@@ -1,6 +1,5 @@
 const WACHTWOORD = 'greenbite2026';
 const OPSLAG = 'BITES_DATA';
-const FAVOPSLAG = 'BITES_FAV';
 const NOTITIE_OPSLAG = 'BITES_NOTITIE';
 
 let beheerder = false;
@@ -46,14 +45,7 @@ const standaardRecepten = [
 
 // Opslag functies
 function laadRecepten() {
-    const data = localStorage.getItem(OPSLAG);
-    if (!data) return [...standaardRecepten];
-    const opgeslagen = JSON.parse(data);
-    if (opgeslagen.length < standaardRecepten.length) {
-        bewaarRecepten(standaardRecepten);
-        return [...standaardRecepten];
-    }
-    return opgeslagen;
+    return [...standaardRecepten];
 }
 function bewaarRecepten(lijst) {
     localStorage.setItem(OPSLAG, JSON.stringify(lijst));
@@ -294,8 +286,7 @@ document.addEventListener('click', e => {
 
 // Bij opstarten
 window.onload = function () {
-    localStorage.removeItem('BITES_BEHEER');
-    localStorage.removeItem(OPSLAG); // Wis oude data
+    localStorage.clear(); // Wis ALLE oude rommel
     laadNotitie();
     toonAlles();
     document.getElementById('notitieVak').oninput = bewaarNotitie;
