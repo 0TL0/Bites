@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bites - Recepten Website</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --card-hover: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #10b981;
+            --accent-hover: #059669;
+            --danger: #ef4444;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: Helvetica, Arial, sans-serif;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .app-container {
+            width: min(98vw, 1200px);
+            min-height: 100vh;
+            margin: 0 auto;
+            background: var(--card-bg);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        header {
+            padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1rem, 3vw, 1.5rem);
+            background: #0f172a;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.1s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .btn:hover { background: var(--accent-hover); }
+        .btn:active { transform: scale(0.97); }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+        .btn-secondary:hover { background: var(--card-hover); }
+
+        .btn-danger { background: var(--danger); }
+
+        .controls-bar {
+            padding: 1rem clamp(1rem, 3vw, 1.5rem);
+            background: rgba(15, 23, 42, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+        .search-input, .filter-select {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            width: 100%;
+        }
+
+        .search-input:focus, .filter-select:focus { border-color: var(--accent); }
+
+        .collapsible-controls {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        .collapsible-controls.show { display: grid; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 1rem clamp(1rem, 3vw, 1.5rem);
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .recipe-card {
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px -5px rgba(16, 185, 129, 0.15);
+            border-color: var(--accent);
+        }
+
+        .recipe-image {
+            height: 140px;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recipe-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .recipe-tags {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(4px);
+            padding: 0.2rem 0.45rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: var(--accent);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .recipe-info {
+            padding: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            flex: 1;
+        }
+
+        .recipe-title {
+            font-size: 1rem;
+            font-weight: bold;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .recipe-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .recipe-tools {
+            background: rgba(16, 185, 129, 0.08);
+            padding: 0.45rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            color: var(--accent);
+            margin-top: 0.2rem;
+            line-height: 1.4;
+        }
+
+        .recipe-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.6rem;
+            padding-top: 0.6rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            width: min(100%, 550px);
+            max-height: 90vh;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+
+        .modal-header {
+            padding: 1rem 1.25rem;
+            background: #0f172a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h3 {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .modal-body {
+            padding: 1.25rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group label {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .form-control {
+            background: #0f172a;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 0.7rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            width: 100%;
+        }
+
+        .form-control:focus { border-color: var(--accent); }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .close-btn:hover { color: var(--text-main); }
+
+        .preview-box {
+            width: 80px;
+            height: 80px;
+            background: #0f172a;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            overflow: hidden;
+            margin-top: 0.25rem;
+        }
+        .preview-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .admin-indicator {
+            font-size: 0.75rem;
+            color: var(--accent);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .sync-badge {
+            font-size: 0.75rem;
+            color: var(--accent);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .button-row .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+            .recipe-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .search-row { flex-direction: column; }
+            .header-actions { gap: 0.4rem; }
+            .btn { padding: 0.45rem 0.7rem; font-size: 0.85rem; }
+            .logo img { height: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <div class="logo">
+                <img src="logo.png" alt="Bites">
+            </div>
+            <div class="header-actions">
+                <span class="sync-badge">💾 Lokaal</span>
+                <span id="adminIndicator" class="admin-indicator" style="display:none;">🔐 Beheerder</span>
+                <button class="btn btn-secondary" id="adminBtn" onclick="openAdminLogin()">🔐</button>
+                <button class="btn" id="addBtn" onclick="openRecipeFormModal()" style="display:none;">➕ Toevoegen</button>
+            </div>
+        </header>
+
+        <div class="controls-bar">
+            <div class="search-row">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Zoek op naam of ingrediënt..." oninput="filterAndRender()">
+                <button class="btn btn-secondary" onclick="toggleSortAndFilters()" id="toggleSortBtn">⚙️ Filter</button>
+            </div>
+            <div id="collapsibleControls" class="collapsible-controls">
+                <select id="cuisineFilter" class="filter-select" onchange="filterAndRender()">
+                    <option value="">Alle Keukens</option>
+                    <option value="Italian">Italiaans</option>
+                    <option value="Mexican">Mexicaans</option>
+                    <option value="Dutch">Nederlands</option>
+                    <option value="Asian">Aziatisch</option>
+                    <option value="French">Frans</option>
+                    <option value="Spanish">Spaans</option>
+                    <option value="Greek">Grieks</option>
+                    <option value="Turkish">Turks</option>
+                </select>
+                <select id="dishFilter" class="filter-select" onchange="filterAndRender()">
+                    <option value="">Alle Soorten</option>
+                    <option value="Main">Hoofdgerecht</option>
+                    <option value="Appetizer">Voorgerecht</option>
+                    <option value="Dessert">Dessert</option>
+                    <option value="Soup">Soep</option>
+                    <option value="Breakfast">Ontbijt</option>
+                    <option value="Lunch">Lunch</option>
+                </select>
+                <select id="sortFilter" class="filter-select" onchange="filterAndRender()">
+                    <option value="asc">⏱️ Tijd: Kort naar Lang</option>
+                    <option value="desc">⏱️ Tijd: Lang naar Kort</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div id="recipeGrid" class="recipe-grid"></div>
+        </div>
+    </div>
+
+    <!-- Inlogscherm -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🔐 Beheerder Inloggen</h3>
+                <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Wachtwoord</label>
+                    <input type="password" id="adminPassword" class="form-control" placeholder="Voer wachtwoord in...">
+                </div>
+                <div class="button-row">
+                    <button class="btn" onclick="checkAdminLogin()">Inloggen</button>
+                    <button class="btn btn-secondary" onclick="closeModal('loginModal')">Annuleren</button>
+                </div>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin-top:1rem;">
+                    💡 Standaard wachtwoord: <strong>greenbite2026</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!--
