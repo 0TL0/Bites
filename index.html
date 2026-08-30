@@ -471,4 +471,383 @@
         </div>
     </div>
 
-    <!--
+    <!-- Recept Toevoegen/Bewerken -->
+    <div id="recipeFormModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="formModalTitle">➕ Nieuw Recept</h3>
+                <button class="close-btn" onclick="closeModal('recipeFormModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editRecipeId" value="">
+                <div class="form-group">
+                    <label>Naam Recept *</label>
+                    <input type="text" id="formName" class="form-control" placeholder="bv. Pasta Bolognese">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Keuken</label>
+                        <select id="formCuisine" class="form-control">
+                            <option value="Italian">Italiaans</option>
+                            <option value="Mexican">Mexicaans</option>
+                            <option value="Dutch">Nederlands</option>
+                            <option value="Asian">Aziatisch</option>
+                            <option value="French">Frans</option>
+                            <option value="Spanish">Spaans</option>
+                            <option value="Greek">Grieks</option>
+                            <option value="Turkish">Turks</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Soort</label>
+                        <select id="formDishType" class="form-control">
+                            <option value="Main">Hoofdgerecht</option>
+                            <option value="Appetizer">Voorgerecht</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Soup">Soep</option>
+                            <option value="Breakfast">Ontbijt</option>
+                            <option value="Lunch">Lunch</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Bereidingstijd (min)</label>
+                        <input type="number" id="formTime" class="form-control" value="25">
+                    </div>
+                    <div class="form-group">
+                        <label>Foto (emoji of link)</label>
+                        <input type="text" id="formPhoto" class="form-control" placeholder="bv. 🍕" value="🍽️" oninput="updateImagePreview(this.value)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Voorbeeld</label>
+                    <div id="imagePreviewBox" class="preview-box">🍽️</div>
+                </div>
+                <div class="form-group">
+                    <label>Ingrediënten *</label>
+                    <div id="ingredientsContainer" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+                    <button type="button" class="btn btn-secondary" style="font-size:0.85rem; padding:0.4rem 0.8rem; margin-top:0.3rem;" onclick="addIngredientRow()">➕ Toevoegen</button>
+                </div>
+                <div class="form-group">
+                    <label>Benodigdheden / Gereedschap *</label>
+                    <input type="text" id="formTools" class="form-control" placeholder="Pan, Mes, Oven...">
+                </div>
+                <div class="form-group">
+                    <label>Korte Beschrijving</label>
+                    <input type="text" id="formDescription" class="form-control" placeholder="Korte samenvatting...">
+                </div>
+                <div class="form-group">
+                    <label>Bereidingswijze</label>
+                    <textarea id="formInstructions" class="form-control" placeholder="Stap voor stap..."></textarea>
+                </div>
+                <div class="button-row">
+                    <button class="btn" onclick="saveRecipeFromForm()">✅ Opslaan</button>
+                    <button class="btn btn-secondary" onclick="closeModal('recipeFormModal')">Annuleren</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recept Detail -->
+    <div id="recipeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Recept</h3>
+                <button class="close-btn" onclick="closeModal('recipeModal')">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = 'greenbite2026';
+        const APP_STORAGE_KEY = 'BITES_RECIPES_V1';
+        let isAdmin = localStorage.getItem('bites_admin') === 'true';
+
+        const defaultRecipes = [
+            {
+                id: 1,
+                name: "Pasta Bolognese",
+                cuisine: "Italian",
+                dishType: "Main",
+                time: 30,
+                photo: "🍝",
+                ingredients: ["Pasta", "Gehakt", "Tomaat", "Ui", "Knoflook"],
+                tools: ["Pan", "Kookpan", "Mes", "Snijplank"],
+                description: "Een klassieke pasta met gehaktsaus.",
+                instructions: "1. Kook de pasta.\n2. Fruit ui en knoflook.\n3. Voeg gehakt toe en bak rul.\n4. Voeg tomaten toe en laat pruttelen.\n5. Meng met de pasta."
+            },
+            {
+                id: 2,
+                name: "Taco's",
+                cuisine: "Mexican",
+                dishType: "Main",
+                time: 20,
+                photo: "🌮",
+                ingredients: ["Tortilla's", "Gehakt", "Sla", "Kaas", "Saus"],
+                tools: ["Koekenpan", "Lepel"],
+                description: "Snelle en lekkere taco's.",
+                instructions: "1. Bak het gehakt met kruiden.\n2. Warm de tortilla's.\n3. Vul en werk af met sla en kaas."
+            }
+        ];
+
+        function loadData() {
+            const saved = localStorage.getItem(APP_STORAGE_KEY + '_data');
+            if (!saved) {
+                localStorage.setItem(APP_STORAGE_KEY + '_data', JSON.stringify(defaultRecipes));
+                return defaultRecipes;
+            }
+            try { return JSON.parse(saved); }
+            catch (e) { return defaultRecipes; }
+        }
+
+        function saveData(data) {
+            localStorage.setItem(APP_STORAGE_KEY + '_data', JSON.stringify(data));
+        }
+
+        function openAdminLogin() {
+            if (isAdmin) {
+                isAdmin = false;
+                localStorage.removeItem('bites_admin');
+                updateAdminUI();
+            } else {
+                document.getElementById('adminPassword').value = '';
+                document.getElementById('loginModal').style.display = 'flex';
+            }
+        }
+
+        function checkAdminLogin() {
+            const pw = document.getElementById('adminPassword').value;
+            if (pw === ADMIN_PASSWORD) {
+                isAdmin = true;
+                localStorage.setItem('bites_admin', 'true');
+                closeModal('loginModal');
+                updateAdminUI();
+                filterAndRender();
+            } else {
+                alert('❌ Verkeerd wachtwoord!');
+            }
+        }
+
+        function updateAdminUI() {
+            document.getElementById('addBtn').style.display = isAdmin ? 'flex' : 'none';
+            document.getElementById('adminIndicator').style.display = isAdmin ? 'inline-flex' : 'none';
+            document.getElementById('adminBtn').innerHTML = isAdmin ? '🔓' : '🔐';
+        }
+
+        function toggleSortAndFilters() {
+            document.getElementById('collapsibleControls').classList.toggle('show');
+        }
+
+        function filterAndRender() {
+            const recipes = loadData();
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const cuisine = document.getElementById('cuisineFilter').value;
+            const dish = document.getElementById('dishFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+
+            let filtered = recipes.filter(r => {
+                const matchSearch = r.name.toLowerCase().includes(search) || 
+                    r.ingredients.some(i => i.toLowerCase().includes(search));
+                const matchCuisine = !cuisine || r.cuisine === cuisine;
+                const matchDish = !dish || r.dishType === dish;
+                return matchSearch && matchCuisine && matchDish;
+            });
+
+            filtered.sort((a, b) => sort === 'asc' ? a.time - b.time : b.time - a.time);
+            renderGrid(filtered);
+        }
+
+        function renderGrid(recipes) {
+            const grid = document.getElementById('recipeGrid');
+            grid.innerHTML = '';
+
+            if (recipes.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:3rem;">
+                    🔍 Geen recepten gevonden.<br>
+                    ${isAdmin ? `<button class="btn" onclick="openRecipeFormModal()" style="margin-top:1rem;">➕ Voeg je eerste recept toe</button>` : ''}
+                </div>`;
+                return;
+            }
+
+            recipes.forEach(r => {
+                const card = document.createElement('div');
+                card.className = 'recipe-card';
+                card.onclick = () => openRecipeDetail(r);
+                const isImgUrl = r.photo && (r.photo.startsWith('http') || r.photo.startsWith('data:'));
+
+                card.innerHTML = `
+                    <div class="recipe-image">
+                        ${isImgUrl ? `<img src="${r.photo}" alt="${r.name}">` : (r.photo || '🍽️')}
+                        <div class="recipe-tags">
+                            <span class="tag">${r.cuisine}</span>
+                            <span class="tag">${r.dishType}</span>
+                        </div>
+                    </div>
+                    <div class="recipe-info">
+                        <h4 class="recipe-title">${r.name}</h4>
+                        <p class="recipe-desc">${r.description}</p>
+                        <div class="recipe-tools">🍳 ${Array.isArray(r.tools) ? r.tools.join(', ') : r.tools}</div>
+                        <div class="recipe-meta">
+                            <span>⏱️ ${r.time} min</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function updateImagePreview(val) {
+            const box = document.getElementById('imagePreviewBox');
+            if (val.startsWith('http') || val.startsWith('data:')) {
+                box.innerHTML = `<img src="${val}" alt="Voorbeeld">`;
+            } else {
+                box.innerHTML = val || '🍽️';
+            }
+        }
+
+        function addIngredientRow(val = '') {
+            const container = document.getElementById('ingredientsContainer');
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.gap = '0.5rem';
+            row.style.alignItems = 'center';
+            row.innerHTML = `
+                <input type="text" class="form-control ingredient-input" value="${val}" placeholder="bv. 200g pasta" style="flex:1;">
+                ${isAdmin ? `<button class="btn btn-danger" style="padding:0.5rem 0.75rem;" onclick="this.parentElement.remove()">❌</button>` : ''}
+            `;
+            container.appendChild(row);
+        }
+
+        function openRecipeFormModal(recipeId = null) {
+            if (!isAdmin) { alert('🔐 Log eerst in als beheerder!'); return; }
+            
+            document.getElementById('editRecipeId').value = recipeId || '';
+            const ingredientsContainer = document.getElementById('ingredientsContainer');
+            ingredientsContainer.innerHTML = '';
+
+            if (recipeId) {
+                document.getElementById('formModalTitle').innerText = '✏️ Bewerk Recept';
+                const recipes = loadData();
+                const r = recipes.find(item => item.id === recipeId);
+                if (r) {
+                    document.getElementById('formName').value = r.name;
+                    document.getElementById('formCuisine').value = r.cuisine;
+                    document.getElementById('formDishType').value = r.dishType;
+                    document.getElementById('formTime').value = r.time;
+                    document.getElementById('formPhoto').value = r.photo;
+                    r.ingredients.forEach(ing => addIngredientRow(ing));
+                    document.getElementById('formTools').value = Array.isArray(r.tools) ? r.tools.join(', ') : r.tools;
+                    document.getElementById('formDescription').value = r.description;
+                    document.getElementById('formInstructions').value = r.instructions;
+                    updateImagePreview(r.photo);
+                }
+            } else {
+                document.getElementById('formModalTitle').innerText = '➕ Nieuw Recept';
+                document.getElementById('formName').value = '';
+                document.getElementById('formCuisine').value = 'Italian';
+                document.getElementById('formDishType').value = 'Main';
+                document.getElementById('formTime').value = 25;
+                document.getElementById('formPhoto').value = '🍽️';
+                addIngredientRow('');
+                addIngredientRow('');
+                document.getElementById('formTools').value = '';
+                document.getElementById('formDescription').value = '';
+                document.getElementById('formInstructions').value = '';
+                updateImagePreview('🍽️');
+            }
+
+            document.getElementById('recipeFormModal').style.display = 'flex';
+        }
+
+        function saveRecipeFromForm() {
+            const editId = document.getElementById('editRecipeId').value;
+            const name = document.getElementById('formName').value.trim();
+            const cuisine = document.getElementById('formCuisine').value;
+            const dishType = document.getElementById('formDishType').value;
+            const time = parseInt(document.getElementById('formTime').value) || 20;
+            const photo = document.getElementById('formPhoto').value.trim() || '🍽️';
+            
+            const ingredientInputs = document.querySelectorAll('.ingredient-input');
+            const ingredients = Array.from(ingredientInputs).map(i => i.value.trim()).filter(s => s);
+            const tools = document.getElementById('formTools').value.split(',').map(s => s.trim()).filter(s => s);
+            const description = document.getElementById('formDescription').value.trim() || 'Zelfgemaakt recept.';
+            const instructions = document.getElementById('formInstructions').value.trim();
+
+            if (!name) { alert('⚠️ Vul een naam in!'); return; }
+            if (ingredients.length === 0) { alert('⚠️ Voeg ten minste één ingrediënt toe!'); return; }
+            if (tools.length === 0) { alert('⚠️ Vul benodigdheden in!'); return; }
+
+            const recipes = loadData();
+
+            if (editId) {
+                const index = recipes.findIndex(item => item.id == editId);
+                if (index !== -1) {
+                    recipes[index] = { id: parseInt(editId), name, cuisine, dishType, time, photo, ingredients, tools, description, instructions };
+                }
+            } else {
+                recipes.push({ id: Date.now(), name, cuisine, dishType, time, photo, ingredients, tools, description, instructions });
+            }
+
+            saveData(recipes);
+            closeModal('recipeFormModal');
+            filterAndRender();
+            alert('✅ Recept opgeslagen!');
+        }
+
+        function openRecipeDetail(r) {
+            document.getElementById('modalTitle').innerText = r.name;
+            const body = document.getElementById('modalBody');
+            
+            const ingredientsList = r.ingredients.map(i => `<li>${i}</li>`).join('');
+            const toolsList = Array.isArray(r.tools) ? r.tools.join(', ') : r.tools;
+            const isImgUrl = r.photo && (r.photo.startsWith('http') || r.photo.startsWith('data:'));
+
+            body.innerHTML = `
+                <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap; margin-bottom:1rem;">
+                    <div style="width:90px; height:90px; background:#0f172a; border-radius:12px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:3rem; overflow:hidden; flex-shrink:0;">
+                        ${isImgUrl ? `<img src="${r.photo}" style="width:100%; height:100%; object-fit:cover;">` : r.photo}
+                    </div>
+                    <div style="flex:1; min-width:180px;">
+                        <p style="margin:0 0 0.3rem 0;"><strong>Keuken:</strong> ${r.cuisine}</p>
+                        <p style="margin:0 0 0.3rem 0;"><strong>Soort:</strong> ${r.dishType}</p>
+                        <p style="margin:0 0 0.3rem 0;"><strong>Tijd:</strong> ${r.time} min</p>
+                        <p style="margin:0;"><strong>Benodigdheden:</strong> ${toolsList}</p>
+                    </div>
+                </div>
+                <div style="margin-bottom:1rem;">
+                    <h4 style="margin:0 0 0.4rem 0; color:var(--accent);">Ingrediënten</h4>
+                    <ul style="margin:0; padding-left:1.2rem; color:var(--text-muted);">${ingredientsList}</ul>
+                </div>
+                <div>
+                    <h4 style="margin:0 0 0.4rem 0; color:var(--accent);">Bereidingswijze</h4>
+                    <p style="margin:0; color:var(--text-muted); white-space:pre-line;">${r.instructions}</p>
+                </div>
+                ${isAdmin ? `
+                <div style="display:flex; gap:0.75rem; margin-top:1rem; border-top:1px solid var(--border); padding-top:1rem;">
+                    <button class="btn btn-secondary" style="flex:1; justify-content:center;" onclick="closeModal('recipeModal'); openRecipeFormModal(${r.id})">✏️ Bewerken</button>
+                    <button class="btn btn-danger" style="flex:1; justify-content:center;" onclick="deleteRecipe(${r.id})">🗑️ Verwijderen</button>
+                </div>` : ''}
+            `;
+            document.getElementById('recipeModal').style.display = 'flex';
+        }
+
+        function deleteRecipe(id) {
+            if (!confirm('Weet je zeker dat je dit recept wilt verwijderen?')) return;
+            let recipes = loadData();
+            recipes = recipes.filter(r => r.id !== id);
+            saveData(recipes);
+            closeModal('recipeModal');
+            filterAndRender();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        updateAdminUI();
+        filterAndRender();
+    </script>
+</body>
+</html>
