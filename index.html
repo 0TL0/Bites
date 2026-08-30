@@ -6,15 +6,19 @@
     <title>Bites - Recepten Website</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --card-hover: #334155;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #2a3b53;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent: #10b981;
             --accent-hover: #059669;
+            --accent-soft: rgba(16, 185, 129, 0.15);
+            --gold: #f59e0b;
+            --gold-dim: #786412;
             --danger: #ef4444;
             --border: #334155;
+            --border-light: #475569;
         }
 
         * {
@@ -26,46 +30,49 @@
         body {
             min-height: 100vh;
             margin: 0;
-            background-color: var(--bg-color);
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                linear-gradient(135deg, #0f172a 0%, #1a2744 50%, #0f172a 100%);
             color: var(--text-main);
-            font-family: Helvetica, Arial, sans-serif;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-attachment: fixed;
         }
 
         .app-container {
-            width: min(98vw, 1200px);
-            min-height: 100vh;
+            width: min(98vw, 1280px);
             margin: 0 auto;
-            background: var(--card-bg);
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            padding: 1rem;
         }
 
         header {
-            padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1rem, 3vw, 1.5rem);
-            background: #0f172a;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             gap: 1rem;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.25rem;
             position: sticky;
-            top: 0;
+            top: 0.5rem;
             z-index: 100;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
         .logo {
             display: flex;
             align-items: center;
+            gap: 0.5rem;
         }
 
         .logo img {
-            height: 40px;
+            height: 44px;
             width: auto;
             display: block;
         }
@@ -78,106 +85,128 @@
         }
 
         .btn {
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
             color: white;
             border: none;
-            padding: 0.5rem 0.9rem;
-            border-radius: 8px;
+            padding: 0.6rem 1.1rem;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
-            transition: background 0.2s, transform 0.1s;
-            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            font-size: 0.92rem;
             display: flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.4rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
 
-        .btn:hover { background: var(--accent-hover); }
-        .btn:active { transform: scale(0.97); }
+        .btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+        }
+        .btn:active { transform: translateY(0); }
 
         .btn-secondary {
-            background: transparent;
-            border: 1px solid var(--border);
+            background: rgba(51, 65, 85, 0.6);
+            border: 1px solid var(--border-light);
             color: var(--text-main);
+            box-shadow: none;
         }
-        .btn-secondary:hover { background: var(--card-hover); }
+        .btn-secondary:hover { 
+            background: rgba(71, 85, 105, 0.6); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
 
-        .btn-danger { background: var(--danger); }
+        .btn-danger { 
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+        .btn-danger:hover { box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3); }
 
         .controls-bar {
-            padding: 1rem clamp(1rem, 3vw, 1.5rem);
-            background: rgba(15, 23, 42, 0.5);
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            border-bottom: 1px solid var(--border);
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.25rem;
         }
 
-        .search-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .search-row { 
+            display: flex; 
+            gap: 0.75rem; 
+            flex-wrap: wrap; 
+            margin-bottom: 0.75rem;
+        }
 
         .search-input, .filter-select {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-light);
             color: var(--text-main);
-            padding: 0.7rem 1rem;
-            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
             font-size: 0.95rem;
             outline: none;
             width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        .search-input:focus, .filter-select:focus { border-color: var(--accent); }
+        .search-input:focus, .filter-select:focus { 
+            border-color: var(--accent); 
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
 
         .collapsible-controls {
             display: none;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
             gap: 0.75rem;
             margin-top: 0.5rem;
-            animation: fadeIn 0.2s ease-in-out;
+            animation: fadeIn 0.25s ease-out;
         }
 
         .collapsible-controls.show { display: grid; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
+            from { opacity: 0; transform: translateY(-8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .content-area {
-            flex: 1;
-            padding: 1rem clamp(1rem, 3vw, 1.5rem);
+            padding: 0;
         }
 
         .recipe-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.2rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.25rem;
         }
 
         .recipe-card {
-            background: #0f172a;
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .recipe-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px -5px rgba(16, 185, 129, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             border-color: var(--accent);
+            background: rgba(30, 41, 59, 0.85);
         }
 
         .recipe-image {
-            height: 140px;
-            background: #1e293b;
+            height: 160px;
+            background: linear-gradient(135deg, #1e293b, #334155);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            font-size: 3.5rem;
             position: relative;
             overflow: hidden;
         }
@@ -190,50 +219,87 @@
 
         .recipe-tags {
             position: absolute;
-            top: 6px;
-            left: 6px;
+            top: 10px;
+            left: 10px;
             display: flex;
-            gap: 0.3rem;
+            gap: 0.35rem;
             flex-wrap: wrap;
         }
 
         .tag {
             background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(4px);
-            padding: 0.2rem 0.45rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
+            backdrop-filter: blur(6px);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            color: var(--accent);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+        .status-uitgeprobeerd {
+            background: rgba(16, 185, 129, 0.2);
             color: var(--accent);
             border: 1px solid rgba(16, 185, 129, 0.3);
         }
+        .status-nog {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
 
         .recipe-info {
-            padding: 0.9rem;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.5rem;
             flex: 1;
         }
 
         .recipe-title {
-            font-size: 1rem;
-            font-weight: bold;
+            font-size: 1.05rem;
+            font-weight: 700;
             margin: 0;
             color: var(--text-main);
+            line-height: 1.3;
         }
 
         .recipe-desc {
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             color: var(--text-muted);
             margin: 0;
-            line-height: 1.4;
+            line-height: 1.5;
+        }
+
+        .stars {
+            color: var(--gold);
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+        .stars .empty { color: var(--gold-dim); opacity: 0.3; }
+        .stars .half { position: relative; }
+        .stars .half > span {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 50%;
+            overflow: hidden;
+            color: var(--gold);
         }
 
         .recipe-tools {
-            background: rgba(16, 185, 129, 0.08);
-            padding: 0.45rem 0.6rem;
-            border-radius: 6px;
-            font-size: 0.78rem;
+            background: var(--accent-soft);
+            padding: 0.5rem 0.7rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
             color: var(--accent);
             margin-top: 0.2rem;
             line-height: 1.4;
@@ -243,12 +309,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 0.6rem;
-            padding-top: 0.6rem;
+            margin-top: 0.5rem;
+            padding-top: 0.7rem;
             font-size: 0.8rem;
             color: var(--text-muted);
             border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 0.3rem;
         }
+
+        .source-link {
+            font-size: 0.75rem;
+            color: #60a5fa;
+            text-decoration: none;
+        }
+        .source-link:hover { text-decoration: underline; }
 
         .modal {
             display: none;
@@ -258,7 +333,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
             align-items: center;
             justify-content: center;
             z-index: 1000;
@@ -267,20 +342,20 @@
         }
 
         .modal-content {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            width: min(100%, 550px);
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid var(--border-light);
+            width: min(100%, 600px);
             max-height: 90vh;
-            border-radius: 16px;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
         }
 
         .modal-header {
-            padding: 1rem 1.25rem;
-            background: #0f172a;
+            padding: 1.1rem 1.4rem;
+            background: rgba(15, 23, 42, 0.9);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -288,22 +363,22 @@
         }
 
         .modal-header h3 {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             margin: 0;
         }
 
         .modal-body {
-            padding: 1.25rem;
+            padding: 1.4rem;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.1rem;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
+            gap: 0.45rem;
         }
 
         .form-group label {
@@ -313,39 +388,61 @@
         }
 
         .form-control {
-            background: #0f172a;
-            border: 1px solid var(--border);
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-light);
             color: var(--text-main);
-            padding: 0.7rem;
-            border-radius: 8px;
+            padding: 0.75rem;
+            border-radius: 10px;
             font-size: 0.95rem;
             outline: none;
             width: 100%;
+            transition: border-color 0.2s;
         }
 
         .form-control:focus { border-color: var(--accent); }
-        textarea.form-control { resize: vertical; min-height: 80px; }
+        textarea.form-control { resize: vertical; min-height: 90px; }
 
         .close-btn {
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             cursor: pointer;
             line-height: 1;
+            transition: color 0.2s;
         }
         .close-btn:hover { color: var(--text-main); }
 
+        .star-rating {
+            display: flex;
+            gap: 0.25rem;
+            font-size: 1.6rem;
+            cursor: pointer;
+        }
+        .star-rating span { color: var(--gold-dim); opacity: 0.3; transition: all 0.15s; }
+        .star-rating span.half { position: relative; }
+        .star-rating span.half > span {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 50%;
+            overflow: hidden;
+            color: var(--gold);
+            opacity: 1;
+        }
+        .star-rating span.active { color: var(--gold); opacity: 1; }
+        .star-rating span:hover { transform: scale(1.15); }
+
         .preview-box {
-            width: 80px;
-            height: 80px;
-            background: #0f172a;
-            border: 1px dashed var(--border);
-            border-radius: 8px;
+            width: 90px;
+            height: 90px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px dashed var(--border-light);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 2.2rem;
             overflow: hidden;
             margin-top: 0.25rem;
         }
@@ -354,18 +451,9 @@
         .admin-indicator {
             font-size: 0.75rem;
             color: var(--accent);
-            background: rgba(16, 185, 129, 0.1);
+            background: var(--accent-soft);
             padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-        }
-
-        .sync-badge {
-            font-size: 0.75rem;
-            color: var(--accent);
-            background: rgba(16, 185, 129, 0.1);
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 6px;
         }
 
         .form-row {
@@ -385,13 +473,20 @@
             justify-content: center;
         }
 
-        @media (max-width: 600px) {
+        .hint-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 700px) {
             .form-row { grid-template-columns: 1fr; }
             .recipe-grid { grid-template-columns: 1fr; gap: 1rem; }
             .search-row { flex-direction: column; }
             .header-actions { gap: 0.4rem; }
-            .btn { padding: 0.45rem 0.7rem; font-size: 0.85rem; }
-            .logo img { height: 32px; }
+            .btn { padding: 0.5rem 0.85rem; font-size: 0.85rem; }
+            .logo img { height: 36px; }
+            header, .controls-bar { padding: 1rem; }
         }
     </style>
 </head>
@@ -403,42 +498,61 @@
                 <img src="logo.png" alt="Bites">
             </div>
             <div class="header-actions">
-                <span class="sync-badge">💾 Lokaal</span>
-                <span id="adminIndicator" class="admin-indicator" style="display:none;">🔐 Beheerder</span>
+                <span class="admin-indicator" id="adminIndicator" style="display:none;">🔐 Beheerder</span>
                 <button class="btn btn-secondary" id="adminBtn" onclick="openAdminLogin()">🔐</button>
-                <button class="btn" id="addBtn" onclick="openRecipeFormModal()" style="display:none;">➕ Toevoegen</button>
+                <button class="btn" id="addBtn" onclick="openRecipeFormModal()" style="display:none;">➕ Recept Toevoegen</button>
             </div>
         </header>
 
         <div class="controls-bar">
             <div class="search-row">
-                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Zoek op naam of ingrediënt..." oninput="filterAndRender()">
-                <button class="btn btn-secondary" onclick="toggleSortAndFilters()" id="toggleSortBtn">⚙️ Filter</button>
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Zoek op naam, ingrediënt of categorie..." oninput="filterAndRender()">
+                <button class="btn btn-secondary" onclick="toggleSortAndFilters()" id="toggleSortBtn">⚙️ Filters & Sorteren</button>
             </div>
             <div id="collapsibleControls" class="collapsible-controls">
-                <select id="cuisineFilter" class="filter-select" onchange="filterAndRender()">
-                    <option value="">Alle Keukens</option>
-                    <option value="Italian">Italiaans</option>
-                    <option value="Mexican">Mexicaans</option>
-                    <option value="Dutch">Nederlands</option>
-                    <option value="Asian">Aziatisch</option>
-                    <option value="French">Frans</option>
-                    <option value="Spanish">Spaans</option>
-                    <option value="Greek">Grieks</option>
-                    <option value="Turkish">Turks</option>
+                <select id="categoryFilter" class="filter-select" onchange="filterAndRender()">
+                    <option value="">Alle Categorieën</option>
+                    <option value="Voorgerecht">Voorgerecht</option>
+                    <option value="Hoofdgerecht">Hoofdgerecht</option>
+                    <option value="Bijgerecht">Bijgerecht</option>
+                    <option value="Nagerecht">Nagerecht</option>
+                    <option value="Soep">Soep</option>
+                    <option value="Salade">Salade</option>
+                    <option value="Pasta & Rijst">Pasta & Rijst</option>
+                    <option value="Vleesgerecht">Vleesgerecht</option>
+                    <option value="Visgerecht">Visgerecht</option>
+                    <option value="Vegetarisch">Vegetarisch</option>
+                    <option value="Vegan">Vegan</option>
+                    <option value="Tussendoortje">Tussendoortje</option>
+                    <option value="Drank">Drank</option>
                 </select>
-                <select id="dishFilter" class="filter-select" onchange="filterAndRender()">
-                    <option value="">Alle Soorten</option>
-                    <option value="Main">Hoofdgerecht</option>
-                    <option value="Appetizer">Voorgerecht</option>
-                    <option value="Dessert">Dessert</option>
-                    <option value="Soup">Soep</option>
-                    <option value="Breakfast">Ontbijt</option>
-                    <option value="Lunch">Lunch</option>
+                <select id="kitchenFilter" class="filter-select" onchange="filterAndRender()">
+                    <option value="">Alle Keukens</option>
+                    <option value="Italiaans">Italiaans</option>
+                    <option value="Mexicaans">Mexicaans</option>
+                    <option value="Spaans">Spaans</option>
+                    <option value="Aziatisch">Aziatisch</option>
+                    <option value="Frans">Frans</option>
+                    <option value="Nederlands">Nederlands</option>
+                    <option value="Overig">Overig</option>
+                </select>
+                <select id="occasionFilter" class="filter-select" onchange="filterAndRender()">
+                    <option value="">Alle Gelegenheden</option>
+                    <option value="Snel">Snel klaar</option>
+                    <option value="Gezond">Gezond</option>
+                    <option value="Feest">Feestdagen</option>
+                    <option value="BBQ">BBQ</option>
+                </select>
+                <select id="statusFilter" class="filter-select" onchange="filterAndRender()">
+                    <option value="">Alle Status</option>
+                    <option value="Uitgeprobeerd">✅ Uitgeprobeerd</option>
+                    <option value="Nog proberen">⏳ Nog proberen</option>
                 </select>
                 <select id="sortFilter" class="filter-select" onchange="filterAndRender()">
-                    <option value="asc">⏱️ Tijd: Kort naar Lang</option>
-                    <option value="desc">⏱️ Tijd: Lang naar Kort</option>
+                    <option value="time-asc">⏱️ Tijd: Kort → Lang</option>
+                    <option value="time-desc">⏱️ Tijd: Lang → Kort</option>
+                    <option value="rating-desc">⭐ Beoordeling: Hoog → Laag</option>
+                    <option value="name-asc">📫 Naam A → Z</option>
                 </select>
             </div>
         </div>
@@ -464,9 +578,7 @@
                     <button class="btn" onclick="checkAdminLogin()">Inloggen</button>
                     <button class="btn btn-secondary" onclick="closeModal('loginModal')">Annuleren</button>
                 </div>
-                <p style="font-size:0.8rem; color:var(--text-muted); margin-top:1rem;">
-                    💡 Standaard wachtwoord: <strong>greenbite2026</strong>
-                </p>
+                <p class="hint-text">💡 Standaard wachtwoord: <strong>greenbite2026</strong></p>
             </div>
         </div>
     </div>
@@ -482,31 +594,37 @@
                 <input type="hidden" id="editRecipeId" value="">
                 <div class="form-group">
                     <label>Naam Recept *</label>
-                    <input type="text" id="formName" class="form-control" placeholder="bv. Pasta Bolognese">
+                    <input type="text" id="formName" class="form-control" placeholder="bv. Garnalen in knoflook">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Keuken</label>
-                        <select id="formCuisine" class="form-control">
-                            <option value="Italian">Italiaans</option>
-                            <option value="Mexican">Mexicaans</option>
-                            <option value="Dutch">Nederlands</option>
-                            <option value="Asian">Aziatisch</option>
-                            <option value="French">Frans</option>
-                            <option value="Spanish">Spaans</option>
-                            <option value="Greek">Grieks</option>
-                            <option value="Turkish">Turks</option>
+                        <label>Hoofd Categorie</label>
+                        <select id="formCategory" class="form-control">
+                            <option value="Voorgerecht">Voorgerecht</option>
+                            <option value="Hoofdgerecht" selected>Hoofdgerecht</option>
+                            <option value="Bijgerecht">Bijgerecht</option>
+                            <option value="Nagerecht">Nagerecht</option>
+                            <option value="Soep">Soep</option>
+                            <option value="Salade">Salade</option>
+                            <option value="Pasta & Rijst">Pasta & Rijst</option>
+                            <option value="Vleesgerecht">Vleesgerecht</option>
+                            <option value="Visgerecht">Visgerecht</option>
+                            <option value="Vegetarisch">Vegetarisch</option>
+                            <option value="Vegan">Vegan</option>
+                            <option value="Tussendoortje">Tussendoortje</option>
+                            <option value="Drank">Drank</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Soort</label>
-                        <select id="formDishType" class="form-control">
-                            <option value="Main">Hoofdgerecht</option>
-                            <option value="Appetizer">Voorgerecht</option>
-                            <option value="Dessert">Dessert</option>
-                            <option value="Soup">Soep</option>
-                            <option value="Breakfast">Ontbijt</option>
-                            <option value="Lunch">Lunch</option>
+                        <label>Keuken / Stijl</label>
+                        <select id="formKitchen" class="form-control">
+                            <option value="Italiaans">Italiaans</option>
+                            <option value="Mexicaans">Mexicaans</option>
+                            <option value="Spaans">Spaans</option>
+                            <option value="Aziatisch">Aziatisch</option>
+                            <option value="Frans">Frans</option>
+                            <option value="Nederlands">Nederlands</option>
+                            <option value="Overig" selected>Overig</option>
                         </select>
                     </div>
                 </div>
@@ -516,26 +634,55 @@
                         <input type="number" id="formTime" class="form-control" value="25">
                     </div>
                     <div class="form-group">
-                        <label>Foto (emoji of link)</label>
-                        <input type="text" id="formPhoto" class="form-control" placeholder="bv. 🍕" value="🍽️" oninput="updateImagePreview(this.value)">
+                        <label>Aantal personen</label>
+                        <input type="number" id="formServings" class="form-control" value="2">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Voorbeeld</label>
+                    <label>Beoordeling / Sterren (klik om te geven)</label>
+                    <div class="star-rating" id="starRatingEditor" data-value="0">
+                        <span data-val="0.5">★</span>
+                        <span data-val="1">★</span>
+                        <span data-val="1.5">★</span>
+                        <span data-val="2">★</span>
+                        <span data-val="2.5">★</span>
+                        <span data-val="3">★</span>
+                        <span data-val="3.5">★</span>
+                        <span data-val="4">★</span>
+                        <span data-val="4.5">★</span>
+                        <span data-val="5">★</span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="formStatus" class="form-control">
+                            <option value="Nog proberen">⏳ Nog proberen</option>
+                            <option value="Uitgeprobeerd">✅ Uitgeprobeerd</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Bron / Link (optioneel)</label>
+                        <input type="url" id="formSource" class="form-control" placeholder="https://...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Foto (emoji of link)</label>
+                    <input type="text" id="formPhoto" class="form-control" placeholder="bv. 🍤 of link" value="🍽️" oninput="updateImagePreview(this.value)">
                     <div id="imagePreviewBox" class="preview-box">🍽️</div>
                 </div>
                 <div class="form-group">
                     <label>Ingrediënten *</label>
                     <div id="ingredientsContainer" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
-                    <button type="button" class="btn btn-secondary" style="font-size:0.85rem; padding:0.4rem 0.8rem; margin-top:0.3rem;" onclick="addIngredientRow()">➕ Toevoegen</button>
+                    <button type="button" class="btn btn-secondary" style="font-size:0.85rem; padding:0.45rem 0.8rem; margin-top:0.3rem;" onclick="addIngredientRow()">➕ Ingrediënt toevoegen</button>
                 </div>
                 <div class="form-group">
-                    <label>Benodigdheden / Gereedschap *</label>
+                    <label>Benodigdheden / Gereedschap</label>
                     <input type="text" id="formTools" class="form-control" placeholder="Pan, Mes, Oven...">
                 </div>
                 <div class="form-group">
-                    <label>Korte Beschrijving</label>
-                    <input type="text" id="formDescription" class="form-control" placeholder="Korte samenvatting...">
+                    <label>Korte Beschrijving / Tips</label>
+                    <textarea id="formDescription" class="form-control" placeholder="Korte uitleg, tips of variaties..."></textarea>
                 </div>
                 <div class="form-group">
                     <label>Bereidingswijze</label>
@@ -562,33 +709,95 @@
 
     <script>
         const ADMIN_PASSWORD = 'greenbite2026';
-        const APP_STORAGE_KEY = 'BITES_RECIPES_V1';
-        let isAdmin = localStorage.getItem('bites_admin') === 'true';
+        const APP_STORAGE_KEY = 'BITES_RECIPES_V2';
+        let isAdmin = localStorage.getItem('bites_admin_v2') === 'true';
 
+        // Voorbeeld-recepten overgenomen van je oude website
         const defaultRecipes = [
             {
                 id: 1,
-                name: "Pasta Bolognese",
-                cuisine: "Italian",
-                dishType: "Main",
-                time: 30,
-                photo: "🍝",
-                ingredients: ["Pasta", "Gehakt", "Tomaat", "Ui", "Knoflook"],
-                tools: ["Pan", "Kookpan", "Mes", "Snijplank"],
-                description: "Een klassieke pasta met gehaktsaus.",
-                instructions: "1. Kook de pasta.\n2. Fruit ui en knoflook.\n3. Voeg gehakt toe en bak rul.\n4. Voeg tomaten toe en laat pruttelen.\n5. Meng met de pasta."
+                name: "Garnalen in knoflook (Gambas al Ajillo)",
+                category: "Visgerecht",
+                kitchen: "Spaans",
+                occasion: "Snel",
+                time: 20,
+                servings: 2,
+                rating: 4.5,
+                status: "Uitgeprobeerd",
+                photo: "🍤",
+                ingredients: ["Garnalen", "Knoflook", "Olijfolie", "Peterselie", "Chili vlokken", "Zout"],
+                tools: ["Koekenpan", "Lepel"],
+                description: "Heerlijke Spaanse tapas! In 15-20 minuten klaar.",
+                instructions: "1. Pel de garnalen en dep droog.\n2. Snijd knoflook in plakjes.\n3. Verhit olijfolie in de pan en fruit knoflook met chili.\n4. Voeg garnalen toe en bak 2-3 minuten.\n5. Bestrooi met peterselie en zout. Serveer direct.",
+                source: "https://kitchenstories-bybaco.weebly.com/garnalen-in-knoflook.html"
             },
             {
                 id: 2,
-                name: "Taco's",
-                cuisine: "Mexican",
-                dishType: "Main",
-                time: 20,
-                photo: "🌮",
-                ingredients: ["Tortilla's", "Gehakt", "Sla", "Kaas", "Saus"],
-                tools: ["Koekenpan", "Lepel"],
-                description: "Snelle en lekkere taco's.",
-                instructions: "1. Bak het gehakt met kruiden.\n2. Warm de tortilla's.\n3. Vul en werk af met sla en kaas."
+                name: "Beef Teriyaki",
+                category: "Voorgerecht",
+                kitchen: "Aziatisch",
+                occasion: "",
+                time: 25,
+                servings: 2,
+                rating: 0,
+                status: "Nog proberen",
+                photo: "🥩",
+                ingredients: ["Rundvlees", "Sojasaus", "Suiker", "Gember", "Knoflook", "Sesamolie"],
+                tools: ["Pan", "Mes"],
+                description: "Zoete en hartige Japanse stijl.",
+                instructions: "1. Snij vlees in reepjes.\n2. Maak saus van sojasaus, suiker, gember en knoflook.\n3. Bak vlees kort.\n4. Voeg saus toe en laat inkoken.",
+                source: ""
+            },
+            {
+                id: 3,
+                name: "Spaghetti Bolognese",
+                category: "Hoofdgerecht",
+                kitchen: "Italiaans",
+                occasion: "",
+                time: 45,
+                servings: 4,
+                rating: 4,
+                status: "Uitgeprobeerd",
+                photo: "🍝",
+                ingredients: ["Spaghetti", "Gehakt", "Tomaat", "Ui", "Knoflook", "Wortel", "Selderij"],
+                tools: ["Kookpan", "Pan", "Mes", "Snijplank"],
+                description: "Klassieke Italiaanse bolognese saus.",
+                instructions: "1. Kook de pasta.\n2. Fruit ui, knoflook, wortel en selderij.\n3. Voeg gehakt toe en bak rul.\n4. Voeg tomaten toe en laat 30 minuten pruttelen.\n5. Meng met de pasta.",
+                source: ""
+            },
+            {
+                id: 4,
+                name: "Macaroni",
+                category: "Pasta & Rijst",
+                kitchen: "Overig",
+                occasion: "",
+                time: 30,
+                servings: 4,
+                rating: 3.5,
+                status: "Uitgeprobeerd",
+                photo: "🧀",
+                ingredients: ["Macaroni", "Kaas", "Melk", "Boter", "Bloem"],
+                tools: ["Kookpan", "Ovenpan"],
+                description: "Simpele en lekkere macaroni.",
+                instructions: "1. Kook de macaroni gaar.\n2. Maak roomsaus van boter, bloem en melk.\n3. Meng kaas erdoor.\n4. Voeg pasta toe en bak kort in de oven.",
+                source: ""
+            },
+            {
+                id: 5,
+                name: "Macaroni met spek of ham",
+                category: "Pasta & Rijst",
+                kitchen: "Overig",
+                occasion: "",
+                time: 35,
+                servings: 4,
+                rating: 0,
+                status: "Nog proberen",
+                photo: "🥓",
+                ingredients: ["Macaroni", "Spek of ham", "Kaas", "Melk", "Boter", "Ui"],
+                tools: ["Kookpan", "Pan"],
+                description: "Macaroni met een beetje spek of ham.",
+                instructions: "1. Kook de macaroni.\n2. Bak spek of ham met ui.\n3. Maak kaassaus.\n4. Alles samen mengen.",
+                source: ""
             }
         ];
 
@@ -609,7 +818,7 @@
         function openAdminLogin() {
             if (isAdmin) {
                 isAdmin = false;
-                localStorage.removeItem('bites_admin');
+                localStorage.removeItem('bites_admin_v2');
                 updateAdminUI();
             } else {
                 document.getElementById('adminPassword').value = '';
@@ -621,7 +830,7 @@
             const pw = document.getElementById('adminPassword').value;
             if (pw === ADMIN_PASSWORD) {
                 isAdmin = true;
-                localStorage.setItem('bites_admin', 'true');
+                localStorage.setItem('bites_admin_v2', 'true');
                 closeModal('loginModal');
                 updateAdminUI();
                 filterAndRender();
@@ -640,22 +849,47 @@
             document.getElementById('collapsibleControls').classList.toggle('show');
         }
 
+        function renderStars(rating) {
+            let html = '';
+            for (let i = 0.5; i <= 5; i += 0.5) {
+                if (i <= rating) {
+                    html += '<span class="active">★</span>';
+                } else if (i - 0.5 < rating) {
+                    html += '<span class="half"><span>★</span></span>';
+                } else {
+                    html += '<span class="empty">★</span>';
+                }
+            }
+            return html || '<span class="empty">Geen</span>';
+        }
+
         function filterAndRender() {
             const recipes = loadData();
             const search = document.getElementById('searchInput').value.toLowerCase();
-            const cuisine = document.getElementById('cuisineFilter').value;
-            const dish = document.getElementById('dishFilter').value;
+            const category = document.getElementById('categoryFilter').value;
+            const kitchen = document.getElementById('kitchenFilter').value;
+            const occasion = document.getElementById('occasionFilter').value;
+            const status = document.getElementById('statusFilter').value;
             const sort = document.getElementById('sortFilter').value;
 
             let filtered = recipes.filter(r => {
-                const matchSearch = r.name.toLowerCase().includes(search) || 
-                    r.ingredients.some(i => i.toLowerCase().includes(search));
-                const matchCuisine = !cuisine || r.cuisine === cuisine;
-                const matchDish = !dish || r.dishType === dish;
-                return matchSearch && matchCuisine && matchDish;
+                const allText = `${r.name} ${r.category || ''} ${r.kitchen || ''} ${(r.ingredients||[]).join(' ')}`.toLowerCase();
+                const matchSearch = !search || allText.includes(search);
+                const matchCat = !category || r.category === category;
+                const matchKitchen = !kitchen || r.kitchen === kitchen;
+                const matchOccasion = !occasion || (r.occasion || '').includes(occasion);
+                const matchStatus = !status || r.status === status;
+                return matchSearch && matchCat && matchKitchen && matchOccasion && matchStatus;
             });
 
-            filtered.sort((a, b) => sort === 'asc' ? a.time - b.time : b.time - a.time);
+            filtered.sort((a, b) => {
+                if (sort === 'time-asc') return a.time - b.time;
+                if (sort === 'time-desc') return b.time - a.time;
+                if (sort === 'rating-desc') return (b.rating || 0) - (a.rating || 0);
+                if (sort === 'name-asc') return a.name.localeCompare(b.name);
+                return 0;
+            });
+
             renderGrid(filtered);
         }
 
@@ -664,9 +898,9 @@
             grid.innerHTML = '';
 
             if (recipes.length === 0) {
-                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:3rem;">
+                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:4rem 2rem;">
                     🔍 Geen recepten gevonden.<br>
-                    ${isAdmin ? `<button class="btn" onclick="openRecipeFormModal()" style="margin-top:1rem;">➕ Voeg je eerste recept toe</button>` : ''}
+                    ${isAdmin ? `<button class="btn" onclick="openRecipeFormModal()" style="margin-top:1.2rem;">➕ Voeg je eerste recept toe</button>` : ''}
                 </div>`;
                 return;
             }
@@ -676,22 +910,27 @@
                 card.className = 'recipe-card';
                 card.onclick = () => openRecipeDetail(r);
                 const isImgUrl = r.photo && (r.photo.startsWith('http') || r.photo.startsWith('data:'));
+                const statusClass = r.status === 'Uitgeprobeerd' ? 'status-uitgeprobeerd' : 'status-nog';
 
                 card.innerHTML = `
                     <div class="recipe-image">
                         ${isImgUrl ? `<img src="${r.photo}" alt="${r.name}">` : (r.photo || '🍽️')}
                         <div class="recipe-tags">
-                            <span class="tag">${r.cuisine}</span>
-                            <span class="tag">${r.dishType}</span>
+                            <span class="tag">${r.category || 'Recept'}</span>
+                            ${r.kitchen ? `<span class="tag">${r.kitchen}</span>` : ''}
                         </div>
+                        <div class="status-badge ${statusClass}">${r.status === 'Uitgeprobeerd' ? '✅' : '⏳'} ${r.status}</div>
                     </div>
                     <div class="recipe-info">
                         <h4 class="recipe-title">${r.name}</h4>
-                        <p class="recipe-desc">${r.description}</p>
-                        <div class="recipe-tools">🍳 ${Array.isArray(r.tools) ? r.tools.join(', ') : r.tools}</div>
+                        <div class="stars">${renderStars(r.rating || 0)}</div>
+                        <p class="recipe-desc">${r.description || ''}</p>
+                        ${r.tools ? `<div class="recipe-tools">🍳 ${Array.isArray(r.tools) ? r.tools.join(', ') : r.tools}</div>` : ''}
                         <div class="recipe-meta">
                             <span>⏱️ ${r.time} min</span>
+                            <span>👥 ${r.servings || 2} pers</span>
                         </div>
+                        ${r.source ? `<a href="${r.source}" target="_blank" class="source-link" onclick="event.stopPropagation()">🔗 Bron</a>` : ''}
                     </div>
                 `;
                 grid.appendChild(card);
@@ -720,6 +959,27 @@
             container.appendChild(row);
         }
 
+        function initStarRating(containerId, hiddenInputId, initialValue) {
+            const container = document.getElementById(containerId);
+            const hidden = hiddenInputId ? document.getElementById(hiddenInputId) : null;
+            const stars = container.querySelectorAll('span');
+
+            function setValue(val) {
+                container.dataset.value = val;
+                if (hidden) hidden.value = val;
+                stars.forEach(star => {
+                    const v = parseFloat(star.dataset.val);
+                    star.classList.toggle('active', v <= val);
+                });
+            }
+
+            stars.forEach(star => {
+                star.onclick = () => setValue(parseFloat(star.dataset.val));
+            });
+
+            setValue(initialValue || 0);
+        }
+
         function openRecipeFormModal(recipeId = null) {
             if (!isAdmin) { alert('🔐 Log eerst in als beheerder!'); return; }
             
@@ -733,22 +993,33 @@
                 const r = recipes.find(item => item.id === recipeId);
                 if (r) {
                     document.getElementById('formName').value = r.name;
-                    document.getElementById('formCuisine').value = r.cuisine;
-                    document.getElementById('formDishType').value = r.dishType;
-                    document.getElementById('formTime').value = r.time;
-                    document.getElementById('formPhoto').value = r.photo;
-                    r.ingredients.forEach(ing => addIngredientRow(ing));
-                    document.getElementById('formTools').value = Array.isArray(r.tools) ? r.tools.join(', ') : r.tools;
-                    document.getElementById('formDescription').value = r.description;
-                    document.getElementById('formInstructions').value = r.instructions;
-                    updateImagePreview(r.photo);
+                    document.getElementById('formCategory').value = r.category || 'Hoofdgerecht';
+                    document.getElementById('formKitchen').value = r.kitchen || 'Overig';
+                    document.getElementById('formTime').value = r.time || 25;
+                    document.getElementById('formServings').value = r.servings || 2;
+                    document.getElementById('formStatus').value = r.status || 'Nog proberen';
+                    document.getElementById('formSource').value = r.source || '';
+                    document.getElementById('formPhoto').value = r.photo || '🍽️';
+                    (r.ingredients || []).forEach(ing => addIngredientRow(ing));
+                    document.getElementById('formTools').value = Array.isArray(r.tools) ? r.tools.join(', ') : (r.tools || '');
+                    document.getElementById('formDescription').value = r.description || '';
+                    document.getElementById('formInstructions').value = r.instructions || '';
+                    updateImagePreview(r.photo || '🍽️');
+
+                    document.getElementById('starRatingEditor').dataset.value = r.rating || 0;
+                    document.querySelectorAll('#starRatingEditor span').forEach(s => {
+                        s.classList.toggle('active', parseFloat(s.dataset.val) <= (r.rating || 0));
+                    });
                 }
             } else {
                 document.getElementById('formModalTitle').innerText = '➕ Nieuw Recept';
                 document.getElementById('formName').value = '';
-                document.getElementById('formCuisine').value = 'Italian';
-                document.getElementById('formDishType').value = 'Main';
+                document.getElementById('formCategory').value = 'Hoofdgerecht';
+                document.getElementById('formKitchen').value = 'Overig';
                 document.getElementById('formTime').value = 25;
+                document.getElementById('formServings').value = 2;
+                document.getElementById('formStatus').value = 'Nog proberen';
+                document.getElementById('formSource').value = '';
                 document.getElementById('formPhoto').value = '🍽️';
                 addIngredientRow('');
                 addIngredientRow('');
@@ -756,7 +1027,21 @@
                 document.getElementById('formDescription').value = '';
                 document.getElementById('formInstructions').value = '';
                 updateImagePreview('🍽️');
+
+                document.getElementById('starRatingEditor').dataset.value = 0;
+                document.querySelectorAll('#starRatingEditor span').forEach(s => s.classList.remove('active'));
             }
+
+            // Sterren interactie
+            document.querySelectorAll('#starRatingEditor span').forEach(star => {
+                star.onclick = () => {
+                    const val = parseFloat(star.dataset.val);
+                    document.getElementById('starRatingEditor').dataset.value = val;
+                    document.querySelectorAll('#starRatingEditor span').forEach(s => {
+                        s.classList.toggle('active', parseFloat(s.dataset.val) <= val);
+                    });
+                };
+            });
 
             document.getElementById('recipeFormModal').style.display = 'flex';
         }
@@ -764,90 +1049,21 @@
         function saveRecipeFromForm() {
             const editId = document.getElementById('editRecipeId').value;
             const name = document.getElementById('formName').value.trim();
-            const cuisine = document.getElementById('formCuisine').value;
-            const dishType = document.getElementById('formDishType').value;
+            const category = document.getElementById('formCategory').value;
+            const kitchen = document.getElementById('formKitchen').value;
             const time = parseInt(document.getElementById('formTime').value) || 20;
+            const servings = parseInt(document.getElementById('formServings').value) || 2;
+            const rating = parseFloat(document.getElementById('starRatingEditor').dataset.value) || 0;
+            const status = document.getElementById('formStatus').value;
+            const source = document.getElementById('formSource').value.trim();
             const photo = document.getElementById('formPhoto').value.trim() || '🍽️';
             
             const ingredientInputs = document.querySelectorAll('.ingredient-input');
             const ingredients = Array.from(ingredientInputs).map(i => i.value.trim()).filter(s => s);
-            const tools = document.getElementById('formTools').value.split(',').map(s => s.trim()).filter(s => s);
-            const description = document.getElementById('formDescription').value.trim() || 'Zelfgemaakt recept.';
+            const toolsText = document.getElementById('formTools').value;
+            const tools = toolsText ? toolsText.split(',').map(s => s.trim()).filter(s => s) : [];
+            const description = document.getElementById('formDescription').value.trim();
             const instructions = document.getElementById('formInstructions').value.trim();
 
             if (!name) { alert('⚠️ Vul een naam in!'); return; }
-            if (ingredients.length === 0) { alert('⚠️ Voeg ten minste één ingrediënt toe!'); return; }
-            if (tools.length === 0) { alert('⚠️ Vul benodigdheden in!'); return; }
-
-            const recipes = loadData();
-
-            if (editId) {
-                const index = recipes.findIndex(item => item.id == editId);
-                if (index !== -1) {
-                    recipes[index] = { id: parseInt(editId), name, cuisine, dishType, time, photo, ingredients, tools, description, instructions };
-                }
-            } else {
-                recipes.push({ id: Date.now(), name, cuisine, dishType, time, photo, ingredients, tools, description, instructions });
-            }
-
-            saveData(recipes);
-            closeModal('recipeFormModal');
-            filterAndRender();
-            alert('✅ Recept opgeslagen!');
-        }
-
-        function openRecipeDetail(r) {
-            document.getElementById('modalTitle').innerText = r.name;
-            const body = document.getElementById('modalBody');
-            
-            const ingredientsList = r.ingredients.map(i => `<li>${i}</li>`).join('');
-            const toolsList = Array.isArray(r.tools) ? r.tools.join(', ') : r.tools;
-            const isImgUrl = r.photo && (r.photo.startsWith('http') || r.photo.startsWith('data:'));
-
-            body.innerHTML = `
-                <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap; margin-bottom:1rem;">
-                    <div style="width:90px; height:90px; background:#0f172a; border-radius:12px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:3rem; overflow:hidden; flex-shrink:0;">
-                        ${isImgUrl ? `<img src="${r.photo}" style="width:100%; height:100%; object-fit:cover;">` : r.photo}
-                    </div>
-                    <div style="flex:1; min-width:180px;">
-                        <p style="margin:0 0 0.3rem 0;"><strong>Keuken:</strong> ${r.cuisine}</p>
-                        <p style="margin:0 0 0.3rem 0;"><strong>Soort:</strong> ${r.dishType}</p>
-                        <p style="margin:0 0 0.3rem 0;"><strong>Tijd:</strong> ${r.time} min</p>
-                        <p style="margin:0;"><strong>Benodigdheden:</strong> ${toolsList}</p>
-                    </div>
-                </div>
-                <div style="margin-bottom:1rem;">
-                    <h4 style="margin:0 0 0.4rem 0; color:var(--accent);">Ingrediënten</h4>
-                    <ul style="margin:0; padding-left:1.2rem; color:var(--text-muted);">${ingredientsList}</ul>
-                </div>
-                <div>
-                    <h4 style="margin:0 0 0.4rem 0; color:var(--accent);">Bereidingswijze</h4>
-                    <p style="margin:0; color:var(--text-muted); white-space:pre-line;">${r.instructions}</p>
-                </div>
-                ${isAdmin ? `
-                <div style="display:flex; gap:0.75rem; margin-top:1rem; border-top:1px solid var(--border); padding-top:1rem;">
-                    <button class="btn btn-secondary" style="flex:1; justify-content:center;" onclick="closeModal('recipeModal'); openRecipeFormModal(${r.id})">✏️ Bewerken</button>
-                    <button class="btn btn-danger" style="flex:1; justify-content:center;" onclick="deleteRecipe(${r.id})">🗑️ Verwijderen</button>
-                </div>` : ''}
-            `;
-            document.getElementById('recipeModal').style.display = 'flex';
-        }
-
-        function deleteRecipe(id) {
-            if (!confirm('Weet je zeker dat je dit recept wilt verwijderen?')) return;
-            let recipes = loadData();
-            recipes = recipes.filter(r => r.id !== id);
-            saveData(recipes);
-            closeModal('recipeModal');
-            filterAndRender();
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        updateAdminUI();
-        filterAndRender();
-    </script>
-</body>
-</html>
+            if (ingredients.length
