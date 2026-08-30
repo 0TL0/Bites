@@ -11,69 +11,68 @@
     <header>
         <div class="logo">🌌 BITES</div>
         <div class="acties">
-            <span class="balkje" id="beheer" style="display:none">🔐 Beheerder</span>
-            <button class="btn sec" id="beheerknop" onclick="loginVenster()">🔐</button>
+            <button class="btn sec" id="beheerKnop" onclick="loginVenster()">🔐</button>
             <button class="btn sec" id="favKnop" onclick="wisselFav()">⭐ Favorieten</button>
             <button class="btn sec" id="weergaveKnop" onclick="wisselWeergave()">📋 Lijst</button>
-            <button class="btn prim" id="toevoegknop" onclick="openForm()" style="display:none">➕ Recept</button>
+            <button class="btn prim" id="toevoegKnop" onclick="openForm()" style="display:none">➕ Recept</button>
         </div>
     </header>
 
     <div class="rij-hoofd">
-        <!-- Notitieblokje aan de zijkant -->
         <aside class="notitie-vak">
             <h3>📝 Notities</h3>
-            <textarea id="notitieVak" placeholder="Schrijf hier snelle notities...&#10;Bijv: wat nog toevoegen, boodschappen, ideeën..."></textarea>
+            <textarea id="notitieVak" placeholder="Schrijf hier snelle notities...&#10;Bijv: wat nog toevoegen..."></textarea>
         </aside>
 
         <main class="hoofd-inhoud">
-            <div class="veld-bar">
-                <div class="rij">
-                    <input type="text" id="zoek" placeholder="🔍 Zoek op naam, ingrediënt..." oninput="toonAlles()">
-                    <button class="btn" onclick="wisselFilter()">⚙️ Filters</button>
-                </div>
-                <div id="filterVak" class="uitklap">
-                    <select id="cat" onchange="toonAlles()">
-                        <option value="">Alle Categorieën</option>
-                        <option>Voorgerecht</option><option selected>Hoofdgerecht</option><option>Bijgerecht</option><option>Nagerecht</option>
-                        <option>Soep</option><option>Salade</option><option>Pasta & Rijst</option><option>Vleesgerecht</option><option>Visgerecht</option>
-                        <option>Vegetarisch</option><option>Vegan</option><option>Tussendoortje</option><option>Drank</option>
-                    </select>
-                    <select id="keuken" onchange="toonAlles()">
-                        <option value="">Alle Keukens</option>
-                        <option>Italiaans</option><option>Mexicaans</option><option>Spaans</option><option>Aziatisch</option>
-                        <option>Frans</option><option>Nederlands</option><option selected>Overig</option>
-                    </select>
-                    <select id="status" onchange="toonAlles()">
-                        <option value="">Alle status</option>
-                        <option>✅ Uitgeprobeerd</option><option>⏳ Nog proberen</option>
-                    </select>
-                    <select id="sorteer" onchange="toonAlles()">
-                        <option value="tijd-ops">⏱️ Tijd: Kort → Lang</option>
-                        <option value="tijd-afl">⏱️ Tijd: Lang → Kort</option>
-                        <option value="ster-afl">⭐ Beoordeling</option>
-                        <option value="naam">📫 Naam A-Z</option>
-                    </select>
-                </div>
+            <div class="zoek-balk">
+                <input type="text" id="zoek" placeholder="🔍 Zoek op naam, ingrediënt..." oninput="toonAlles()">
+                <button class="btn" onclick="wisselFilter()">⚙️ Filters</button>
             </div>
+
+            <div id="filterVak" class="filter-uitklap">
+                <select id="cat" onchange="toonAlles()">
+                    <option value="">Alle Categorieën</option>
+                    <option>Voorgerecht</option>
+                    <option>Hoofdgerecht</option>
+                    <option>Bijgerecht</option>
+                    <option>Nagerecht</option>
+                    <option>Pasta & Rijst</option>
+                    <option>Vegetarisch</option>
+                </select>
+                <select id="keuken" onchange="toonAlles()">
+                    <option value="">Alle Keukens</option>
+                    <option>Italiaans</option>
+                    <option>Mexicaans</option>
+                    <option>Spaans</option>
+                    <option>Aziatisch</option>
+                    <option>Nederlands</option>
+                    <option>Overig</option>
+                </select>
+                <select id="sorteer" onchange="toonAlles()">
+                    <option value="tijd-ops">⏱️ Tijd: Kort → Lang</option>
+                    <option value="tijd-afl">⏱️ Tijd: Lang → Kort</option>
+                    <option value="ster-afl">⭐ Beoordeling</option>
+                    <option value="naam">📫 Naam A-Z</option>
+                </select>
+            </div>
+
             <div id="rooster" class="rooster"></div>
         </main>
     </div>
 </div>
 
-<!-- Boodschappenlijst knop -->
-<div class="boodschap-knop">
-    <button class="btn prim" onclick="openBoodschap()">🛒</button>
-    <div class="boodschap-aantal" id="boodAantal">0</div>
-</div>
-
 <!-- Inlogvenster -->
 <div id="loginV" class="venster">
     <div class="venster-inhoud">
-        <div class="venster-kop"><h3>🔐 Inloggen</h3><button class="sluit" onclick="sluitV('loginV')">&times;</button></div>
+        <div class="venster-kop"><h3>🔐 Inloggen</h3><button class="sluit" onclick="sluitVenster('loginV')">&times;</button></div>
         <div class="venster-body">
-            <div class="groep"><label>Wachtwoord</label><input type="password" id="ww"></div>
-            <div class="knop-rij"><button class="btn prim" onclick="controleerWW()">Inloggen</button><button class="btn sec" onclick="sluitV('loginV')">Annuleren</button></div>
+            <label>Wachtwoord</label>
+            <input type="password" id="ww">
+            <div class="knop-rij">
+                <button class="btn prim" onclick="controleerWW()">Inloggen</button>
+                <button class="btn sec" onclick="sluitVenster('loginV')">Annuleren</button>
+            </div>
         </div>
     </div>
 </div>
@@ -81,62 +80,46 @@
 <!-- Recept Toevoegen/Bewerken -->
 <div id="formV" class="venster">
     <div class="venster-inhoud">
-        <div class="venster-kop"><h3 id="formTitel">➕ Nieuw Recept</h3><button class="sluit" onclick="sluitV('formV')">&times;</button></div>
+        <div class="venster-kop"><h3 id="formTitel">➕ Nieuw Recept</h3><button class="sluit" onclick="sluitVenster('formV')">&times;</button></div>
         <div class="venster-body">
             <input type="hidden" id="bewerkId">
-            <div class="groep"><label>Naam Recept *</label><input type="text" id="f-naam" placeholder="bv. Spaghetti Bolognese"></div>
-            <div class="rij2">
-                <div class="groep"><label>Categorie</label><select id="f-cat">
-                    <option>Voorgerecht</option><option selected>Hoofdgerecht</option><option>Bijgerecht</option><option>Nagerecht</option><option>Soep</option><option>Salade</option>
-                    <option>Pasta & Rijst</option><option>Vleesgerecht</option><option>Visgerecht</option><option>Vegetarisch</option><option>Vegan</option>
-                    <option>Tussendoortje</option><option>Drank</option>
-                </select></div>
-                <div class="groep"><label>Keuken</label><select id="f-keuken">
-                    <option>Italiaans</option><option>Mexicaans</option><option>Spaans</option><option>Aziatisch</option><option>Frans</option><option>Nederlands</option><option selected>Overig</option>
-                </select></div>
+            <label>Naam *</label><input type="text" id="f-naam">
+            <label>Categorie</label>
+            <select id="f-cat">
+                <option>Voorgerecht</option>
+                <option selected>Hoofdgerecht</option>
+                <option>Bijgerecht</option>
+                <option>Nagerecht</option>
+                <option>Pasta & Rijst</option>
+            </select>
+            <label>Keuken</label>
+            <select id="f-keuken">
+                <option>Italiaans</option>
+                <option>Mexicaans</option>
+                <option>Spaans</option>
+                <option>Aziatisch</option>
+                <option>Nederlands</option>
+                <option selected>Overig</option>
+            </select>
+            <label>Bereidingstijd (min)</label><input type="number" id="f-tijd" value="25">
+            <label>Aantal personen</label><input type="number" id="f-pers" value="2">
+            <label>Beoordeling (1-5)</label>
+            <div class="sterren" id="f-ster">
+                <span data-waarde="1">★</span>
+                <span data-waarde="2">★</span>
+                <span data-waarde="3">★</span>
+                <span data-waarde="4">★</span>
+                <span data-waarde="5">★</span>
             </div>
-            <div class="rij2">
-                <div class="groep"><label>Bereidingstijd (min)</label><input type="number" id="f-tijd" value="25"></div>
-                <div class="groep"><label>Aantal personen</label><input type="number" id="f-pers" value="2"></div>
-            </div>
-            <div class="groep"><label>Beoordeling (1-5 sterren)</label><div class="sterren" id="f-ster">
-                <span data-waarde="1">★</span><span data-waarde="2">★</span><span data-waarde="3">★</span><span data-waarde="4">★</span><span data-waarde="5">★</span>
-            </div></div>
-            <div class="rij2">
-                <div class="groep"><label>Status</label><select id="f-status">
-                    <option>⏳ Nog proberen</option><option>✅ Uitgeprobeerd</option>
-                </select></div>
-                <div class="groep"><label>Foto / Emoji</label>
-                    <div class="foto-kiezer">
-                        <input type="text" id="f-foto" value="🍽️" oninput="werkVoorbeeld()">
-                        <div class="voorver" id="voor">🍽️</div>
-                    </div>
-                    <div class="emoji-lijst">
-                        <span onclick="document.getElementById('f-foto').value='🍝';werkVoorbeeld()">🍝</span>
-                        <span onclick="document.getElementById('f-foto').value='🍕';werkVoorbeeld()">🍕</span>
-                        <span onclick="document.getElementById('f-foto').value='🍔';werkVoorbeeld()">🍔</span>
-                        <span onclick="document.getElementById('f-foto').value='🍗';werkVoorbeeld()">🍗</span>
-                        <span onclick="document.getElementById('f-foto').value='🥩';werkVoorbeeld()">🥩</span>
-                        <span onclick="document.getElementById('f-foto').value='🍤';werkVoorbeeld()">🍤</span>
-                        <span onclick="document.getElementById('f-foto').value='🌮';werkVoorbeeld()">🌮</span>
-                        <span onclick="document.getElementById('f-foto').value='🥗';werkVoorbeeld()">🥗</span>
-                        <span onclick="document.getElementById('f-foto').value='🍰';werkVoorbeeld()">🍰</span>
-                        <span onclick="document.getElementById('f-foto').value='🍪';werkVoorbeeld()">🍪</span>
-                    </div>
-                    <div style="margin-top:.5rem">
-                        <label>📷 Eigen foto uploaden:</label>
-                        <input type="file" id="f-fotobestand" accept="image/*" onchange="fotoNaarVoorbeeld(event)">
-                    </div>
-                </div>
-            </div>
-            <div class="groep"><label>Ingrediënten (elk op nieuwe regel)</label><textarea id="f-ing" placeholder="400g gehakt&#10;1 ui"></textarea></div>
-            <div class="groep"><label>Benodigdheden</label><textarea id="f-gerei" placeholder="Koekenpan, lepel"></textarea></div>
-            <div class="groep"><label>Korte beschrijving</label><textarea id="f-korte" placeholder="Snelle maaltijd"></textarea></div>
-            <div class="groep"><label>Bereidingswijze</label><textarea id="f-stap" placeholder="1. Snijd groenten..."></textarea></div>
+            <label>Foto / Emoji</label><input type="text" id="f-foto" value="🍽️">
+            <label>Ingrediënten</label><textarea id="f-ing" placeholder="Elk op nieuwe regel"></textarea>
+            <label>Benodigdheden</label><textarea id="f-gerei"></textarea>
+            <label>Korte beschrijving</label><textarea id="f-korte"></textarea>
+            <label>Bereidingswijze</label><textarea id="f-stap"></textarea>
             <div class="knop-rij">
-                <button class="btn sec" onclick="sluitV('formV')">Annuleren</button>
+                <button class="btn sec" onclick="sluitVenster('formV')">Annuleren</button>
                 <button class="btn prim" onclick="bewaarRecept()">✅ Opslaan</button>
-                <button class="btn rood" id="verwijderKnop" style="display:none" onclick="verwijderRecept()">🗑️</button>
+                <button class="btn rood" id="verwijderKnop" style="display:none" onclick="verwijderRecept()">🗑️ Verwijder</button>
             </div>
         </div>
     </div>
@@ -145,18 +128,8 @@
 <!-- Recept Detail Venster -->
 <div id="detailV" class="venster">
     <div class="venster-inhoud">
-        <div class="venster-kop"><h3 id="detailTitel">Recept</h3><button class="sluit" onclick="sluitV('detailV')">&times;</button></div>
+        <div class="venster-kop"><h3 id="detailNaam"></h3><button class="sluit" onclick="sluitVenster('detailV')">&times;</button></div>
         <div class="venster-body" id="detailInhoud"></div>
-    </div>
-</div>
-
-<!-- Boodschappenlijst Venster -->
-<div id="boodV" class="venster">
-    <div class="venster-inhoud">
-        <div class="venster-kop"><h3>🛒 Boodschappenlijst</h3><button class="sluit" onclick="sluitV('boodV')">&times;</button></div>
-        <div class="venster-body" id="boodInhoud">
-            <div style="text-align:center;color:var(--grijs);padding:2rem;">Nog geen ingrediënten geselecteerd.</div>
-        </div>
     </div>
 </div>
 
