@@ -11,6 +11,7 @@
     <header>
         <div class="logo">🌌 BITES</div>
         <div class="acties">
+            <button class="btn sec" onclick="openVenster('notitieV')">📝 Notities</button>
             <button class="btn sec" id="beheerKnop" onclick="loginVenster()">🔐</button>
             <button class="btn sec" id="favKnop" onclick="wisselFav()">⭐ Favorieten</button>
             <button class="btn sec" id="weergaveKnop" onclick="wisselWeergave()">📋 Lijst</button>
@@ -18,47 +19,54 @@
         </div>
     </header>
 
-    <div class="rij-hoofd">
-        <aside class="notitie-vak">
-            <h3>📝 Notities</h3>
-            <textarea id="notitieVak" placeholder="Schrijf hier snelle notities...&#10;Bijv: wat nog toevoegen..."></textarea>
-        </aside>
+    <main class="hoofd-inhoud">
+        <div class="zoek-balk">
+            <input type="text" id="zoek" placeholder="🔍 Zoek op naam, ingrediënt..." oninput="toonAlles()">
+            <button class="btn" onclick="wisselFilter()">⚙️ Filters</button>
+        </div>
 
-        <main class="hoofd-inhoud">
-            <div class="zoek-balk">
-                <input type="text" id="zoek" placeholder="🔍 Zoek op naam, ingrediënt..." oninput="toonAlles()">
-                <button class="btn" onclick="wisselFilter()">⚙️ Filters</button>
+        <div id="filterVak" class="filter-uitklap">
+            <select id="cat" onchange="toonAlles()">
+                <option value="">Alle Categorieën</option>
+                <option>Voorgerecht</option>
+                <option>Hoofdgerecht</option>
+                <option>Bijgerecht</option>
+                <option>Nagerecht</option>
+                <option>Pasta & Rijst</option>
+                <option>Vleesgerecht</option>
+                <option>Visgerecht</option>
+            </select>
+            <select id="keuken" onchange="toonAlles()">
+                <option value="">Alle Keukens</option>
+                <option>Italiaans</option>
+                <option>Mexicaans</option>
+                <option>Spaans</option>
+                <option>Aziatisch</option>
+                <option>Nederlands</option>
+                <option>Overig</option>
+            </select>
+            <select id="sorteer" onchange="toonAlles()">
+                <option value="tijd-ops">⏱️ Tijd: Kort → Lang</option>
+                <option value="tijd-afl">⏱️ Tijd: Lang → Kort</option>
+                <option value="ster-afl">⭐ Beoordeling</option>
+                <option value="naam">📫 Naam A-Z</option>
+            </select>
+        </div>
+
+        <div id="rooster" class="rooster"></div>
+    </main>
+</div>
+
+<!-- Notitie Venster -->
+<div id="notitieV" class="venster">
+    <div class="venster-inhoud">
+        <div class="venster-kop"><h3>📝 Notities</h3><button class="sluit" onclick="sluitVenster('notitieV')">&times;</button></div>
+        <div class="venster-body">
+            <textarea id="notitieVak" placeholder="Schrijf hier snelle notities...&#10;Bijv: wat nog toevoegen, boodschappen, ideeën..."></textarea>
+            <div class="knop-rij">
+                <button class="btn prim" onclick="sluitVenster('notitieV')">✅ Opslaan & Sluiten</button>
             </div>
-
-            <div id="filterVak" class="filter-uitklap">
-                <select id="cat" onchange="toonAlles()">
-                    <option value="">Alle Categorieën</option>
-                    <option>Voorgerecht</option>
-                    <option>Hoofdgerecht</option>
-                    <option>Bijgerecht</option>
-                    <option>Nagerecht</option>
-                    <option>Pasta & Rijst</option>
-                    <option>Vegetarisch</option>
-                </select>
-                <select id="keuken" onchange="toonAlles()">
-                    <option value="">Alle Keukens</option>
-                    <option>Italiaans</option>
-                    <option>Mexicaans</option>
-                    <option>Spaans</option>
-                    <option>Aziatisch</option>
-                    <option>Nederlands</option>
-                    <option>Overig</option>
-                </select>
-                <select id="sorteer" onchange="toonAlles()">
-                    <option value="tijd-ops">⏱️ Tijd: Kort → Lang</option>
-                    <option value="tijd-afl">⏱️ Tijd: Lang → Kort</option>
-                    <option value="ster-afl">⭐ Beoordeling</option>
-                    <option value="naam">📫 Naam A-Z</option>
-                </select>
-            </div>
-
-            <div id="rooster" class="rooster"></div>
-        </main>
+        </div>
     </div>
 </div>
 
@@ -91,6 +99,8 @@
                 <option>Bijgerecht</option>
                 <option>Nagerecht</option>
                 <option>Pasta & Rijst</option>
+                <option>Vleesgerecht</option>
+                <option>Visgerecht</option>
             </select>
             <label>Keuken</label>
             <select id="f-keuken">
