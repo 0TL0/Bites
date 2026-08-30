@@ -13,7 +13,9 @@ let isLijstWeergave = false;
 const standaard = [
     {id:1,naam:"Garnalen in knoflook",cat:"Voorgerecht",keuken:"Spaans",tijd:20,pers:2,ster:4,status:"✅ Uitgeprobeerd",foto:"🍤",ing:["400 gr garnalen","4 teentjes knoflook","3 el olijfolie","1 tl rode pepervlokken","1 el peterselie","Sap van halve citroen","Zout en peper"],gerei:["Koekenpan","Lepel"],korte:"Heerlijke Spaanse tapas, in 20 minuten klaar.",stap:"1. Pel de garnalen en dep droog.\n2. Snijd knoflook in plakjes.\n3. Verhit olie en fruit knoflook met chili.\n4. Voeg garnalen toe en bak 3-4 minuten tot ze roze zijn.\n5. Breng op smaak met zout, peper en citroensap.\n6. Bestrooi met peterselie en serveer direct."},
     {id:2,naam:"Beef Teriyaki",cat:"Hoofdgerecht",keuken:"Aziatisch",tijd:30,pers:2,ster:0,status:"⏳ Nog proberen",foto:"🥩",ing:["400 gr rundvlees in dunne reepjes","3 el sojasaus","2 el mirin of rijstwijn","1 el suiker of honing","1 teentje knoflook","1 tl gember","1 el sesamolie","1 lente-ui","Sesamzaadjes"],gerei:["Pan of wok","Lepel"],korte:"Zoete en hartige Japanse stijl.",stap:"1. Snij vlees in dunne reepjes.\n2. Meng sojasaus, mirin, suiker, knoflook en gember.\n3. Marineer 10 minuten.\n4. Bak vlees 4-5 minuten.\n5. Voeg saus toe en laat inkoken."},
-    {id:3,naam:"Spaghetti Bolognese",cat:"Pasta & Rijst",keuken:"Italiaans",tijd:40,pers:4,ster:4,status:"✅ Uitgeprobeerd",foto:"🍝",ing:["300 gr spaghetti","500 gr rundergehakt","1 ui","2 teentjes knoflook","1 blik tomatenblokjes","1 blikje tomatenpuree","1 bouillonblokje","Kruiden"],gerei:["Kookpan","Koekenpan"],korte:"Klassieke Italiaanse schotel.",stap:"1. Kook de pasta.\n2. Bak ui, knoflook en gehakt.\n3. Voeg tomaten en kruiden toe.\n4. Laat 25 minuten pruttelen."}
+    {id:3,naam:"Spaghetti Bolognese",cat:"Pasta & Rijst",keuken:"Italiaans",tijd:40,pers:4,ster:4,status:"✅ Uitgeprobeerd",foto:"🍝",ing:["300 gr spaghetti","500 gr rundergehakt","1 ui","2 teentjes knoflook","1 blik tomatenblokjes","1 blikje tomatenpuree","1 bouillonblokje","Kruiden"],gerei:["Kookpan","Koekenpan"],korte:"Klassieke Italiaanse schotel.",stap:"1. Kook de pasta.\n2. Bak ui, knoflook en gehakt.\n3. Voeg tomaten en kruiden toe.\n4. Laat 25 minuten pruttelen."},
+    {id:4,naam:"Macaroni",cat:"Pasta & Rijst",keuken:"Overig",tijd:30,pers:4,ster:3,status:"✅ Uitgeprobeerd",foto:"🧀",ing:["350 gr macaroni","250 gr gehakt","1 ui","3 teentjes knoflook","1 rode paprika","1 blik tomatenblokjes","1 blikje tomatenpuree","1 el Italiaanse kruiden","Zout en peper","Kaas"],gerei:["Kookpan","Pan"],korte:"Simpele en lekkere schotel.",stap:"1. Kook de macaroni gaar.\n2. Bak ui en knoflook.\n3. Voeg gehakt en groente toe.\n4. Voeg tomaten en kruiden toe.\n5. Laat 10 minuten sudderen."},
+    {id:5,naam:"Taco's Gehakt",cat:"Hoofdgerecht",keuken:"Mexicaans",tijd:25,pers:3,ster:0,status:"⏳ Nog proberen",foto:"🌮",ing:["Taco schelpen","Gehakt","1 ui","1 paprika","2 teentjes knoflook","Tacokruiden","Sla","Tomaat","Kaas"],gerei:["Pan"],korte:"Pittige taco's met gehakt.",stap:"1. Bak gehakt met ui, paprika en knoflook.\n2. Voeg kruiden en een beetje water toe.\n3. Verwarm de schelpen.\n4. Vul en beleg met groente en kaas."}
 ];
 
 // Hulpfuncties
@@ -26,7 +28,7 @@ function bewaarBood(b){localStorage.setItem(BOODOPSLAG,JSON.stringify(b))}
 
 // Notitie bewaren
 function bewaarNotitie(){localStorage.setItem(NOTITIE_OPSLAG,document.getElementById('notitieVak').value)}
-function laadNotitie(){document.getElementById('notitieVak').value=localStorage.getItem(NOTITIE_OPSLAG)||''}
+function laadNotitie(){document.getElementById('notitieVak').value=localStorage.getItem(NOTITIE_OPSLAG)||'';document.getElementById('notitieVak').oninput=bewaarNotitie}
 
 function wisselFilter(){document.getElementById('filterVak').classList.toggle('aan')}
 function wisselFav(){toonAlleenFav=!toonAlleenFav;document.getElementById('favKnop').style.fontWeight=toonAlleenFav?'bold':'normal';toonAlles()}
@@ -75,8 +77,8 @@ function toonAlles(){
         const kaart=document.createElement('div');
         kaart.className='kaart';
         const isFav=favs.includes(r.id);
-        const kl=r.status.includes('✅')?'ja':'nee';
-        const inhoudFoto=r.foto.startsWith('data:image')?`<img src="${r.foto}">`:r.foto;
+        const kl=r.status?.includes('✅')?'ja':'nee';
+        const inhoudFoto=r.foto?.startsWith?.('data:image')?`<img src="${r.foto}">`:r.foto;
         kaart.innerHTML=`
         <div class="foto">${inhoudFoto}
             <div class="ster-links">${maakSterren(r.ster||0)}</div>
@@ -118,4 +120,42 @@ function openBoodschap(){const b=laadBood();const r=laadOp();let h='';r.forEach(
 function openForm(){if(!beheerder){alert('Log eerst in!');return}bewerkId=null;sterWaarde=0;document.getElementById('formTitel').innerText='➕ Nieuw Recept';document.getElementById('bewerkId').value='';document.getElementById('f-naam').value='';document.getElementById('f-tijd').value=25;document.getElementById('f-pers').value=2;document.getElementById('f-ster').innerHTML='<span data-waarde="1">★</span><span data-waarde="2">★</span><span data-waarde="3">★</span><span data-waarde="4">★</span><span data-waarde="5">★</span>';document.getElementById('f-foto').value='🍽️';document.getElementById('voorver').innerHTML='🍽️';document.getElementById('f-ing').value='';document.getElementById('f-gerei').value='';document.getElementById('f-korte').value='';document.getElementById('f-stap').value='';document.getElementById('verwijderKnop').style.display='none';document.getElementById('formV').classList.add('aan')}
 
 // Recept bewerken
-function bewerkRecept(id,e){e.stopPropagation();if(!beheerder){alert('Log eerst in!');return}bewerkId=id;const r=laadOp().find(x=>x.id===id);sterWaarde=r.ster||0;document.getElementById('formT
+function bewerkRecept(id,e){e.stopPropagation();if(!beheerder){alert('Log eerst in!');return}bewerkId=id;const r=laadOp().find(x=>x.id===id);sterWaarde=r.ster||0;document.getElementById('formTitel').innerText='✏️ Recept Bewerken';document.getElementById('bewerkId').value=id;document.getElementById('f-naam').value=r.naam;document.getElementById('f-cat').value=r.cat;document.getElementById('f-keuken').value=r.keuken;document.getElementById('f-tijd').value=r.tijd;document.getElementById('f-pers').value=r.pers;document.querySelectorAll('#f-ster span').forEach((s,i)=>s.classList.toggle('aan',i+1<=sterWaarde));document.getElementById('f-foto').value=r.foto;werkVoorbeeld();document.getElementById('f-ing').value=(r.ing||[]).join('\n');document.getElementById('f-gerei').value=(r.gerei||[]).join('\n');document.getElementById('f-korte').value=r.korte;document.getElementById('f-stap').value=r.stap;document.getElementById('f-status').value=r.status;document.getElementById('verwijderKnop').style.display='inline-block';document.getElementById('formV').classList.add('aan')}
+
+// Recept opslaan
+function bewaarRecept(){
+    const naam=document.getElementById('f-naam').value.trim();
+    if(!naam){alert('Vul een naam in!');return}
+    const r={
+        id:bewerkId||Date.now(),
+        naam:naam,
+        cat:document.getElementById('f-cat').value,
+        keuken:document.getElementById('f-keuken').value,
+        tijd:Number(document.getElementById('f-tijd').value)||20,
+        pers:Number(document.getElementById('f-pers').value)||2,
+        ster:sterWaarde,
+        status:document.getElementById('f-status').value,
+        foto:document.getElementById('f-foto').value,
+        ing:document.getElementById('f-ing').value.split('\n').filter(x=>x.trim()),
+        gerei:document.getElementById('f-gerei').value.split('\n').filter(x=>x.trim()),
+        korte:document.getElementById('f-korte').value,
+        stap:document.getElementById('f-stap').value
+    };
+    const alle=laadOp();
+    if(bewerkId){const i=alle.findIndex(x=>x.id===bewerkId);alle[i]=r}else alle.push(r);
+    bewaarOp(alle);sluitV('formV');toonAlles()
+}
+
+// Recept verwijderen
+function verwijderRecept(){
+    if(!confirm('Weet je zeker dat je dit recept wilt verwijderen?'))return;
+    const alle=laadOp().filter(x=>x.id!==bewerkId);
+    bewaarOp(alle);sluitV('formV');toonAlles()
+}
+
+// Bij opstarten
+window.onload=function(){
+    laadNotitie();
+    toonAlles();
+    werkBij();
+}
