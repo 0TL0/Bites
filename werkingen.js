@@ -58,11 +58,13 @@ function bewaarNotitie() {
 }
 
 // Venster beheer
-function sluitVenster(id) {
-    document.getElementById(id).classList.remove('aan');
-}
 function openVenster(id) {
     document.getElementById(id).classList.add('aan');
+    if (id === 'notitieV') laadNotitie();
+}
+function sluitVenster(id) {
+    if (id === 'notitieV') bewaarNotitie();
+    document.getElementById(id).classList.remove('aan');
 }
 
 // Inloggen
@@ -99,7 +101,7 @@ function wisselWeergave() {
 function maakSterren(aantal) {
     let html = '';
     for (let i = 1; i <= 5; i++) {
-        html += i <= aantal ? '★' : '<span style="color:rgba(100,90,40,0.3)">★</span>';
+        html += i <= aantal ? '★' : '<span style="color:rgba(100,90,40,0.25)">★</span>';
     }
     return html;
 }
@@ -286,8 +288,6 @@ document.addEventListener('click', e => {
 
 // Bij opstarten
 window.onload = function () {
-    localStorage.clear(); // Wis ALLE oude rommel
-    laadNotitie();
+    localStorage.clear();
     toonAlles();
-    document.getElementById('notitieVak').oninput = bewaarNotitie;
 };
