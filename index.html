@@ -8,512 +8,206 @@
         :root {
             --bg-dark: #0f172a;
             --bg-card: #1e293b;
-            --bg-card-hover: #2a3b53;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent: #10b981;
             --accent-hover: #059669;
-            --accent-soft: rgba(16, 185, 129, 0.15);
+            --accent-soft: rgba(16,185,129,0.15);
             --gold: #f59e0b;
             --gold-dim: #786412;
             --danger: #ef4444;
             --border: #334155;
             --border-light: #475569;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * {box-sizing:border-box;margin:0;padding:0;}
         body {
-            min-height: 100vh;
-            margin: 0;
+            min-height:100vh;
+            margin:0;
             background: 
-                radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 10% 20%, rgba(16,185,129,0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(59,130,246,0.08) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(139,92,246,0.05) 0%, transparent 50%),
                 linear-gradient(135deg, #0f172a 0%, #1a2744 50%, #0f172a 100%);
-            color: var(--text-main);
-            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            background-attachment: fixed;
+            color:var(--text-main);
+            font-family:'Segoe UI',Helvetica,Arial,sans-serif;
+            line-height:1.6;
+            background-attachment:fixed;
         }
-
-        .app-container {
-            width: min(98vw, 1280px);
-            margin: 0 auto;
-            padding: 1rem;
-        }
-
+        .app-container {width:min(98vw,1280px);margin:0 auto;padding:1rem;}
         header {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-light);
-            border-radius: 16px;
-            padding: 1.25rem 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-bottom: 1.25rem;
-            position: sticky;
-            top: 0.5rem;
-            z-index: 100;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            background:rgba(15,23,42,0.85);
+            backdrop-filter:blur(12px);
+            border:1px solid var(--border-light);
+            border-radius:16px;
+            padding:1.25rem 1.5rem;
+            display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;
+            margin-bottom:1.25rem;position:sticky;top:0.5rem;z-index:100;
+            box-shadow:0 8px 32px rgba(0,0,0,0.3);
         }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo img {
-            height: 44px;
-            width: auto;
-            display: block;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 0.6rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
+        .logo img {height:44px;width:auto;}
+        .header-actions {display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;}
         .btn {
-            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-            color: white;
-            border: none;
-            padding: 0.6rem 1.1rem;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            font-size: 0.92rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+            background:linear-gradient(135deg,var(--accent),var(--accent-hover));
+            color:white;border:none;padding:0.6rem 1.1rem;border-radius:10px;
+            cursor:pointer;font-weight:600;transition:all 0.2s;font-size:0.92rem;
+            display:flex;align-items:center;gap:0.4rem;
+            box-shadow:0 4px 12px rgba(16,185,129,0.2);
         }
-
-        .btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
-        }
-        .btn:active { transform: translateY(0); }
-
-        .btn-secondary {
-            background: rgba(51, 65, 85, 0.6);
-            border: 1px solid var(--border-light);
-            color: var(--text-main);
-            box-shadow: none;
-        }
-        .btn-secondary:hover { 
-            background: rgba(71, 85, 105, 0.6); 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .btn-danger { 
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-        }
-        .btn-danger:hover { box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3); }
-
+        .btn:hover {transform:translateY(-2px);box-shadow:0 6px 20px rgba(16,185,129,0.3);}
+        .btn-secondary {background:rgba(51,65,85,0.6);border:1px solid var(--border-light);color:var(--text-main);box-shadow:none;}
+        .btn-secondary:hover {background:rgba(71,85,105,0.6);}
+        .btn-danger {background:linear-gradient(135deg,#ef4444,#dc2626);}
         .controls-bar {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-light);
-            border-radius: 16px;
-            padding: 1.25rem 1.5rem;
-            margin-bottom: 1.25rem;
+            background:rgba(30,41,59,0.7);backdrop-filter:blur(10px);
+            border:1px solid var(--border-light);border-radius:16px;
+            padding:1.25rem 1.5rem;margin-bottom:1.25rem;
         }
-
-        .search-row { 
-            display: flex; 
-            gap: 0.75rem; 
-            flex-wrap: wrap; 
-            margin-bottom: 0.75rem;
-        }
-
+        .search-row {display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem;}
         .search-input, .filter-select {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--border-light);
-            color: var(--text-main);
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            outline: none;
-            width: 100%;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            background:rgba(15,23,42,0.6);border:1px solid var(--border-light);
+            color:var(--text-main);padding:0.75rem 1rem;border-radius:10px;
+            font-size:0.95rem;outline:none;width:100%;
         }
-
-        .search-input:focus, .filter-select:focus { 
-            border-color: var(--accent); 
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
-        }
-
-        .collapsible-controls {
-            display: none;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 0.75rem;
-            margin-top: 0.5rem;
-            animation: fadeIn 0.25s ease-out;
-        }
-
-        .collapsible-controls.show { display: grid; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .content-area {
-            padding: 0;
-        }
-
-        .recipe-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.25rem;
-        }
-
+        .search-input:focus, .filter-select:focus {border-color:var(--accent);box-shadow:0 0 0 3px rgba(16,185,129,0.15);}
+        .collapsible-controls {display:none;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0.75rem;margin-top:0.5rem;animation:fadeIn 0.25s ease-out;}
+        .collapsible-controls.show {display:grid;}
+        @keyframes fadeIn {from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+        .recipe-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;}
         .recipe-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-light);
-            border-radius: 16px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            background:rgba(30,41,59,0.7);backdrop-filter:blur(10px);
+            border:1px solid var(--border-light);border-radius:16px;
+            overflow:hidden;display:flex;flex-direction:column;transition:all 0.3s;cursor:pointer;
         }
-
-        .recipe-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border-color: var(--accent);
-            background: rgba(30, 41, 59, 0.85);
-        }
-
-        .recipe-image {
-            height: 160px;
-            background: linear-gradient(135deg, #1e293b, #334155);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .recipe-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .recipe-tags {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            display: flex;
-            gap: 0.35rem;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(6px);
-            padding: 0.25rem 0.5rem;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            color: var(--accent);
-            border: 1px solid rgba(16, 185, 129, 0.25);
-        }
-
-        .status-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 0.25rem 0.5rem;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            font-weight: 600;
-        }
-        .status-uitgeprobeerd {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--accent);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-        .status-nog {
-            background: rgba(245, 158, 11, 0.15);
-            color: #fbbf24;
-            border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-
-        .recipe-info {
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            flex: 1;
-        }
-
-        .recipe-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin: 0;
-            color: var(--text-main);
-            line-height: 1.3;
-        }
-
-        .recipe-desc {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            margin: 0;
-            line-height: 1.5;
-        }
-
-        .stars {
-            color: var(--gold);
-            font-size: 1rem;
-            letter-spacing: 1px;
-        }
-        .stars .empty { color: var(--gold-dim); opacity: 0.3; }
-        .stars .half { position: relative; }
-        .stars .half > span {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 50%;
-            overflow: hidden;
-            color: var(--gold);
-        }
-
-        .recipe-tools {
-            background: var(--accent-soft);
-            padding: 0.5rem 0.7rem;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            color: var(--accent);
-            margin-top: 0.2rem;
-            line-height: 1.4;
-        }
-
-        .recipe-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 0.5rem;
-            padding-top: 0.7rem;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border);
-            flex-wrap: wrap;
-            gap: 0.3rem;
-        }
-
-        .source-link {
-            font-size: 0.75rem;
-            color: #60a5fa;
-            text-decoration: none;
-        }
-        .source-link:hover { text-decoration: underline; }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 1rem;
-            box-sizing: border-box;
-        }
-
-        .modal-content {
-            background: rgba(30, 41, 59, 0.95);
-            border: 1px solid var(--border-light);
-            width: min(100%, 600px);
-            max-height: 90vh;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
-        }
-
-        .modal-header {
-            padding: 1.1rem 1.4rem;
-            background: rgba(15, 23, 42, 0.9);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .modal-header h3 {
-            font-size: 1.15rem;
-            margin: 0;
-        }
-
-        .modal-body {
-            padding: 1.4rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.1rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.45rem;
-        }
-
-        .form-group label {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .form-control {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--border-light);
-            color: var(--text-main);
-            padding: 0.75rem;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            outline: none;
-            width: 100%;
-            transition: border-color 0.2s;
-        }
-
-        .form-control:focus { border-color: var(--accent); }
-        textarea.form-control { resize: vertical; min-height: 90px; }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.6rem;
-            cursor: pointer;
-            line-height: 1;
-            transition: color 0.2s;
-        }
-        .close-btn:hover { color: var(--text-main); }
-
-        .star-rating {
-            display: flex;
-            gap: 0.25rem;
-            font-size: 1.6rem;
-            cursor: pointer;
-        }
-        .star-rating span { color: var(--gold-dim); opacity: 0.3; transition: all 0.15s; }
-        .star-rating span.half { position: relative; }
-        .star-rating span.half > span {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 50%;
-            overflow: hidden;
-            color: var(--gold);
-            opacity: 1;
-        }
-        .star-rating span.active { color: var(--gold); opacity: 1; }
-        .star-rating span:hover { transform: scale(1.15); }
-
-        .preview-box {
-            width: 90px;
-            height: 90px;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px dashed var(--border-light);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.2rem;
-            overflow: hidden;
-            margin-top: 0.25rem;
-        }
-        .preview-box img { width: 100%; height: 100%; object-fit: cover; }
-
-        .admin-indicator {
-            font-size: 0.75rem;
-            color: var(--accent);
-            background: var(--accent-soft);
-            padding: 0.25rem 0.5rem;
-            border-radius: 6px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .button-row {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 0.5rem;
-        }
-
-        .button-row .btn {
-            flex: 1;
-            justify-content: center;
-        }
-
-        .hint-text {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 0.5rem;
-        }
-
-        @media (max-width: 700px) {
-            .form-row { grid-template-columns: 1fr; }
-            .recipe-grid { grid-template-columns: 1fr; gap: 1rem; }
-            .search-row { flex-direction: column; }
-            .header-actions { gap: 0.4rem; }
-            .btn { padding: 0.5rem 0.85rem; font-size: 0.85rem; }
-            .logo img { height: 36px; }
-            header, .controls-bar { padding: 1rem; }
-        }
+        .recipe-card:hover {transform:translateY(-5px);box-shadow:0 20px 40px rgba(0,0,0,0.3);border-color:var(--accent);}
+        .recipe-image {height:160px;background:linear-gradient(135deg,#1e293b,#334155);display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;}
+        .recipe-image img {width:100%;height:100%;object-fit:cover;}
+        .recipe-tags {position:absolute;top:10px;left:10px;display:flex;gap:0.35rem;flex-wrap:wrap;}
+        .tag {background:rgba(15,23,42,0.85);backdrop-filter:blur(6px);padding:0.25rem 0.5rem;border-radius:6px;font-size:0.72rem;color:var(--accent);border:1px solid rgba(16,185,129,0.25);}
+        .status-badge {position:absolute;top:10px;right:10px;padding:0.25rem 0.5rem;border-radius:6px;font-size:0.72rem;font-weight:600;}
+        .status-uitgeprobeerd {background:rgba(16,185,129,0.2);color:var(--accent);border:1px solid rgba(16,185,129,0.3);}
+        .status-nog {background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3);}
+        .recipe-info {padding:1rem;display:flex;flex-direction:column;gap:0.5rem;flex:1;}
+        .recipe-title {font-size:1.05rem;font-weight:700;color:var(--text-main);}
+        .recipe-desc {font-size:0.88rem;color:var(--text-muted);}
+        .stars {color:var(--gold);font-size:1rem;letter-spacing:1px;}
+        .stars .empty {color:var(--gold-dim);opacity:0.3;}
+        .recipe-tools {background:var(--accent-soft);padding:0.5rem 0.7rem;border-radius:8px;font-size:0.8rem;color:var(--accent);margin-top:0.2rem;}
+        .recipe-meta {display:flex;justify-content:space-between;align-items:center;margin-top:0.5rem;padding-top:0.7rem;font-size:0.8rem;color:var(--text-muted);border-top:1px solid var(--border);flex-wrap:wrap;gap:0.3rem;}
+        .source-link {font-size:0.75rem;color:#60a5fa;text-decoration:none;}
+        .source-link:hover {text-decoration:underline;}
+        .modal {display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;z-index:1000;padding:1rem;}
+        .modal-content {background:rgba(30,41,59,0.95);border:1px solid var(--border-light);width:min(100%,600px);max-height:90vh;border-radius:20px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,0.5);}
+        .modal-header {padding:1.1rem 1.4rem;background:rgba(15,23,42,0.9);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
+        .modal-body {padding:1.4rem;overflow-y:auto;display:flex;flex-direction:column;gap:1.1rem;}
+        .form-group {display:flex;flex-direction:column;gap:0.45rem;}
+        .form-group label {font-size:0.88rem;color:var(--text-muted);font-weight:600;}
+        .form-control {background:rgba(15,23,42,0.6);border:1px solid var(--border-light);color:var(--text-main);padding:0.75rem;border-radius:10px;font-size:0.95rem;outline:none;}
+        .form-control:focus {border-color:var(--accent);}
+        textarea.form-control {resize:vertical;min-height:90px;}
+        .close-btn {background:none;border:none;color:var(--text-muted);font-size:1.6rem;cursor:pointer;}
+        .close-btn:hover {color:var(--text-main);}
+        .star-rating {display:flex;gap:0.25rem;font-size:1.6rem;cursor:pointer;}
+        .star-rating span {color:var(--gold-dim);opacity:0.3;transition:all 0.15s;}
+        .star-rating span.active {color:var(--gold);opacity:1;}
+        .star-rating span:hover {transform:scale(1.15);}
+        .preview-box {width:90px;height:90px;background:rgba(15,23,42,0.6);border:1px dashed var(--border-light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;overflow:hidden;margin-top:0.25rem;}
+        .preview-box img {width:100%;height:100%;object-fit:cover;}
+        .admin-indicator {font-size:0.75rem;color:var(--accent);background:var(--accent-soft);padding:0.25rem 0.5rem;border-radius:6px;}
+        .form-row {display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+        .button-row {display:flex;gap:0.75rem;margin-top:0.5rem;}
+        .button-row .btn {flex:1;justify-content:center;}
+        .hint-text {font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;}
+        @media(max-width:700px){.form-row{grid-template-columns:1fr;}.recipe-grid{grid-template-columns:1fr;}.search-row{flex-direction:column;}}
     </style>
 </head>
 <body>
+<div class="app-container">
+    <header>
+        <div class="logo"><img src="logo.png" alt="Bites"></div>
+        <div class="header-actions">
+            <span class="admin-indicator" id="adminIndicator" style="display:none;">🔐 Beheerder</span>
+            <button class="btn btn-secondary" id="adminBtn" onclick="openAdminLogin()">🔐</button>
+            <button class="btn" id="addBtn" onclick="openRecipeFormModal()" style="display:none;">➕ Recept Toevoegen</button>
+        </div>
+    </header>
 
-    <div class="app-container">
-        <header>
-            <div class="logo">
-                <img src="logo.png" alt="Bites">
-            </div>
-            <div class="header-actions">
-                <span class="admin-indicator" id="adminIndicator" style="display:none;">🔐 Beheerder</span>
-                <button class="btn btn-secondary" id="adminBtn" onclick="openAdminLogin()">🔐</button>
-                <button class="btn" id="addBtn" onclick="openRecipeFormModal()" style="display:none;">➕ Recept Toevoegen</button>
-            </div>
-        </header>
+    <div class="controls-bar">
+        <div class="search-row">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Zoek op naam, ingrediënt of categorie..." oninput="filterAndRender()">
+            <button class="btn btn-secondary" onclick="toggleSortAndFilters()">⚙️ Filters & Sorteren</button>
+        </div>
+        <div id="collapsibleControls" class="collapsible-controls">
+            <select id="categoryFilter" class="filter-select" onchange="filterAndRender()">
+                <option value="">Alle Categorieën</option>
+                <option value="Voorgerecht">Voorgerecht</option>
+                <option value="Hoofdgerecht">Hoofdgerecht</option>
+                <option value="Bijgerecht">Bijgerecht</option>
+                <option value="Nagerecht">Nagerecht</option>
+                <option value="Soep">Soep</option>
+                <option value="Salade">Salade</option>
+                <option value="Pasta & Rijst">Pasta & Rijst</option>
+                <option value="Vleesgerecht">Vleesgerecht</option>
+                <option value="Visgerecht">Visgerecht</option>
+                <option value="Vegetarisch">Vegetarisch</option>
+                <option value="Vegan">Vegan</option>
+                <option value="Tussendoortje">Tussendoortje</option>
+                <option value="Drank">Drank</option>
+            </select>
+            <select id="kitchenFilter" class="filter-select" onchange="filterAndRender()">
+                <option value="">Alle Keukens</option>
+                <option value="Italiaans">Italiaans</option>
+                <option value="Mexicaans">Mexicaans</option>
+                <option value="Spaans">Spaans</option>
+                <option value="Aziatisch">Aziatisch</option>
+                <option value="Frans">Frans</option>
+                <option value="Nederlands">Nederlands</option>
+                <option value="Overig">Overig</option>
+            </select>
+            <select id="occasionFilter" class="filter-select" onchange="filterAndRender()">
+                <option value="">Alle Gelegenheden</option>
+                <option value="Snel">Snel klaar</option>
+                <option value="Gezond">Gezond</option>
+                <option value="Feest">Feestdagen</option>
+                <option value="BBQ">BBQ</option>
+            </select>
+            <select id="statusFilter" class="filter-select" onchange="filterAndRender()">
+                <option value="">Alle Status</option>
+                <option value="Uitgeprobeerd">✅ Uitgeprobeerd</option>
+                <option value="Nog proberen">⏳ Nog proberen</option>
+            </select>
+            <select id="sortFilter" class="filter-select" onchange="filterAndRender()">
+                <option value="time-asc">⏱️ Tijd: Kort → Lang</option>
+                <option value="time-desc">⏱️ Tijd: Lang → Kort</option>
+                <option value="rating-desc">⭐ Beoordeling: Hoog → Laag</option>
+                <option value="name-asc">📫 Naam A → Z</option>
+            </select>
+        </div>
+    </div>
 
-        <div class="controls-bar">
-            <div class="search-row">
-                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Zoek op naam, ingrediënt of categorie..." oninput="filterAndRender()">
-                <button class="btn btn-secondary" onclick="toggleSortAndFilters()" id="toggleSortBtn">⚙️ Filters & Sorteren</button>
-            </div>
-            <div id="collapsibleControls" class="collapsible-controls">
-                <select id="categoryFilter" class="filter-select" onchange="filterAndRender()">
-                    <option value="">Alle Categorieën</option>
+    <div class="content-area"><div id="recipeGrid" class="recipe-grid"></div></div>
+</div>
+
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header"><h3>🔐 Beheerder Inloggen</h3><button class="close-btn" onclick="closeModal('loginModal')">&times;</button></div>
+        <div class="modal-body">
+            <div class="form-group"><label>Wachtwoord</label><input type="password" id="adminPassword" class="form-control" placeholder="Voer wachtwoord in..."></div>
+            <div class="button-row"><button class="btn" onclick="checkAdminLogin()">Inloggen</button><button class="btn btn-secondary" onclick="closeModal('loginModal')">Annuleren</button></div>
+            <p class="hint-text">Wachtwoord: greenbite2026</p>
+        </div>
+    </div>
+</div>
+
+<div id="recipeFormModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header"><h3 id="formModalTitle">➕ Nieuw Recept</h3><button class="close-btn" onclick="closeModal('recipeFormModal')">&times;</button></div>
+        <div class="modal-body">
+            <input type="hidden" id="editRecipeId" value="">
+            <div class="form-group"><label>Naam Recept *</label><input type="text" id="formName" class="form-control" placeholder="bv. Garnalen in knoflook"></div>
+            <div class="form-row">
+                <div class="form-group"><label>Categorie</label><select id="formCategory" class="form-control">
                     <option value="Voorgerecht">Voorgerecht</option>
-                    <option value="Hoofdgerecht">Hoofdgerecht</option>
+                    <option value="Hoofdgerecht" selected>Hoofdgerecht</option>
                     <option value="Bijgerecht">Bijgerecht</option>
                     <option value="Nagerecht">Nagerecht</option>
                     <option value="Soep">Soep</option>
@@ -525,545 +219,256 @@
                     <option value="Vegan">Vegan</option>
                     <option value="Tussendoortje">Tussendoortje</option>
                     <option value="Drank">Drank</option>
-                </select>
-                <select id="kitchenFilter" class="filter-select" onchange="filterAndRender()">
-                    <option value="">Alle Keukens</option>
+                </select></div>
+                <div class="form-group"><label>Keuken</label><select id="formKitchen" class="form-control">
                     <option value="Italiaans">Italiaans</option>
                     <option value="Mexicaans">Mexicaans</option>
                     <option value="Spaans">Spaans</option>
                     <option value="Aziatisch">Aziatisch</option>
                     <option value="Frans">Frans</option>
                     <option value="Nederlands">Nederlands</option>
-                    <option value="Overig">Overig</option>
-                </select>
-                <select id="occasionFilter" class="filter-select" onchange="filterAndRender()">
-                    <option value="">Alle Gelegenheden</option>
-                    <option value="Snel">Snel klaar</option>
-                    <option value="Gezond">Gezond</option>
-                    <option value="Feest">Feestdagen</option>
-                    <option value="BBQ">BBQ</option>
-                </select>
-                <select id="statusFilter" class="filter-select" onchange="filterAndRender()">
-                    <option value="">Alle Status</option>
-                    <option value="Uitgeprobeerd">✅ Uitgeprobeerd</option>
+                    <option value="Overig" selected>Overig</option>
+                </select></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group"><label>Bereidingstijd (min)</label><input type="number" id="formTime" class="form-control" value="25"></div>
+                <div class="form-group"><label>Aantal personen</label><input type="number" id="formServings" class="form-control" value="2"></div>
+            </div>
+            <div class="form-group"><label>Beoordeling (klik ster)</label><div class="star-rating" id="starRatingEditor">
+                <span data-v="0.5">★</span><span data-v="1">★</span><span data-v="1.5">★</span><span data-v="2">★</span><span data-v="2.5">★</span>
+                <span data-v="3">★</span><span data-v="3.5">★</span><span data-v="4">★</span><span data-v="4.5">★</span><span data-v="5">★</span>
+            </div></div>
+            <div class="form-row">
+                <div class="form-group"><label>Status</label><select id="formStatus" class="form-control">
                     <option value="Nog proberen">⏳ Nog proberen</option>
-                </select>
-                <select id="sortFilter" class="filter-select" onchange="filterAndRender()">
-                    <option value="time-asc">⏱️ Tijd: Kort → Lang</option>
-                    <option value="time-desc">⏱️ Tijd: Lang → Kort</option>
-                    <option value="rating-desc">⭐ Beoordeling: Hoog → Laag</option>
-                    <option value="name-asc">📫 Naam A → Z</option>
-                </select>
+                    <option value="Uitgeprobeerd">✅ Uitgeprobeerd</option>
+                </select></div>
+                <div class="form-group"><label>Bron Link</label><input type="url" id="formSource" class="form-control" placeholder="https://..."></div>
             </div>
-        </div>
-
-        <div class="content-area">
-            <div id="recipeGrid" class="recipe-grid"></div>
+            <div class="form-group"><label>Foto (emoji of link)</label><input type="text" id="formPhoto" class="form-control" placeholder="bv. 🍤" value="🍽️" oninput="updatePreview(this.value)"><div id="previewBox" class="preview-box">🍽️</div></div>
+            <div class="form-group"><label>Ingrediënten</label><div id="ingContainer" style="display:flex;flex-direction:column;gap:0.5rem;"></div><button class="btn btn-secondary" style="font-size:0.85rem;padding:0.45rem 0.8rem;margin-top:0.3rem;" onclick="addIng()">➕ Toevoegen</button></div>
+            <div class="form-group"><label>Benodigdheden</label><input type="text" id="formTools" class="form-control" placeholder="Pan, Mes..."></div>
+            <div class="form-group"><label>Beschrijving / Tips</label><textarea id="formDesc" class="form-control" placeholder="Korte uitleg..."></textarea></div>
+            <div class="form-group"><label>Bereidingswijze</label><textarea id="formInstr" class="form-control" placeholder="Stap voor stap..."></textarea></div>
+            <div class="button-row"><button class="btn" onclick="saveRecipe()">✅ Opslaan</button><button class="btn btn-secondary" onclick="closeModal('recipeFormModal')">Annuleren</button></div>
         </div>
     </div>
+</div>
 
-    <!-- Inlogscherm -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>🔐 Beheerder Inloggen</h3>
-                <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
+<div id="recipeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header"><h3 id="modalTitle">Recept</h3><button class="close-btn" onclick="closeModal('recipeModal')">&times;</button></div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
+
+<script>
+const ADMIN_PASS = 'greenbite2026';
+const STORAGE_KEY = 'BITES_DATA_V3';
+let isAdmin = localStorage.getItem('bites_admin') === 'true';
+let editingId = null;
+let starValue = 0;
+
+const defaultRecipes = [
+    {id:1,name:"Garnalen in knoflook",category:"Visgerecht",kitchen:"Spaans",occasion:"Snel",time:20,servings:2,rating:4.5,status:"Uitgeprobeerd",photo:"🍤",ingredients:["Garnalen","Knoflook","Olijfolie","Peterselie","Chili","Zout"],tools:["Koekenpan","Lepel"],description:"Heerlijke Spaanse tapas! In 15-20 minuten klaar.",instructions:"1. Pel en dep garnalen droog.\n2. Snijd knoflook in plakjes.\n3. Verhit olie en fruit knoflook met chili.\n4. Voeg garnalen toe, bak 2-3 minuten.\n5. Bestrooi met peterselie en zout. Serveer direct.",source:"https://kitchenstories-bybaco.weebly.com/garnalen-in-knoflook.html"},
+    {id:2,name:"Beef Teriyaki",category:"Voorgerecht",kitchen:"Aziatisch",occasion:"",time:25,servings:2,rating:0,status:"Nog proberen",photo:"🥩",ingredients:["Rundvlees","Sojasaus","Suiker","Gember","Knoflook","Sesamolie"],tools:["Pan","Mes"],description:"Zoete en hartige Japanse stijl.",instructions:"1. Snij vlees in reepjes.\n2. Maak saus van sojasaus, suiker, gember en knoflook.\n3. Bak vlees kort.\n4. Voeg saus toe en laat inkoken.",source:""},
+    {id:3,name:"Spaghetti Bolognese",category:"Hoofdgerecht",kitchen:"Italiaans",occasion:"",time:45,servings:4,rating:4,status:"Uitgeprobeerd",photo:"🍝",ingredients:["Spaghetti","Gehakt","Tomaat","Ui","Knoflook","Wortel","Selderij"],tools:["Kookpan","Pan","Mes","Snijplank"],description:"Klassieke Italiaanse bolognese saus.",instructions:"1. Kook de pasta.\n2. Fruit ui, knoflook, wortel en selderij.\n3. Voeg gehakt toe en bak rul.\n4. Voeg tomaten toe en laat 30 minuten pruttelen.\n5. Meng met de pasta.",source:""},
+    {id:4,name:"Macaroni",category:"Pasta & Rijst",kitchen:"Overig",occasion:"",time:30,servings:4,rating:3.5,status:"Uitgeprobeerd",photo:"🧀",ingredients:["Macaroni","Kaas","Melk","Boter","Bloem"],tools:["Kookpan","Ovenpan"],description:"Simpele en lekkere macaroni.",instructions:"1. Kook de macaroni gaar.\n2. Maak roomsaus van boter, bloem en melk.\n3. Meng kaas erdoor.\n4. Voeg pasta toe en bak kort in de oven.",source:""},
+    {id:5,name:"Macaroni met spek of ham",category:"Pasta & Rijst",kitchen:"Overig",occasion:"",time:35,servings:4,rating:0,status:"Nog proberen",photo:"🥓",ingredients:["Macaroni","Spek of ham","Kaas","Melk","Boter","Ui"],tools:["Kookpan","Pan"],description:"Macaroni met een beetje spek of ham.",instructions:"1. Kook de macaroni.\n2. Bak spek of ham met ui.\n3. Maak kaassaus.\n4. Alles samen mengen.",source:""}
+];
+
+function loadData(){const s=localStorage.getItem(STORAGE_KEY);return s?JSON.parse(s):defaultRecipes;}
+function saveData(d){localStorage.setItem(STORAGE_KEY,JSON.stringify(d));}
+function openAdminLogin(){isAdmin?(isAdmin=false,localStorage.removeItem('bites_admin'),updateUI()):(document.getElementById('adminPassword').value='',document.getElementById('loginModal').style.display='flex');}
+function checkAdminLogin(){if(document.getElementById('adminPassword').value===ADMIN_PASS){isAdmin=true;localStorage.setItem('bites_admin','true');closeModal('loginModal');updateUI();render();}else alert('❌ Verkeerd wachtwoord!');}
+function updateUI(){document.getElementById('addBtn').style.display=isAdmin?'flex':'none';document.getElementById('adminIndicator').style.display=isAdmin?'inline-flex':'none';document.getElementById('adminBtn').innerHTML=isAdmin?'🔓':'🔐';}
+function toggleSortAndFilters(){document.getElementById('collapsibleControls').classList.toggle('show');}
+function renderStars(r){let h='';for(let i=0.5;i<=5;i+=0.5)h+=i<=r?'<span class="active">★</span>':'<span class="empty">★</span>';return h||'<span class="empty">Geen</span>';}
+function closeModal(id){document.getElementById(id).style.display='none';editingId=null;starValue=0;}
+function updatePreview(v){const b=document.getElementById('previewBox');b.innerHTML=(v.startsWith('http')||v.startsWith('data:'))?`<img src="${v}">`:v||'🍽️';}
+function addIng(v=''){const c=document.getElementById('ingContainer');const r=document.createElement('div');r.style.cssText='display:flex;gap:0.5rem;align-items:center;';r.innerHTML=`<input type="text" class="form-control ing-inp" value="${v}" placeholder="bv. 200g pasta" style="flex:1;">${isAdmin?'<button class="btn btn-danger" style="padding:0.5rem 0.75rem;" onclick="this.parentElement.remove()">❌</button>':''}`;c.appendChild(r);}
+
+function openRecipeFormModal(id=null){
+    if(!isAdmin){alert('🔐 Log eerst in!');return;}
+    editingId=id;starValue=0;
+    document.getElementById('formModalTitle').innerText=id?'✏️ Bewerk Recept':'➕ Nieuw Recept';
+    document.getElementById('ingContainer').innerHTML='';
+    document.getElementById('starRatingEditor').querySelectorAll('span').forEach(s=>s.classList.remove('active'));
+    if(id){
+        const r=loadData().find(x=>x.id===id);
+        if(r){
+            document.getElementById('formName').value=r.name;
+            document.getElementById('formCategory').value=r.category||'Hoofdgerecht';
+            document.getElementById('formKitchen').value=r.kitchen||'Overig';
+            document.getElementById('formTime').value=r.time||25;
+            document.getElementById('formServings').value=r.servings||2;
+            document.getElementById('formStatus').value=r.status||'Nog proberen';
+            document.getElementById('formSource').value=r.source||'';
+            document.getElementById('formPhoto').value=r.photo||'🍽️';
+            (r.ingredients||[]).forEach(x=>addIng(x));
+            document.getElementById('formTools').value=Array.isArray(r.tools)?r.tools.join(', '):(r.tools||'');
+            document.getElementById('formDesc').value=r.description||'';
+            document.getElementById('formInstr').value=r.instructions||'';
+            updatePreview(r.photo||'🍽️');
+            starValue=r.rating||0;
+            document.getElementById('starRatingEditor').querySelectorAll('span').forEach(s=>{if(parseFloat(s.dataset.v)<=starValue)s.classList.add('active');});
+        }
+    }else{
+        document.getElementById('formName').value='';
+        document.getElementById('formCategory').value='Hoofdgerecht';
+        document.getElementById('formKitchen').value='Overig';
+        document.getElementById('formTime').value=25;
+        document.getElementById('formServings').value=2;
+        document.getElementById('formStatus').value='Nog proberen';
+        document.getElementById('formSource').value='';
+        document.getElementById('formPhoto').value='🍽️';
+        addIng();addIng();
+        document.getElementById('formTools').value='';
+        document.getElementById('formDesc').value='';
+        document.getElementById('formInstr').value='';
+        updatePreview('🍽️');
+    }
+    document.getElementById('recipeFormModal').style.display='flex';
+}
+
+function saveRecipe(){
+    const name=document.getElementById('formName').value.trim();
+    const cat=document.getElementById('formCategory').value;
+    const kit=document.getElementById('formKitchen').value;
+    const time=parseInt(document.getElementById('formTime').value)||25;
+    const serv=parseInt(document.getElementById('formServings').value)||2;
+    const status=document.getElementById('formStatus').value;
+    const src=document.getElementById('formSource').value.trim();
+    const photo=document.getElementById('formPhoto').value.trim()||'🍽️';
+    const ing=Array.from(document.querySelectorAll('.ing-inp')).map(i=>i.value.trim()).filter(s=>s);
+    const tools=document.getElementById('formTools').value.split(',').map(s=>s.trim()).filter(s=>s);
+    const desc=document.getElementById('formDesc').value.trim();
+    const instr=document.getElementById('formInstr').value.trim();
+    if(!name){alert('⚠️ Vul een naam in!');return;}
+    if(ing.length===0){alert('⚠️ Voeg ingrediënten toe!');return;}
+
+    let data=loadData();
+    if(editingId){
+        const i=data.findIndex(x=>x.id===editingId);
+        if(i>-1)data[i]={id:editingId,name,category:cat,kitchen:kit,occasion:'',time,servings:serv,rating:starValue,status,photo,ingredients:ing,tools,description:desc,instructions:instr,source:src};
+    }else{
+        data.push({id:Date.now(),name,category:cat,kitchen:kit,occasion:'',time,servings:serv,rating:starValue,status,photo,ingredients:ing,tools,description:desc,instructions:instr,source:src});
+    }
+    saveData(data);
+    closeModal('recipeFormModal');
+    render();
+    alert('✅ Opgeslagen!');
+}
+
+function openRecipeDetail(r){
+    document.getElementById('modalTitle').innerText=r.name;
+    const ingList=r.ingredients.map(i=>`<li>${i}</li>`).join('');
+    const toolsList=Array.isArray(r.tools)?r.tools.join(', '):r.tools;
+    const isImgUrl=r.photo&&(r.photo.startsWith('http')||r.photo.startsWith('data:'));
+    document.getElementById('modalBody').innerHTML=`
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem;">
+            <div style="width:90px;height:90px;background:#0f172a;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:3rem;overflow:hidden;flex-shrink:0;">
+                ${isImgUrl?`<img src="${r.photo}" style="width:100%;height:100%;object-fit:cover;">`:r.photo}
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Wachtwoord</label>
-                    <input type="password" id="adminPassword" class="form-control" placeholder="Voer wachtwoord in...">
-                </div>
-                <div class="button-row">
-                    <button class="btn" onclick="checkAdminLogin()">Inloggen</button>
-                    <button class="btn btn-secondary" onclick="closeModal('loginModal')">Annuleren</button>
-                </div>
-                <p class="hint-text">💡 Standaard wachtwoord: <strong>greenbite2026</strong></p>
+            <div style="flex:1;min-width:180px;">
+                <p><strong>Categorie:</strong> ${r.category}</p>
+                <p><strong>Keuken:</strong> ${r.kitchen}</p>
+                <p><strong>Tijd:</strong> ${r.time} min</p>
+                <p><strong>Personen:</strong> ${r.servings}</p>
+                <p><strong>Beoordeling:</strong> ${renderStars(r.rating||0)}</p>
+                <p><strong>Status:</strong> ${r.status}</p>
+                <p><strong>Benodigdheden:</strong> ${toolsList}</p>
             </div>
         </div>
-    </div>
-
-    <!-- Recept Toevoegen/Bewerken -->
-    <div id="recipeFormModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="formModalTitle">➕ Nieuw Recept</h3>
-                <button class="close-btn" onclick="closeModal('recipeFormModal')">&times;</button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="editRecipeId" value="">
-                <div class="form-group">
-                    <label>Naam Recept *</label>
-                    <input type="text" id="formName" class="form-control" placeholder="bv. Garnalen in knoflook">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Hoofd Categorie</label>
-                        <select id="formCategory" class="form-control">
-                            <option value="Voorgerecht">Voorgerecht</option>
-                            <option value="Hoofdgerecht" selected>Hoofdgerecht</option>
-                            <option value="Bijgerecht">Bijgerecht</option>
-                            <option value="Nagerecht">Nagerecht</option>
-                            <option value="Soep">Soep</option>
-                            <option value="Salade">Salade</option>
-                            <option value="Pasta & Rijst">Pasta & Rijst</option>
-                            <option value="Vleesgerecht">Vleesgerecht</option>
-                            <option value="Visgerecht">Visgerecht</option>
-                            <option value="Vegetarisch">Vegetarisch</option>
-                            <option value="Vegan">Vegan</option>
-                            <option value="Tussendoortje">Tussendoortje</option>
-                            <option value="Drank">Drank</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Keuken / Stijl</label>
-                        <select id="formKitchen" class="form-control">
-                            <option value="Italiaans">Italiaans</option>
-                            <option value="Mexicaans">Mexicaans</option>
-                            <option value="Spaans">Spaans</option>
-                            <option value="Aziatisch">Aziatisch</option>
-                            <option value="Frans">Frans</option>
-                            <option value="Nederlands">Nederlands</option>
-                            <option value="Overig" selected>Overig</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Bereidingstijd (min)</label>
-                        <input type="number" id="formTime" class="form-control" value="25">
-                    </div>
-                    <div class="form-group">
-                        <label>Aantal personen</label>
-                        <input type="number" id="formServings" class="form-control" value="2">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Beoordeling / Sterren (klik om te geven)</label>
-                    <div class="star-rating" id="starRatingEditor" data-value="0">
-                        <span data-val="0.5">★</span>
-                        <span data-val="1">★</span>
-                        <span data-val="1.5">★</span>
-                        <span data-val="2">★</span>
-                        <span data-val="2.5">★</span>
-                        <span data-val="3">★</span>
-                        <span data-val="3.5">★</span>
-                        <span data-val="4">★</span>
-                        <span data-val="4.5">★</span>
-                        <span data-val="5">★</span>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select id="formStatus" class="form-control">
-                            <option value="Nog proberen">⏳ Nog proberen</option>
-                            <option value="Uitgeprobeerd">✅ Uitgeprobeerd</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Bron / Link (optioneel)</label>
-                        <input type="url" id="formSource" class="form-control" placeholder="https://...">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Foto (emoji of link)</label>
-                    <input type="text" id="formPhoto" class="form-control" placeholder="bv. 🍤 of link" value="🍽️" oninput="updateImagePreview(this.value)">
-                    <div id="imagePreviewBox" class="preview-box">🍽️</div>
-                </div>
-                <div class="form-group">
-                    <label>Ingrediënten *</label>
-                    <div id="ingredientsContainer" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
-                    <button type="button" class="btn btn-secondary" style="font-size:0.85rem; padding:0.45rem 0.8rem; margin-top:0.3rem;" onclick="addIngredientRow()">➕ Ingrediënt toevoegen</button>
-                </div>
-                <div class="form-group">
-                    <label>Benodigdheden / Gereedschap</label>
-                    <input type="text" id="formTools" class="form-control" placeholder="Pan, Mes, Oven...">
-                </div>
-                <div class="form-group">
-                    <label>Korte Beschrijving / Tips</label>
-                    <textarea id="formDescription" class="form-control" placeholder="Korte uitleg, tips of variaties..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Bereidingswijze</label>
-                    <textarea id="formInstructions" class="form-control" placeholder="Stap voor stap..."></textarea>
-                </div>
-                <div class="button-row">
-                    <button class="btn" onclick="saveRecipeFromForm()">✅ Opslaan</button>
-                    <button class="btn btn-secondary" onclick="closeModal('recipeFormModal')">Annuleren</button>
-                </div>
-            </div>
+        <div style="margin-bottom:1rem;">
+            <h4 style="margin:0 0 0.4rem 0;color:var(--accent);">Ingrediënten</h4>
+            <ul style="margin:0;padding-left:1.2rem;color:var(--text-muted);">${ingList}</ul>
         </div>
-    </div>
-
-    <!-- Recept Detail -->
-    <div id="recipeModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Recept</h3>
-                <button class="close-btn" onclick="closeModal('recipeModal')">&times;</button>
-            </div>
-            <div class="modal-body" id="modalBody"></div>
+        <div>
+            <h4 style="margin:0 0 0.4rem 0;color:var(--accent);">Bereidingswijze</h4>
+            <p style="margin:0;color:var(--text-muted);white-space:pre-line;">${r.instructions||'Geen beschrijving'}</p>
         </div>
-    </div>
+        ${r.source?`<p style="margin-top:1rem;"><a href="${r.source}" target="_blank" class="source-link">🔗 Originele bron</a></p>`:''}
+        ${isAdmin?`
+        <div style="display:flex;gap:0.75rem;margin-top:1rem;border-top:1px solid var(--border);padding-top:1rem;">
+            <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('recipeModal');openRecipeFormModal(${r.id})">✏️ Bewerken</button>
+            <button class="btn btn-danger" style="flex:1;" onclick="delRecipe(${r.id})">🗑️ Verwijderen</button>
+        </div>`:''}
+    `;
+    document.getElementById('recipeModal').style.display='flex';
+}
 
-    <script>
-        const ADMIN_PASSWORD = 'greenbite2026';
-        const APP_STORAGE_KEY = 'BITES_RECIPES_V2';
-        let isAdmin = localStorage.getItem('bites_admin_v2') === 'true';
+function delRecipe(id){
+    if(confirm('Weet je het zeker?')){
+        saveData(loadData().filter(r=>r.id!==id));
+        closeModal('recipeModal');
+        render();
+    }
+}
 
-        // Voorbeeld-recepten overgenomen van je oude website
-        const defaultRecipes = [
-            {
-                id: 1,
-                name: "Garnalen in knoflook (Gambas al Ajillo)",
-                category: "Visgerecht",
-                kitchen: "Spaans",
-                occasion: "Snel",
-                time: 20,
-                servings: 2,
-                rating: 4.5,
-                status: "Uitgeprobeerd",
-                photo: "🍤",
-                ingredients: ["Garnalen", "Knoflook", "Olijfolie", "Peterselie", "Chili vlokken", "Zout"],
-                tools: ["Koekenpan", "Lepel"],
-                description: "Heerlijke Spaanse tapas! In 15-20 minuten klaar.",
-                instructions: "1. Pel de garnalen en dep droog.\n2. Snijd knoflook in plakjes.\n3. Verhit olijfolie in de pan en fruit knoflook met chili.\n4. Voeg garnalen toe en bak 2-3 minuten.\n5. Bestrooi met peterselie en zout. Serveer direct.",
-                source: "https://kitchenstories-bybaco.weebly.com/garnalen-in-knoflook.html"
-            },
-            {
-                id: 2,
-                name: "Beef Teriyaki",
-                category: "Voorgerecht",
-                kitchen: "Aziatisch",
-                occasion: "",
-                time: 25,
-                servings: 2,
-                rating: 0,
-                status: "Nog proberen",
-                photo: "🥩",
-                ingredients: ["Rundvlees", "Sojasaus", "Suiker", "Gember", "Knoflook", "Sesamolie"],
-                tools: ["Pan", "Mes"],
-                description: "Zoete en hartige Japanse stijl.",
-                instructions: "1. Snij vlees in reepjes.\n2. Maak saus van sojasaus, suiker, gember en knoflook.\n3. Bak vlees kort.\n4. Voeg saus toe en laat inkoken.",
-                source: ""
-            },
-            {
-                id: 3,
-                name: "Spaghetti Bolognese",
-                category: "Hoofdgerecht",
-                kitchen: "Italiaans",
-                occasion: "",
-                time: 45,
-                servings: 4,
-                rating: 4,
-                status: "Uitgeprobeerd",
-                photo: "🍝",
-                ingredients: ["Spaghetti", "Gehakt", "Tomaat", "Ui", "Knoflook", "Wortel", "Selderij"],
-                tools: ["Kookpan", "Pan", "Mes", "Snijplank"],
-                description: "Klassieke Italiaanse bolognese saus.",
-                instructions: "1. Kook de pasta.\n2. Fruit ui, knoflook, wortel en selderij.\n3. Voeg gehakt toe en bak rul.\n4. Voeg tomaten toe en laat 30 minuten pruttelen.\n5. Meng met de pasta.",
-                source: ""
-            },
-            {
-                id: 4,
-                name: "Macaroni",
-                category: "Pasta & Rijst",
-                kitchen: "Overig",
-                occasion: "",
-                time: 30,
-                servings: 4,
-                rating: 3.5,
-                status: "Uitgeprobeerd",
-                photo: "🧀",
-                ingredients: ["Macaroni", "Kaas", "Melk", "Boter", "Bloem"],
-                tools: ["Kookpan", "Ovenpan"],
-                description: "Simpele en lekkere macaroni.",
-                instructions: "1. Kook de macaroni gaar.\n2. Maak roomsaus van boter, bloem en melk.\n3. Meng kaas erdoor.\n4. Voeg pasta toe en bak kort in de oven.",
-                source: ""
-            },
-            {
-                id: 5,
-                name: "Macaroni met spek of ham",
-                category: "Pasta & Rijst",
-                kitchen: "Overig",
-                occasion: "",
-                time: 35,
-                servings: 4,
-                rating: 0,
-                status: "Nog proberen",
-                photo: "🥓",
-                ingredients: ["Macaroni", "Spek of ham", "Kaas", "Melk", "Boter", "Ui"],
-                tools: ["Kookpan", "Pan"],
-                description: "Macaroni met een beetje spek of ham.",
-                instructions: "1. Kook de macaroni.\n2. Bak spek of ham met ui.\n3. Maak kaassaus.\n4. Alles samen mengen.",
-                source: ""
-            }
-        ];
+function render(){
+    const search=document.getElementById('searchInput').value.toLowerCase();
+    const cat=document.getElementById('categoryFilter').value;
+    const kit=document.getElementById('kitchenFilter').value;
+    const occ=document.getElementById('occasionFilter').value;
+    const stat=document.getElementById('statusFilter').value;
+    const sort=document.getElementById('sortFilter').value;
+    let data=loadData().filter(r=>{
+        const allText=`${r.name} ${r.category} ${r.kitchen} ${(r.ingredients||[]).join(' ')}`.toLowerCase();
+        return (!search||allText.includes(search))&&(!cat||r.category===cat)&&(!kit||r.kitchen===kit)&&(!occ||(r.occasion||'').includes(occ))&&(!stat||r.status===stat);
+    });
+    data.sort((a,b)=>{
+        if(sort==='time-asc')return a.time-b.time;
+        if(sort==='time-desc')return b.time-a.time;
+        if(sort==='rating-desc')return(b.rating||0)-(a.rating||0);
+        if(sort==='name-asc')return a.name.localeCompare(b.name);
+        return 0;
+    });
+    const grid=document.getElementById('recipeGrid');
+    grid.innerHTML='';
+    if(data.length===0){
+        grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:4rem 2rem;">🔍 Geen recepten gevonden.${isAdmin?'<br><button class="btn" onclick="openRecipeFormModal()" style="margin-top:1.2rem;">➕ Voeg recept toe</button>':''}</div>`;
+        return;
+    }
+    data.forEach(r=>{
+        const card=document.createElement('div');
+        card.className='recipe-card';
+        card.onclick=()=>openRecipeDetail(r);
+        const isImgUrl=r.photo&&(r.photo.startsWith('http')||r.photo.startsWith('data:'));
+        const stClass=r.status==='Uitgeprobeerd'?'status-uitgeprobeerd':'status-nog';
+        card.innerHTML=`
+            <div class="recipe-image">
+                ${isImgUrl?`<img src="${r.photo}" alt="${r.name}">`:r.photo}
+                <div class="recipe-tags"><span class="tag">${r.category}</span><span class="tag">${r.kitchen}</span></div>
+                <div class="status-badge ${stClass}">${r.status==='Uitgeprobeerd'?'✅':'⏳'} ${r.status}</div>
+            </div>
+            <div class="recipe-info">
+                <h4 class="recipe-title">${r.name}</h4>
+                <div class="stars">${renderStars(r.rating||0)}</div>
+                <p class="recipe-desc">${r.description||''}</p>
+                ${r.tools?`<div class="recipe-tools">🍳 ${Array.isArray(r.tools)?r.tools.join(', '):r.tools}</div>`:''}
+                <div class="recipe-meta">
+                    <span>⏱️ ${r.time} min</span>
+                    <span>👥 ${r.servings} pers</span>
+                </div>
+                ${r.source?`<a href="${r.source}" target="_blank" class="source-link" onclick="event.stopPropagation()">🔗 Bron</a>`:''}
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
 
-        function loadData() {
-            const saved = localStorage.getItem(APP_STORAGE_KEY + '_data');
-            if (!saved) {
-                localStorage.setItem(APP_STORAGE_KEY + '_data', JSON.stringify(defaultRecipes));
-                return defaultRecipes;
-            }
-            try { return JSON.parse(saved); }
-            catch (e) { return defaultRecipes; }
-        }
+document.getElementById('starRatingEditor').querySelectorAll('span').forEach(s=>{
+    s.onclick=()=>{
+        starValue=parseFloat(s.dataset.v);
+        document.getElementById('starRatingEditor').querySelectorAll('span').forEach(x=>{
+            x.classList.toggle('active',parseFloat(x.dataset.v)<=starValue);
+        });
+    };
+});
 
-        function saveData(data) {
-            localStorage.setItem(APP_STORAGE_KEY + '_data', JSON.stringify(data));
-        }
-
-        function openAdminLogin() {
-            if (isAdmin) {
-                isAdmin = false;
-                localStorage.removeItem('bites_admin_v2');
-                updateAdminUI();
-            } else {
-                document.getElementById('adminPassword').value = '';
-                document.getElementById('loginModal').style.display = 'flex';
-            }
-        }
-
-        function checkAdminLogin() {
-            const pw = document.getElementById('adminPassword').value;
-            if (pw === ADMIN_PASSWORD) {
-                isAdmin = true;
-                localStorage.setItem('bites_admin_v2', 'true');
-                closeModal('loginModal');
-                updateAdminUI();
-                filterAndRender();
-            } else {
-                alert('❌ Verkeerd wachtwoord!');
-            }
-        }
-
-        function updateAdminUI() {
-            document.getElementById('addBtn').style.display = isAdmin ? 'flex' : 'none';
-            document.getElementById('adminIndicator').style.display = isAdmin ? 'inline-flex' : 'none';
-            document.getElementById('adminBtn').innerHTML = isAdmin ? '🔓' : '🔐';
-        }
-
-        function toggleSortAndFilters() {
-            document.getElementById('collapsibleControls').classList.toggle('show');
-        }
-
-        function renderStars(rating) {
-            let html = '';
-            for (let i = 0.5; i <= 5; i += 0.5) {
-                if (i <= rating) {
-                    html += '<span class="active">★</span>';
-                } else if (i - 0.5 < rating) {
-                    html += '<span class="half"><span>★</span></span>';
-                } else {
-                    html += '<span class="empty">★</span>';
-                }
-            }
-            return html || '<span class="empty">Geen</span>';
-        }
-
-        function filterAndRender() {
-            const recipes = loadData();
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            const category = document.getElementById('categoryFilter').value;
-            const kitchen = document.getElementById('kitchenFilter').value;
-            const occasion = document.getElementById('occasionFilter').value;
-            const status = document.getElementById('statusFilter').value;
-            const sort = document.getElementById('sortFilter').value;
-
-            let filtered = recipes.filter(r => {
-                const allText = `${r.name} ${r.category || ''} ${r.kitchen || ''} ${(r.ingredients||[]).join(' ')}`.toLowerCase();
-                const matchSearch = !search || allText.includes(search);
-                const matchCat = !category || r.category === category;
-                const matchKitchen = !kitchen || r.kitchen === kitchen;
-                const matchOccasion = !occasion || (r.occasion || '').includes(occasion);
-                const matchStatus = !status || r.status === status;
-                return matchSearch && matchCat && matchKitchen && matchOccasion && matchStatus;
-            });
-
-            filtered.sort((a, b) => {
-                if (sort === 'time-asc') return a.time - b.time;
-                if (sort === 'time-desc') return b.time - a.time;
-                if (sort === 'rating-desc') return (b.rating || 0) - (a.rating || 0);
-                if (sort === 'name-asc') return a.name.localeCompare(b.name);
-                return 0;
-            });
-
-            renderGrid(filtered);
-        }
-
-        function renderGrid(recipes) {
-            const grid = document.getElementById('recipeGrid');
-            grid.innerHTML = '';
-
-            if (recipes.length === 0) {
-                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:4rem 2rem;">
-                    🔍 Geen recepten gevonden.<br>
-                    ${isAdmin ? `<button class="btn" onclick="openRecipeFormModal()" style="margin-top:1.2rem;">➕ Voeg je eerste recept toe</button>` : ''}
-                </div>`;
-                return;
-            }
-
-            recipes.forEach(r => {
-                const card = document.createElement('div');
-                card.className = 'recipe-card';
-                card.onclick = () => openRecipeDetail(r);
-                const isImgUrl = r.photo && (r.photo.startsWith('http') || r.photo.startsWith('data:'));
-                const statusClass = r.status === 'Uitgeprobeerd' ? 'status-uitgeprobeerd' : 'status-nog';
-
-                card.innerHTML = `
-                    <div class="recipe-image">
-                        ${isImgUrl ? `<img src="${r.photo}" alt="${r.name}">` : (r.photo || '🍽️')}
-                        <div class="recipe-tags">
-                            <span class="tag">${r.category || 'Recept'}</span>
-                            ${r.kitchen ? `<span class="tag">${r.kitchen}</span>` : ''}
-                        </div>
-                        <div class="status-badge ${statusClass}">${r.status === 'Uitgeprobeerd' ? '✅' : '⏳'} ${r.status}</div>
-                    </div>
-                    <div class="recipe-info">
-                        <h4 class="recipe-title">${r.name}</h4>
-                        <div class="stars">${renderStars(r.rating || 0)}</div>
-                        <p class="recipe-desc">${r.description || ''}</p>
-                        ${r.tools ? `<div class="recipe-tools">🍳 ${Array.isArray(r.tools) ? r.tools.join(', ') : r.tools}</div>` : ''}
-                        <div class="recipe-meta">
-                            <span>⏱️ ${r.time} min</span>
-                            <span>👥 ${r.servings || 2} pers</span>
-                        </div>
-                        ${r.source ? `<a href="${r.source}" target="_blank" class="source-link" onclick="event.stopPropagation()">🔗 Bron</a>` : ''}
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function updateImagePreview(val) {
-            const box = document.getElementById('imagePreviewBox');
-            if (val.startsWith('http') || val.startsWith('data:')) {
-                box.innerHTML = `<img src="${val}" alt="Voorbeeld">`;
-            } else {
-                box.innerHTML = val || '🍽️';
-            }
-        }
-
-        function addIngredientRow(val = '') {
-            const container = document.getElementById('ingredientsContainer');
-            const row = document.createElement('div');
-            row.style.display = 'flex';
-            row.style.gap = '0.5rem';
-            row.style.alignItems = 'center';
-            row.innerHTML = `
-                <input type="text" class="form-control ingredient-input" value="${val}" placeholder="bv. 200g pasta" style="flex:1;">
-                ${isAdmin ? `<button class="btn btn-danger" style="padding:0.5rem 0.75rem;" onclick="this.parentElement.remove()">❌</button>` : ''}
-            `;
-            container.appendChild(row);
-        }
-
-        function initStarRating(containerId, hiddenInputId, initialValue) {
-            const container = document.getElementById(containerId);
-            const hidden = hiddenInputId ? document.getElementById(hiddenInputId) : null;
-            const stars = container.querySelectorAll('span');
-
-            function setValue(val) {
-                container.dataset.value = val;
-                if (hidden) hidden.value = val;
-                stars.forEach(star => {
-                    const v = parseFloat(star.dataset.val);
-                    star.classList.toggle('active', v <= val);
-                });
-            }
-
-            stars.forEach(star => {
-                star.onclick = () => setValue(parseFloat(star.dataset.val));
-            });
-
-            setValue(initialValue || 0);
-        }
-
-        function openRecipeFormModal(recipeId = null) {
-            if (!isAdmin) { alert('🔐 Log eerst in als beheerder!'); return; }
-            
-            document.getElementById('editRecipeId').value = recipeId || '';
-            const ingredientsContainer = document.getElementById('ingredientsContainer');
-            ingredientsContainer.innerHTML = '';
-
-            if (recipeId) {
-                document.getElementById('formModalTitle').innerText = '✏️ Bewerk Recept';
-                const recipes = loadData();
-                const r = recipes.find(item => item.id === recipeId);
-                if (r) {
-                    document.getElementById('formName').value = r.name;
-                    document.getElementById('formCategory').value = r.category || 'Hoofdgerecht';
-                    document.getElementById('formKitchen').value = r.kitchen || 'Overig';
-                    document.getElementById('formTime').value = r.time || 25;
-                    document.getElementById('formServings').value = r.servings || 2;
-                    document.getElementById('formStatus').value = r.status || 'Nog proberen';
-                    document.getElementById('formSource').value = r.source || '';
-                    document.getElementById('formPhoto').value = r.photo || '🍽️';
-                    (r.ingredients || []).forEach(ing => addIngredientRow(ing));
-                    document.getElementById('formTools').value = Array.isArray(r.tools) ? r.tools.join(', ') : (r.tools || '');
-                    document.getElementById('formDescription').value = r.description || '';
-                    document.getElementById('formInstructions').value = r.instructions || '';
-                    updateImagePreview(r.photo || '🍽️');
-
-                    document.getElementById('starRatingEditor').dataset.value = r.rating || 0;
-                    document.querySelectorAll('#starRatingEditor span').forEach(s => {
-                        s.classList.toggle('active', parseFloat(s.dataset.val) <= (r.rating || 0));
-                    });
-                }
-            } else {
-                document.getElementById('formModalTitle').innerText = '➕ Nieuw Recept';
-                document.getElementById('formName').value = '';
-                document.getElementById('formCategory').value = 'Hoofdgerecht';
-                document.getElementById('formKitchen').value = 'Overig';
-                document.getElementById('formTime').value = 25;
-                document.getElementById('formServings').value = 2;
-                document.getElementById('formStatus').value = 'Nog proberen';
-                document.getElementById('formSource').value = '';
-                document.getElementById('formPhoto').value = '🍽️';
-                addIngredientRow('');
-                addIngredientRow('');
-                document.getElementById('formTools').value = '';
-                document.getElementById('formDescription').value = '';
-                document.getElementById('formInstructions').value = '';
-                updateImagePreview('🍽️');
-
-                document.getElementById('starRatingEditor').dataset.value = 0;
-                document.querySelectorAll('#starRatingEditor span').forEach(s => s.classList.remove('active'));
-            }
-
-            // Sterren interactie
-            document.querySelectorAll('#starRatingEditor span').forEach(star => {
-                star.onclick = () => {
-                    const val = parseFloat(star.dataset.val);
-                    document.getElementById('starRatingEditor').dataset.value = val;
-                    document.querySelectorAll('#starRatingEditor span').forEach(s => {
-                        s.classList.toggle('active', parseFloat(s.dataset.val) <= val);
-                    });
-                };
-            });
-
-            document.getElementById('recipeFormModal').style.display = 'flex';
-        }
-
-        function saveRecipeFromForm() {
-            const editId = document.getElementById('editRecipeId').value;
-            const name = document.getElementById('formName').value.trim();
-            const category = document.getElementById('formCategory').value;
-            const kitchen = document.getElementById('formKitchen').value;
-            const time = parseInt(document.getElementById('formTime').value) || 20;
-            const servings = parseInt(document.getElementById('formServings').value) || 2;
-            const rating = parseFloat(document.getElementById('starRatingEditor').dataset.value) || 0;
-            const status = document.getElementById('formStatus').value;
-            const source = document.getElementById('formSource').value.trim();
-            const photo = document.getElementById('formPhoto').value.trim() || '🍽️';
-            
-            const ingredientInputs = document.querySelectorAll('.ingredient-input');
-            const ingredients = Array.from(ingredientInputs).map(i => i.value.trim()).filter(s => s);
-            const toolsText = document.getElementById('formTools').value;
-            const tools = toolsText ? toolsText.split(',').map(s => s.trim()).filter(s => s) : [];
-            const description = document.getElementById('formDescription').value.trim();
-            const instructions = document.getElementById('formInstructions').value.trim();
-
-            if (!name) { alert('⚠️ Vul een naam in!'); return; }
-            if (ingredients.length
+updateUI();
+render();
+</script>
+</body>
+</html>
