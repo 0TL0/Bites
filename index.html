@@ -3,539 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌌 Bites - Recepten</title>
+    <title>🌌 BITES - Recepten</title>
     <style>
         :root {
             --bg-deep: #050714;
             --bg-card: rgba(15, 23, 42, 0.75);
-            --bg-card-hover: rgba(22, 35, 60, 0.85);
             --text-main: #f0fff9;
             --text-muted: #94b8b0;
             --neon-green: #00ff9d;
-            --neon-green-soft: rgba(0, 255, 157, 0.18);
-            --neon-green-glow: 0 0 6px #00ff9d, 0 0 18px rgba(0, 255, 157, 0.5), 0 0 35px rgba(0, 255, 157, 0.25);
+            --neon-green-glow: 0 0 6px #00ff9d, 0 0 18px rgba(0,255,157,0.5);
             --neon-blue: #00ccff;
-            --neon-blue-glow: 0 0 6px #00ccff, 0 0 18px rgba(0, 204, 255, 0.4);
             --gold: #ffd700;
-            --border: rgba(0, 255, 157, 0.25);
-            --border-strong: rgba(0, 255, 157, 0.6);
+            --border: rgba(0,255,157,0.25);
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * {box-sizing:border-box;margin:0;padding:0;}
         body {
-            min-height: 100vh;
-            margin: 0;
+            min-height:100vh;
             background: 
-                radial-gradient(ellipse at top left, rgba(0, 60, 120, 0.4) 0%, transparent 55%),
-                radial-gradient(ellipse at top right, rgba(0, 80, 100, 0.35) 0%, transparent 55%),
-                radial-gradient(ellipse at bottom center, rgba(20, 40, 80, 0.5) 0%, transparent 65%),
+                radial-gradient(ellipse at top left, rgba(0,60,120,0.4) 0%, transparent 55%),
+                radial-gradient(ellipse at top right, rgba(0,80,100,0.35) 0%, transparent 55%),
+                radial-gradient(ellipse at bottom center, rgba(20,40,80,0.5) 0%, transparent 65%),
                 linear-gradient(180deg, #050714 0%, #0a1229 45%, #0f1a3c 100%);
-            color: var(--text-main);
-            font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-            line-height: 1.6;
-            background-attachment: fixed;
-            overflow-x: hidden;
+            color:var(--text-main);
+            font-family:'Segoe UI',sans-serif;
+            background-attachment:fixed;
         }
-
-        /* Sterren achtergrond */
-        body::before, body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            background-image: 
-                radial-gradient(1px 1px at 20px 30px, #fff, transparent),
-                radial-gradient(1px 1px at 60px 70px, rgba(255,255,255,0.7), transparent),
-                radial-gradient(1px 1px at 50px 50px, #fff, transparent),
-                radial-gradient(1.5px 1.5px at 140px 90px, rgba(255,255,255,0.9), transparent),
-                radial-gradient(1px 1px at 90px 10px, #fff, transparent);
-            background-size: 200px 200px;
-            opacity: 0.4;
+        body::before {
+            content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+            background-image:radial-gradient(1px 1px at 20px 30px,#fff,transparent),radial-gradient(1.5px 1.5px at 140px 90px,rgba(255,255,255,0.9),transparent);
+            background-size:200px 200px;opacity:0.4;
         }
-        body::after { opacity: 0.25; background-position: 100px 50px; }
-
-        .app-container {
-            position: relative;
-            z-index: 1;
-            width: min(96vw, 1300px);
-            margin: 0 auto;
-            padding: 1.2rem;
-        }
-
+        .app-container {position:relative;z-index:1;width:min(96vw,1300px);margin:0 auto;padding:1.2rem;}
         header {
-            background: rgba(8, 12, 28, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 1.4rem 1.8rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            position: sticky;
-            top: 0.8rem;
-            z-index: 100;
-            box-shadow: 0 0 25px rgba(0, 255, 157, 0.08), 0 8px 40px rgba(0, 0, 0, 0.4);
+            background:rgba(8,12,28,0.7);backdrop-filter:blur(20px);border:1px solid var(--border);
+            border-radius:20px;padding:1.4rem 1.8rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;
+            margin-bottom:1.5rem;position:sticky;top:0.8rem;z-index:100;
+            box-shadow:0 0 25px rgba(0,255,157,0.08);
         }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 0.8rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
+        .logo {font-size:1.8rem;font-weight:800;background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;}
+        .header-actions {display:flex;gap:0.8rem;align-items:center;}
         .btn {
-            background: linear-gradient(135deg, rgba(0, 255, 157, 0.15), rgba(0, 204, 255, 0.12));
-            color: var(--neon-green);
-            border: 1px solid var(--border);
-            padding: 0.7rem 1.3rem;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.25s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            box-shadow: inset 0 0 10px rgba(0, 255, 157, 0.05);
+            background:linear-gradient(135deg,rgba(0,255,157,0.15),rgba(0,204,255,0.12));
+            color:var(--neon-green);border:1px solid var(--border);padding:0.7rem 1.3rem;border-radius:12px;
+            cursor:pointer;font-weight:600;font-size:0.95rem;transition:all 0.25s;
         }
-
-        .btn:hover {
-            transform: translateY(-4px) scale(1.03);
-            border-color: var(--neon-green);
-            box-shadow: var(--neon-green-glow);
-            background: linear-gradient(135deg, rgba(0, 255, 157, 0.25), rgba(0, 204, 255, 0.18));
-        }
-
-        .btn:active { transform: translateY(-1px); }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #00a368, #0088aa);
-            color: white;
-            border: none;
-        }
-        .btn-primary:hover {
-            box-shadow: 0 0 12px #00ff9d, 0 0 25px rgba(0, 255, 157, 0.4);
-        }
-
-        .btn-secondary {
-            background: rgba(40, 50, 80, 0.4);
-            color: var(--text-muted);
-            border-color: rgba(100, 120, 150, 0.3);
-        }
-        .btn-secondary:hover {
-            color: var(--neon-blue);
-            border-color: var(--neon-blue);
-            box-shadow: var(--neon-blue-glow);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, rgba(220, 50, 80, 0.2), rgba(180, 30, 60, 0.15));
-            color: #ff7b9c;
-            border-color: rgba(255, 100, 130, 0.35);
-        }
-        .btn-danger:hover {
-            box-shadow: 0 0 12px #ff4d6d, 0 0 25px rgba(255, 77, 109, 0.3);
-            border-color: #ff4d6d;
-        }
-
-        .controls-bar {
-            background: rgba(12, 20, 45, 0.65);
-            backdrop-filter: blur(18px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 1.5rem 1.8rem;
-            margin-bottom: 1.5rem;
-            box-shadow: inset 0 0 20px rgba(0, 255, 157, 0.03);
-        }
-
-        .search-row {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            margin-bottom: 0.9rem;
-        }
-
+        .btn:hover {transform:translateY(-4px);border-color:var(--neon-green);box-shadow:var(--neon-green-glow);}
+        .btn-primary {background:linear-gradient(135deg,#00a368,#0088aa);color:white;border:none;}
+        .btn-secondary {background:rgba(40,50,80,0.4);color:var(--text-muted);border-color:rgba(100,120,150,0.3);}
+        .btn-secondary:hover {color:var(--neon-blue);border-color:var(--neon-blue);box-shadow:0 0 6px #00ccff,0 0 18px rgba(0,204,255,0.4);}
+        .btn-danger {background:linear-gradient(135deg,rgba(220,50,80,0.2),rgba(180,30,60,0.15));color:#ff7b9c;border-color:rgba(255,100,130,0.35);}
+        .controls-bar {background:rgba(12,20,45,0.65);backdrop-filter:blur(18px);border:1px solid var(--border);border-radius:20px;padding:1.5rem 1.8rem;margin-bottom:1.5rem;}
+        .search-row {display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.9rem;}
         .search-input, .filter-select {
-            background: rgba(10, 18, 40, 0.7);
-            border: 1px solid rgba(0, 255, 157, 0.15);
-            color: var(--text-main);
-            padding: 0.85rem 1.1rem;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            outline: none;
-            width: 100%;
-            transition: all 0.25s ease;
+            background:rgba(10,18,40,0.7);border:1px solid rgba(0,255,157,0.15);color:var(--text-main);
+            padding:0.85rem 1.1rem;border-radius:12px;font-size:0.95rem;outline:none;width:100%;
         }
-
-        .search-input:focus, .filter-select:focus {
-            border-color: var(--neon-green);
-            box-shadow: 0 0 0 3px rgba(0, 255, 157, 0.12), 0 0 15px rgba(0, 255, 157, 0.15);
-        }
-
-        .collapsible-controls {
-            display: none;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 0.8rem;
-            margin-top: 0.6rem;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .collapsible-controls.show { display: grid; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .recipe-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-            gap: 1.4rem;
-        }
-
+        .search-input:focus, .filter-select:focus {border-color:var(--neon-green);box-shadow:0 0 0 3px rgba(0,255,157,0.12);}
+        .collapsible-controls {display:none;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.8rem;margin-top:0.6rem;animation:fadeIn 0.3s ease-out;}
+        .collapsible-controls.show {display:grid;}
+        @keyframes fadeIn {from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+        .recipe-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.4rem;}
         .recipe-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
+            background:var(--bg-card);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:20px;
+            overflow:hidden;display:flex;flex-direction:column;transition:all 0.3s;cursor:pointer;
         }
-
-        .recipe-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 20px;
-            background: linear-gradient(135deg, rgba(0, 255, 157, 0), rgba(0, 204, 255, 0));
-            opacity: 0;
-            transition: opacity 0.35s ease;
-            pointer-events: none;
-        }
-
-        .recipe-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--neon-green);
-            box-shadow: 0 0 15px rgba(0, 255, 157, 0.15), 0 20px 45px rgba(0, 0, 0, 0.45);
-        }
-
-        .recipe-card:hover::before {
-            opacity: 1;
-            background: linear-gradient(135deg, rgba(0, 255, 157, 0.06), rgba(0, 204, 255, 0.04));
-        }
-
-        .recipe-image {
-            height: 170px;
-            background: linear-gradient(135deg, rgba(0, 60, 80, 0.4), rgba(0, 40, 70, 0.5));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            position: relative;
-            overflow: hidden;
-            border-bottom: 1px solid rgba(0, 255, 157, 0.1);
-        }
-
-        .recipe-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .recipe-tags {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            display: flex;
-            gap: 0.4rem;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background: rgba(5, 10, 30, 0.75);
-            backdrop-filter: blur(10px);
-            padding: 0.3rem 0.65rem;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            color: var(--neon-green);
-            border: 1px solid rgba(0, 255, 157, 0.3);
-            box-shadow: 0 0 6px rgba(0, 255, 157, 0.1);
-        }
-
-        .status-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            padding: 0.3rem 0.65rem;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-        }
-
-        .status-uitgeprobeerd {
-            background: rgba(0, 255, 157, 0.12);
-            color: var(--neon-green);
-            border: 1px solid rgba(0, 255, 157, 0.4);
-            box-shadow: 0 0 8px rgba(0, 255, 157, 0.15);
-        }
-
-        .status-nog {
-            background: rgba(255, 215, 0, 0.1);
-            color: #ffd700;
-            border: 1px solid rgba(255, 215, 0, 0.35);
-            box-shadow: 0 0 8px rgba(255, 215, 0, 0.1);
-        }
-
-        .recipe-info {
-            padding: 1.2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-            flex: 1;
-        }
-
-        .recipe-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin: 0;
-            color: var(--text-main);
-            letter-spacing: 0.3px;
-        }
-
-        .recipe-desc {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .stars {
-            color: var(--gold);
-            font-size: 1.05rem;
-            letter-spacing: 2px;
-            text-shadow: 0 0 4px rgba(255, 215, 0, 0.3);
-        }
-        .stars .empty { color: rgba(100, 90, 40, 0.4); text-shadow: none; }
-
-        .recipe-tools {
-            background: rgba(0, 255, 157, 0.08);
-            padding: 0.6rem 0.85rem;
-            border-radius: 10px;
-            font-size: 0.82rem;
-            color: var(--neon-green);
-            margin-top: 0.2rem;
-            border: 1px solid rgba(0, 255, 157, 0.12);
-        }
-
-        .recipe-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 0.6rem;
-            padding-top: 0.8rem;
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            border-top: 1px solid rgba(0, 255, 157, 0.1);
-            flex-wrap: wrap;
-            gap: 0.4rem;
-        }
-
-        .source-link {
-            font-size: 0.78rem;
-            color: var(--neon-blue);
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-        .source-link:hover {
-            text-decoration: underline;
-            text-shadow: 0 0 6px rgba(0, 204, 255, 0.4);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(5, 7, 20, 0.85);
-            backdrop-filter: blur(14px);
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 1rem;
-        }
-
-        .modal-content {
-            background: rgba(12, 20, 45, 0.92);
-            border: 1px solid var(--border);
-            width: min(100%, 620px);
-            max-height: 90vh;
-            border-radius: 24px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 0 25px rgba(0, 255, 157, 0.1), 0 30px 70px rgba(0, 0, 0, 0.6);
-        }
-
-        .modal-header {
-            padding: 1.3rem 1.6rem;
-            background: rgba(5, 10, 30, 0.6);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .modal-header h3 {
-            font-size: 1.2rem;
-            margin: 0;
-            color: var(--neon-green);
-        }
-
-        .modal-body {
-            padding: 1.6rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-group label {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .form-control {
-            background: rgba(10, 18, 40, 0.6);
-            border: 1px solid rgba(0, 255, 157, 0.15);
-            color: var(--text-main);
-            padding: 0.85rem 1rem;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            outline: none;
-            width: 100%;
-            transition: all 0.25s;
-        }
-
-        .form-control:focus {
-            border-color: var(--neon-green);
-            box-shadow: 0 0 0 3px rgba(0, 255, 157, 0.1), 0 0 12px rgba(0, 255, 157, 0.15);
-        }
-
-        textarea.form-control { resize: vertical; min-height: 100px; }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.8rem;
-            cursor: pointer;
-            line-height: 1;
-            transition: all 0.2s;
-        }
-        .close-btn:hover {
-            color: var(--neon-green);
-            text-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
-        }
-
-        .star-rating {
-            display: flex;
-            gap: 0.3rem;
-            font-size: 1.8rem;
-            cursor: pointer;
-        }
-        .star-rating span {
-            color: rgba(100, 90, 40, 0.35);
-            transition: all 0.2s ease;
-            text-shadow: none;
-        }
-        .star-rating span.active {
-            color: var(--gold);
-            text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
-        }
-        .star-rating span:hover {
-            transform: scale(1.2);
-        }
-
-        .preview-box {
-            width: 100px;
-            height: 100px;
-            background: rgba(10, 18, 40, 0.6);
-            border: 1px dashed rgba(0, 255, 157, 0.25);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            overflow: hidden;
-            margin-top: 0.3rem;
-        }
-        .preview-box img { width: 100%; height: 100%; object-fit: cover; }
-
-        .admin-indicator {
-            font-size: 0.8rem;
-            color: var(--neon-green);
-            background: rgba(0, 255, 157, 0.1);
-            padding: 0.3rem 0.6rem;
-            border-radius: 8px;
-            border: 1px solid rgba(0, 255, 157, 0.25);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .button-row {
-            display: flex;
-            gap: 0.8rem;
-            margin-top: 0.6rem;
-        }
-
-        .button-row .btn { flex: 1; justify-content: center; }
-
-        @media (max-width: 720px) {
-            .form-row { grid-template-columns: 1fr; }
-            .recipe-grid { grid-template-columns: 1fr; gap: 1.2rem; }
-            .search-row { flex-direction: column; }
-            header, .controls-bar { padding: 1.1rem 1.3rem; }
-        }
+        .recipe-card:hover {transform:translateY(-8px);border-color:var(--neon-green);box-shadow:0 0 15px rgba(0,255,157,0.15),0 20px 45px rgba(0,0,0,0.45);}
+        .recipe-image {height:170px;background:linear-gradient(135deg,rgba(0,60,80,0.4),rgba(0,40,70,0.5));display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;}
+        .recipe-tags {position:absolute;top:12px;left:12px;display:flex;gap:0.4rem;flex-wrap:wrap;}
+        .tag {background:rgba(5,10,30,0.75);padding:0.3rem 0.65rem;border-radius:8px;font-size:0.75rem;color:var(--neon-green);border:1px solid rgba(0,255,157,0.3);}
+        .status-badge {position:absolute;top:12px;right:12px;padding:0.3rem 0.65rem;border-radius:8px;font-size:0.75rem;font-weight:600;backdrop-filter:blur(10px);}
+        .status-uitgeprobeerd {background:rgba(0,255,157,0.12);color:var(--neon-green);border:1px solid rgba(0,255,157,0.4);}
+        .status-nog {background:rgba(255,215,0,0.1);color:#ffd700;border:1px solid rgba(255,215,0,0.35);}
+        .recipe-info {padding:1.2rem;display:flex;flex-direction:column;gap:0.6rem;}
+        .recipe-title {font-size:1.1rem;font-weight:700;color:var(--text-main);}
+        .recipe-desc {font-size:0.88rem;color:var(--text-muted);}
+        .stars {color:var(--gold);font-size:1.05rem;letter-spacing:2px;}
+        .stars .empty {color:rgba(100,90,40,0.4);}
+        .recipe-tools {background:rgba(0,255,157,0.08);padding:0.6rem 0.85rem;border-radius:10px;font-size:0.82rem;color:var(--neon-green);border:1px solid rgba(0,255,157,0.12);}
+        .recipe-meta {display:flex;justify-content:space-between;align-items:center;margin-top:0.6rem;padding-top:0.8rem;font-size:0.82rem;color:var(--text-muted);border-top:1px solid rgba(0,255,157,0.1);}
+        .modal {display:none;position:fixed;inset:0;background:rgba(5,7,20,0.85);backdrop-filter:blur(14px);align-items:center;justify-content:center;z-index:1000;padding:1rem;}
+        .modal-content {background:rgba(12,20,45,0.92);border:1px solid var(--border);width:min(100%,620px);max-height:90vh;border-radius:24px;display:flex;flex-direction:column;box-shadow:0 0 25px rgba(0,255,157,0.1),0 30px 70px rgba(0,0,0,0.6);}
+        .modal-header {padding:1.3rem 1.6rem;background:rgba(5,10,30,0.6);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
+        .modal-header h3 {color:var(--neon-green);}
+        .modal-body {padding:1.6rem;overflow-y:auto;display:flex;flex-direction:column;gap:1.2rem;}
+        .form-group {display:flex;flex-direction:column;gap:0.5rem;}
+        .form-group label {font-size:0.88rem;color:var(--text-muted);font-weight:600;}
+        .form-control {background:rgba(10,18,40,0.6);border:1px solid rgba(0,255,157,0.15);color:var(--text-main);padding:0.85rem 1rem;border-radius:12px;font-size:0.95rem;outline:none;}
+        .form-control:focus {border-color:var(--neon-green);box-shadow:0 0 0 3px rgba(0,255,157,0.1);}
+        textarea.form-control {resize:vertical;min-height:100px;}
+        .close-btn {background:none;border:none;color:var(--text-muted);font-size:1.8rem;cursor:pointer;}
+        .close-btn:hover {color:var(--neon-green);text-shadow:0 0 8px rgba(0,255,157,0.4);}
+        .star-rating {display:flex;gap:0.3rem;font-size:1.8rem;cursor:pointer;}
+        .star-rating span {color:rgba(100,90,40,0.35);transition:all 0.2s;}
+        .star-rating span.active {color:var(--gold);text-shadow:0 0 6px rgba(255,215,0,0.5);}
+        .star-rating span:hover {transform:scale(1.2);}
+        .preview-box {width:100px;height:100px;background:rgba(10,18,40,0.6);border:1px dashed rgba(0,255,157,0.25);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;overflow:hidden;}
+        .preview-box img {width:100%;height:100%;object-fit:cover;}
+        .form-row {display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+        .button-row {display:flex;gap:0.8rem;}
+        .button-row .btn {flex:1;justify-content:center;}
+        .admin-indicator {font-size:0.8rem;color:var(--neon-green);background:rgba(0,255,157,0.1);padding:0.3rem 0.6rem;border-radius:8px;border:1px solid rgba(0,255,157,0.25);}
+        @media(max-width:720px){.form-row{grid-template-columns:1fr;}.recipe-grid{grid-template-columns:1fr;}}
     </style>
 </head>
 <body>
-
 <div class="app-container">
     <header>
         <div class="logo">🌌 BITES</div>
@@ -599,33 +170,25 @@
         </div>
     </div>
 
-    <div class="content-area"><div id="recipeGrid" class="recipe-grid"></div></div>
+    <div id="recipeGrid" class="recipe-grid"></div>
 </div>
 
-<!-- Inlogscherm -->
 <div id="loginModal" class="modal">
     <div class="modal-content">
         <div class="modal-header"><h3>🔐 Beheerder Inloggen</h3><button class="close-btn" onclick="closeModal('loginModal')">&times;</button></div>
         <div class="modal-body">
-            <div class="form-group">
-                <label>Wachtwoord</label>
-                <input type="password" id="adminPassword" class="form-control" placeholder="Voer wachtwoord in...">
-            </div>
-            <div class="button-row">
-                <button class="btn btn-primary" onclick="checkAdminLogin()">Inloggen</button>
-                <button class="btn btn-secondary" onclick="closeModal('loginModal')">Annuleren</button>
-            </div>
+            <div class="form-group"><label>Wachtwoord</label><input type="password" id="adminPassword" class="form-control" placeholder="Voer wachtwoord in..."></div>
+            <div class="button-row"><button class="btn btn-primary" onclick="checkAdminLogin()">Inloggen</button><button class="btn btn-secondary" onclick="closeModal('loginModal')">Annuleren</button></div>
         </div>
     </div>
 </div>
 
-<!-- Recept Toevoegen/Bewerken -->
 <div id="recipeFormModal" class="modal">
     <div class="modal-content">
         <div class="modal-header"><h3 id="formModalTitle">➕ Nieuw Recept</h3><button class="close-btn" onclick="closeModal('recipeFormModal')">&times;</button></div>
         <div class="modal-body">
-            <input type="hidden" id="editRecipeId" value="">
-            <div class="form-group"><label>Naam Recept *</label><input type="text" id="formName" class="form-control" placeholder="bv. Garnalen in knoflook"></div>
+            <input type="hidden" id="editRecipeId">
+            <div class="form-group"><label>Naam Recept *</label><input type="text" id="formName" class="form-control"></div>
             <div class="form-row">
                 <div class="form-group"><label>Categorie</label><select id="formCategory" class="form-control">
                     <option value="Voorgerecht">Voorgerecht</option>
@@ -654,9 +217,9 @@
             </div>
             <div class="form-row">
                 <div class="form-group"><label>Bereidingstijd (min)</label><input type="number" id="formTime" class="form-control" value="25"></div>
-                <div class="form-group"><label>Aantal personen</label><input type="number" id="formServings" class="form-control" value="2"></div>
+                <div class="form-group"><label>Personen</label><input type="number" id="formServings" class="form-control" value="2"></div>
             </div>
-            <div class="form-group"><label>Beoordeling (klik op ster)</label><div class="star-rating" id="starRatingEditor">
+            <div class="form-group"><label>Beoordeling</label><div class="star-rating" id="starRatingEditor">
                 <span data-v="0.5">★</span><span data-v="1">★</span><span data-v="1.5">★</span><span data-v="2">★</span><span data-v="2.5">★</span>
                 <span data-v="3">★</span><span data-v="3.5">★</span><span data-v="4">★</span><span data-v="4.5">★</span><span data-v="5">★</span>
             </div></div>
@@ -665,22 +228,18 @@
                     <option value="Nog proberen">⏳ Nog proberen</option>
                     <option value="Uitgeprobeerd">✅ Uitgeprobeerd</option>
                 </select></div>
-                <div class="form-group"><label>Bron Link</label><input type="url" id="formSource" class="form-control" placeholder="https://..."></div>
+                <div class="form-group"><label>Bron Link</label><input type="url" id="formSource" class="form-control"></div>
             </div>
-            <div class="form-group"><label>Foto (emoji of link)</label><input type="text" id="formPhoto" class="form-control" placeholder="bv. 🍤" value="🍽️" oninput="updatePreview(this.value)"><div id="previewBox" class="preview-box">🍽️</div></div>
-            <div class="form-group"><label>Ingrediënten</label><div id="ingContainer" style="display:flex;flex-direction:column;gap:0.5rem;"></div><button class="btn btn-secondary" style="font-size:0.85rem;padding:0.5rem 0.85rem;margin-top:0.4rem;" onclick="addIng()">➕ Toevoegen</button></div>
-            <div class="form-group"><label>Benodigdheden / Gereedschap</label><input type="text" id="formTools" class="form-control" placeholder="Pan, Mes, Oven..."></div>
-            <div class="form-group"><label>Korte Beschrijving / Tips</label><textarea id="formDesc" class="form-control" placeholder="Korte uitleg, tips of variaties..."></textarea></div>
-            <div class="form-group"><label>Bereidingswijze</label><textarea id="formInstr" class="form-control" placeholder="Stap voor stap..."></textarea></div>
-            <div class="button-row">
-                <button class="btn btn-primary" onclick="saveRecipe()">✅ Opslaan</button>
-                <button class="btn btn-secondary" onclick="closeModal('recipeFormModal')">Annuleren</button>
-            </div>
+            <div class="form-group"><label>Foto (emoji of link)</label><input type="text" id="formPhoto" class="form-control" value="🍽️" oninput="updatePreview(this.value)"><div id="previewBox" class="preview-box">🍽️</div></div>
+            <div class="form-group"><label>Ingrediënten</label><div id="ingContainer"></div><button class="btn btn-secondary" onclick="addIng()">➕ Toevoegen</button></div>
+            <div class="form-group"><label>Benodigdheden</label><input type="text" id="formTools" class="form-control"></div>
+            <div class="form-group"><label>Beschrijving</label><textarea id="formDesc" class="form-control"></textarea></div>
+            <div class="form-group"><label>Bereidingswijze</label><textarea id="formInstr" class="form-control"></textarea></div>
+            <div class="button-row"><button class="btn btn-primary" onclick="saveRecipe()">✅ Opslaan</button><button class="btn btn-secondary" onclick="closeModal('recipeFormModal')">Annuleren</button></div>
         </div>
     </div>
 </div>
 
-<!-- Recept Detail -->
 <div id="recipeModal" class="modal">
     <div class="modal-content">
         <div class="modal-header"><h3 id="modalTitle">Recept</h3><button class="close-btn" onclick="closeModal('recipeModal')">&times;</button></div>
@@ -692,16 +251,14 @@
 const ADMIN_PASS = 'greenbite2026';
 const STORAGE_KEY = 'BITES_GALAXY_DATA';
 let isAdmin = localStorage.getItem('bites_admin_galaxy') === 'true';
-let editingId = null;
-let starValue = 0;
+let editingId = null, starValue = 0;
 
-// Standaard recepten
 const defaultRecipes = [
-    {id:1,name:"Garnalen in knoflook",category:"Visgerecht",kitchen:"Spaans",occasion:"Snel",time:20,servings:2,rating:4.5,status:"Uitgeprobeerd",photo:"🍤",ingredients:["Garnalen","Knoflook","Olijfolie","Peterselie","Chili vlokken","Zout"],tools:["Koekenpan","Lepel"],description:"Heerlijke Spaanse tapas! In 15-20 minuten klaar.",instructions:"1. Pel de garnalen en dep droog.\n2. Snijd knoflook in plakjes.\n3. Verhit olie en fruit knoflook met chili.\n4. Voeg garnalen toe en bak 2-3 minuten.\n5. Bestrooi met peterselie en zout. Serveer direct.",source:"https://kitchenstories-bybaco.weebly.com/garnalen-in-knoflook.html"},
-    {id:2,name:"Beef Teriyaki",category:"Voorgerecht",kitchen:"Aziatisch",occasion:"",time:25,servings:2,rating:0,status:"Nog proberen",photo:"🥩",ingredients:["Rundvlees","Sojasaus","Suiker","Gember","Knoflook","Sesamolie"],tools:["Pan","Mes"],description:"Zoete en hartige Japanse stijl.",instructions:"1. Snij vlees in reepjes.\n2. Maak saus van sojasaus, suiker, gember en knoflook.\n3. Bak vlees kort.\n4. Voeg saus toe en laat inkoken.",source:""},
-    {id:3,name:"Spaghetti Bolognese",category:"Hoofdgerecht",kitchen:"Italiaans",occasion:"",time:45,servings:4,rating:4,status:"Uitgeprobeerd",photo:"🍝",ingredients:["Spaghetti","Gehakt","Tomaat","Ui","Knoflook","Wortel","Selderij"],tools:["Kookpan","Pan","Mes","Snijplank"],description:"Klassieke Italiaanse bolognese saus.",instructions:"1. Kook de pasta.\n2. Fruit ui, knoflook, wortel en selderij.\n3. Voeg gehakt toe en bak rul.\n4. Voeg tomaten toe en laat 30 minuten pruttelen.\n5. Meng met de pasta.",source:""},
-    {id:4,name:"Macaroni",category:"Pasta & Rijst",kitchen:"Overig",occasion:"",time:30,servings:4,rating:3.5,status:"Uitgeprobeerd",photo:"🧀",ingredients:["Macaroni","Kaas","Melk","Boter","Bloem"],tools:["Kookpan","Ovenpan"],description:"Simpele en lekkere macaroni.",instructions:"1. Kook de macaroni gaar.\n2. Maak roomsaus van boter, bloem en melk.\n3. Meng kaas erdoor.\n4. Voeg pasta toe en bak kort in de oven.",source:""},
-    {id:5,name:"Macaroni met spek of ham",category:"Pasta & Rijst",kitchen:"Overig",occasion:"",time:35,servings:4,rating:0,status:"Nog proberen",photo:"🥓",ingredients:["Macaroni","Spek of ham","Kaas","Melk","Boter","Ui"],tools:["Kookpan","Pan"],description:"Macaroni met een beetje spek of ham.",instructions:"1. Kook de macaroni.\n2. Bak spek of ham met ui.\n3. Maak kaassaus.\n4. Alles samen mengen.",source:""}
+    {id:1,name:"Garnalen in knoflook",category:"Visgerecht",kitchen:"Spaans",occasion:"Snel",time:20,servings:2,rating:4.5,status:"Uitgeprobeerd",photo:"🍤",ingredients:["Garnalen","Knoflook","Olijfolie","Peterselie","Chili","Zout"],tools:["Koekenpan","Lepel"],description:"Heerlijke Spaanse tapas! In 15-20 minuten klaar.",instructions:"1. Pel en dep garnalen droog.\n2. Snijd knoflook in plakjes.\n3. Verhit olie en fruit knoflook met chili.\n4. Voeg garnalen toe, bak 2-3 minuten.\n5. Bestrooi met peterselie en zout. Serveer direct.",source:""},
+    {id:2,name:"Beef Teriyaki",category:"Voorgerecht",kitchen:"Aziatisch",occasion:"",time:25,servings:2,rating:0,status:"Nog proberen",photo:"🥩",ingredients:["Rundvlees","Sojasaus","Suiker","Gember","Knoflook","Sesamolie"],tools:["Pan","Mes"],description:"Zoete en hartige Japanse stijl.",instructions:"1. Snij vlees in reepjes.\n2. Maak saus.\n3. Bak vlees kort.\n4. Voeg saus toe en laat inkoken.",source:""},
+    {id:3,name:"Spaghetti Bolognese",category:"Hoofdgerecht",kitchen:"Italiaans",occasion:"",time:45,servings:4,rating:4,status:"Uitgeprobeerd",photo:"🍝",ingredients:["Spaghetti","Gehakt","Tomaat","Ui","Knoflook","Wortel","Selderij"],tools:["Kookpan","Pan","Mes"],description:"Klassieke Italiaanse bolognese.",instructions:"1. Kook pasta.\n2. Fruit groenten.\n3. Voeg gehakt toe.\n4. Voeg tomaten toe, laat 30 minuten pruttelen.\n5. Meng met pasta.",source:""},
+    {id:4,name:"Macaroni",category:"Pasta & Rijst",kitchen:"Overig",occasion:"",time:30,servings:4,rating:3.5,status:"Uitgeprobeerd",photo:"🧀",ingredients:["Macaroni","Kaas","Melk","Boter","Bloem"],tools:["Kookpan","Ovenpan"],description:"Simpele en lekkere macaroni.",instructions:"1. Kook macaroni.\n2. Maak roomsaus.\n3. Meng kaas erdoor.\n4. Voeg pasta toe.",source:""},
+    {id:5,name:"Macaroni met spek of ham",category:"Pasta & Rijst",kitchen:"Overig",occasion:"",time:35,servings:4,rating:0,status:"Nog proberen",photo:"🥓",ingredients:["Macaroni","Spek of ham","Kaas","Melk","Boter","Ui"],tools:["Kookpan","Pan"],description:"Macaroni met spek of ham.",instructions:"1. Kook macaroni.\n2. Bak spek met ui.\n3. Maak kaassaus.\n4. Alles samen mengen.",source:""}
 ];
 
 function loadData(){const s=localStorage.getItem(STORAGE_KEY);return s?JSON.parse(s):defaultRecipes;}
@@ -713,7 +270,7 @@ function toggleSortAndFilters(){document.getElementById('collapsibleControls').c
 function renderStars(r){let h='';for(let i=0.5;i<=5;i+=0.5)h+=i<=r?'<span class="active">★</span>':'<span class="empty">★</span>';return h||'<span class="empty">Geen</span>';}
 function closeModal(id){document.getElementById(id).style.display='none';editingId=null;starValue=0;}
 function updatePreview(v){const b=document.getElementById('previewBox');b.innerHTML=(v.startsWith('http')||v.startsWith('data:'))?`<img src="${v}">`:v||'🍽️';}
-function addIng(v=''){const c=document.getElementById('ingContainer');const r=document.createElement('div');r.style.cssText='display:flex;gap:0.5rem;align-items:center;';r.innerHTML=`<input type="text" class="form-control ing-inp" value="${v}" placeholder="bv. 200g pasta" style="flex:1;">${isAdmin?'<button class="btn btn-danger" style="padding:0.5rem 0.75rem;" onclick="this.parentElement.remove()">❌</button>':''}`;c.appendChild(r);}
+function addIng(v=''){const c=document.getElementById('ingContainer');const r=document.createElement('div');r.style.cssText='display:flex;gap:0.5rem;align-items:center;margin-bottom:0.4rem;';r.innerHTML=`<input type="text" class="form-control ing-inp" value="${v}" placeholder="bv. 200g pasta" style="flex:1;">${isAdmin?'<button class="btn btn-danger" style="padding:0.5rem 0.7rem;" onclick="this.parentElement.remove()">❌</button>':''}`;c.appendChild(r);}
 
 function openRecipeFormModal(id=null){
     if(!isAdmin){alert('🔐 Log eerst in!');return;}
@@ -772,7 +329,7 @@ function saveRecipe(){
     const desc=document.getElementById('formDesc').value.trim();
     const instr=document.getElementById('formInstr').value.trim();
     if(!name){alert('⚠️ Vul een naam in!');return;}
-    if(ing.length===0){alert('⚠️ Voeg ten minste één ingrediënt toe!');return;}
+    if(ing.length===0){alert('⚠️ Voeg ingrediënten toe!');return;}
 
     let data=loadData();
     if(editingId){
@@ -784,7 +341,7 @@ function saveRecipe(){
     saveData(data);
     closeModal('recipeFormModal');
     filterAndRender();
-    alert('✅ Recept opgeslagen!');
+    alert('✅ Opgeslagen!');
 }
 
 function openRecipeDetail(r){
@@ -794,7 +351,7 @@ function openRecipeDetail(r){
     const isImgUrl=r.photo&&(r.photo.startsWith('http')||r.photo.startsWith('data:'));
     document.getElementById('modalBody').innerHTML=`
         <div style="display:flex;gap:1.2rem;align-items:flex-start;flex-wrap:wrap;margin-bottom:1.2rem;">
-            <div style="width:100px;height:100px;background:rgba(10,18,40,0.7);border-radius:14px;border:1px solid rgba(0,255,157,0.2);display:flex;align-items:center;justify-content:center;font-size:3.2rem;overflow:hidden;flex-shrink:0;">
+            <div style="width:100px;height:100px;background:rgba(10,18,40,0.7);border-radius:14px;border:1px solid rgba(0,255,157,0.2);display:flex;align-items:center;justify-content:center;font-size:3.2rem;overflow:hidden;">
                 ${isImgUrl?`<img src="${r.photo}" style="width:100%;height:100%;object-fit:cover;">`:r.photo}
             </div>
             <div style="flex:1;min-width:200px;">
@@ -815,7 +372,7 @@ function openRecipeDetail(r){
             <h4 style="margin:0 0 0.5rem 0;color:#00ff9d;">Bereidingswijze</h4>
             <p style="margin:0;color:#94b8b0;white-space:pre-line;line-height:1.7;">${r.instructions||'Geen beschrijving'}</p>
         </div>
-        ${r.source?`<p style="margin-top:1rem;"><a href="${r.source}" target="_blank" class="source-link">🔗 Originele bron</a></p>`:''}
+        ${r.source?`<p style="margin-top:1rem;"><a href="${r.source}" target="_blank" style="color:#00ccff;">🔗 Originele bron</a></p>`:''}
         ${isAdmin?`
         <div style="display:flex;gap:0.8rem;margin-top:1.2rem;border-top:1px solid rgba(0,255,157,0.15);padding-top:1.2rem;">
             <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('recipeModal');openRecipeFormModal(${r.id})">✏️ Bewerken</button>
@@ -826,7 +383,7 @@ function openRecipeDetail(r){
 }
 
 function delRecipe(id){
-    if(confirm('Weet je het zeker? Deze kan niet ongedaan gemaakt worden!')){
+    if(confirm('Weet je het zeker?')){
         saveData(loadData().filter(r=>r.id!==id));
         closeModal('recipeModal');
         filterAndRender();
@@ -834,4 +391,67 @@ function delRecipe(id){
 }
 
 function filterAndRender(){
-    const search=document.getElementById('searchInput').value
+    const search=document.getElementById('searchInput').value.toLowerCase();
+    const cat=document.getElementById('categoryFilter').value;
+    const kit=document.getElementById('kitchenFilter').value;
+    const occ=document.getElementById('occasionFilter').value;
+    const stat=document.getElementById('statusFilter').value;
+    const sort=document.getElementById('sortFilter').value;
+    let data=loadData().filter(r=>{
+        const allText=`${r.name} ${r.category} ${r.kitchen} ${(r.ingredients||[]).join(' ')}`.toLowerCase();
+        return (!search||allText.includes(search))&&(!cat||r.category===cat)&&(!kit||r.kitchen===kit)&&(!occ||(r.occasion||'').includes(occ))&&(!stat||r.status===stat);
+    });
+    data.sort((a,b)=>{
+        if(sort==='time-asc')return a.time-b.time;
+        if(sort==='time-desc')return b.time-a.time;
+        if(sort==='rating-desc')return(b.rating||0)-(a.rating||0);
+        if(sort==='name-asc')return a.name.localeCompare(b.name);
+        return 0;
+    });
+    const grid=document.getElementById('recipeGrid');
+    grid.innerHTML='';
+    if(data.length===0){
+        grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;color:#94b8b0;padding:4rem 2rem;">🔍 Geen recepten gevonden.${isAdmin?'<br><button class="btn btn-primary" onclick="openRecipeFormModal()" style="margin-top:1.2rem;">➕ Voeg recept toe</button>':''}</div>`;
+        return;
+    }
+    data.forEach(r=>{
+        const card=document.createElement('div');
+        card.className='recipe-card';
+        card.onclick=()=>openRecipeDetail(r);
+        const isImgUrl=r.photo&&(r.photo.startsWith('http')||r.photo.startsWith('data:'));
+        const stClass=r.status==='Uitgeprobeerd'?'status-uitgeprobeerd':'status-nog';
+        card.innerHTML=`
+            <div class="recipe-image">
+                ${isImgUrl?`<img src="${r.photo}" style="width:100%;height:100%;object-fit:cover;">`:r.photo}
+                <div class="recipe-tags"><span class="tag">${r.category}</span><span class="tag">${r.kitchen}</span></div>
+                <div class="status-badge ${stClass}">${r.status==='Uitgeprobeerd'?'✅':'⏳'} ${r.status}</div>
+            </div>
+            <div class="recipe-info">
+                <h4 class="recipe-title">${r.name}</h4>
+                <div class="stars">${renderStars(r.rating||0)}</div>
+                <p class="recipe-desc">${r.description||''}</p>
+                ${r.tools?`<div class="recipe-tools">🍳 ${Array.isArray(r.tools)?r.tools.join(', '):r.tools}</div>`:''}
+                <div class="recipe-meta">
+                    <span>⏱️ ${r.time} min</span>
+                    <span>👥 ${r.servings} pers</span>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+document.getElementById('starRatingEditor').querySelectorAll('span').forEach(s=>{
+    s.onclick=()=>{
+        starValue=parseFloat(s.dataset.v);
+        document.getElementById('starRatingEditor').querySelectorAll('span').forEach(x=>{
+            x.classList.toggle('active',parseFloat(x.dataset.v)<=starValue);
+        });
+    };
+});
+
+updateUI();
+filterAndRender();
+</script>
+</body>
+</html>
