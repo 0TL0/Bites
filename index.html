@@ -1,457 +1,262 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌌 BITES - Recepten</title>
-    <style>
-        :root {
-            --bg-deep: #050714;
-            --bg-card: rgba(15, 23, 42, 0.75);
-            --text-main: #f0fff9;
-            --text-muted: #94b8b0;
-            --neon-green: #00ff9d;
-            --neon-green-glow: 0 0 6px #00ff9d, 0 0 18px rgba(0,255,157,0.5);
-            --neon-blue: #00ccff;
-            --gold: #ffd700;
-            --border: rgba(0,255,157,0.25);
-        }
-        * {box-sizing:border-box;margin:0;padding:0;}
-        body {
-            min-height:100vh;
-            background: 
-                radial-gradient(ellipse at top left, rgba(0,60,120,0.4) 0%, transparent 55%),
-                radial-gradient(ellipse at top right, rgba(0,80,100,0.35) 0%, transparent 55%),
-                radial-gradient(ellipse at bottom center, rgba(20,40,80,0.5) 0%, transparent 65%),
-                linear-gradient(180deg, #050714 0%, #0a1229 45%, #0f1a3c 100%);
-            color:var(--text-main);
-            font-family:'Segoe UI',sans-serif;
-            background-attachment:fixed;
-        }
-        body::before {
-            content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-            background-image:radial-gradient(1px 1px at 20px 30px,#fff,transparent),radial-gradient(1.5px 1.5px at 140px 90px,rgba(255,255,255,0.9),transparent);
-            background-size:200px 200px;opacity:0.4;
-        }
-        .app-container {position:relative;z-index:1;width:min(96vw,1300px);margin:0 auto;padding:1.2rem;}
-        header {
-            background:rgba(8,12,28,0.7);backdrop-filter:blur(20px);border:1px solid var(--border);
-            border-radius:20px;padding:1.4rem 1.8rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;
-            margin-bottom:1.5rem;position:sticky;top:0.8rem;z-index:100;
-            box-shadow:0 0 25px rgba(0,255,157,0.08);
-        }
-        .logo {font-size:1.8rem;font-weight:800;background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;}
-        .header-actions {display:flex;gap:0.8rem;align-items:center;}
-        .btn {
-            background:linear-gradient(135deg,rgba(0,255,157,0.15),rgba(0,204,255,0.12));
-            color:var(--neon-green);border:1px solid var(--border);padding:0.7rem 1.3rem;border-radius:12px;
-            cursor:pointer;font-weight:600;font-size:0.95rem;transition:all 0.25s;
-        }
-        .btn:hover {transform:translateY(-4px);border-color:var(--neon-green);box-shadow:var(--neon-green-glow);}
-        .btn-primary {background:linear-gradient(135deg,#00a368,#0088aa);color:white;border:none;}
-        .btn-secondary {background:rgba(40,50,80,0.4);color:var(--text-muted);border-color:rgba(100,120,150,0.3);}
-        .btn-secondary:hover {color:var(--neon-blue);border-color:var(--neon-blue);box-shadow:0 0 6px #00ccff,0 0 18px rgba(0,204,255,0.4);}
-        .btn-danger {background:linear-gradient(135deg,rgba(220,50,80,0.2),rgba(180,30,60,0.15));color:#ff7b9c;border-color:rgba(255,100,130,0.35);}
-        .controls-bar {background:rgba(12,20,45,0.65);backdrop-filter:blur(18px);border:1px solid var(--border);border-radius:20px;padding:1.5rem 1.8rem;margin-bottom:1.5rem;}
-        .search-row {display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:0.9rem;}
-        .search-input, .filter-select {
-            background:rgba(10,18,40,0.7);border:1px solid rgba(0,255,157,0.15);color:var(--text-main);
-            padding:0.85rem 1.1rem;border-radius:12px;font-size:0.95rem;outline:none;width:100%;
-        }
-        .search-input:focus, .filter-select:focus {border-color:var(--neon-green);box-shadow:0 0 0 3px rgba(0,255,157,0.12);}
-        .collapsible-controls {display:none;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0.8rem;margin-top:0.6rem;animation:fadeIn 0.3s ease-out;}
-        .collapsible-controls.show {display:grid;}
-        @keyframes fadeIn {from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
-        .recipe-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.4rem;}
-        .recipe-card {
-            background:var(--bg-card);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:20px;
-            overflow:hidden;display:flex;flex-direction:column;transition:all 0.3s;cursor:pointer;
-        }
-        .recipe-card:hover {transform:translateY(-8px);border-color:var(--neon-green);box-shadow:0 0 15px rgba(0,255,157,0.15),0 20px 45px rgba(0,0,0,0.45);}
-        .recipe-image {height:170px;background:linear-gradient(135deg,rgba(0,60,80,0.4),rgba(0,40,70,0.5));display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;}
-        .recipe-tags {position:absolute;top:12px;left:12px;display:flex;gap:0.4rem;flex-wrap:wrap;}
-        .tag {background:rgba(5,10,30,0.75);padding:0.3rem 0.65rem;border-radius:8px;font-size:0.75rem;color:var(--neon-green);border:1px solid rgba(0,255,157,0.3);}
-        .status-badge {position:absolute;top:12px;right:12px;padding:0.3rem 0.65rem;border-radius:8px;font-size:0.75rem;font-weight:600;backdrop-filter:blur(10px);}
-        .status-uitgeprobeerd {background:rgba(0,255,157,0.12);color:var(--neon-green);border:1px solid rgba(0,255,157,0.4);}
-        .status-nog {background:rgba(255,215,0,0.1);color:#ffd700;border:1px solid rgba(255,215,0,0.35);}
-        .recipe-info {padding:1.2rem;display:flex;flex-direction:column;gap:0.6rem;}
-        .recipe-title {font-size:1.1rem;font-weight:700;color:var(--text-main);}
-        .recipe-desc {font-size:0.88rem;color:var(--text-muted);}
-        .stars {color:var(--gold);font-size:1.05rem;letter-spacing:2px;}
-        .stars .empty {color:rgba(100,90,40,0.4);}
-        .recipe-tools {background:rgba(0,255,157,0.08);padding:0.6rem 0.85rem;border-radius:10px;font-size:0.82rem;color:var(--neon-green);border:1px solid rgba(0,255,157,0.12);}
-        .recipe-meta {display:flex;justify-content:space-between;align-items:center;margin-top:0.6rem;padding-top:0.8rem;font-size:0.82rem;color:var(--text-muted);border-top:1px solid rgba(0,255,157,0.1);}
-        .modal {display:none;position:fixed;inset:0;background:rgba(5,7,20,0.85);backdrop-filter:blur(14px);align-items:center;justify-content:center;z-index:1000;padding:1rem;}
-        .modal-content {background:rgba(12,20,45,0.92);border:1px solid var(--border);width:min(100%,620px);max-height:90vh;border-radius:24px;display:flex;flex-direction:column;box-shadow:0 0 25px rgba(0,255,157,0.1),0 30px 70px rgba(0,0,0,0.6);}
-        .modal-header {padding:1.3rem 1.6rem;background:rgba(5,10,30,0.6);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);}
-        .modal-header h3 {color:var(--neon-green);}
-        .modal-body {padding:1.6rem;overflow-y:auto;display:flex;flex-direction:column;gap:1.2rem;}
-        .form-group {display:flex;flex-direction:column;gap:0.5rem;}
-        .form-group label {font-size:0.88rem;color:var(--text-muted);font-weight:600;}
-        .form-control {background:rgba(10,18,40,0.6);border:1px solid rgba(0,255,157,0.15);color:var(--text-main);padding:0.85rem 1rem;border-radius:12px;font-size:0.95rem;outline:none;}
-        .form-control:focus {border-color:var(--neon-green);box-shadow:0 0 0 3px rgba(0,255,157,0.1);}
-        textarea.form-control {resize:vertical;min-height:100px;}
-        .close-btn {background:none;border:none;color:var(--text-muted);font-size:1.8rem;cursor:pointer;}
-        .close-btn:hover {color:var(--neon-green);text-shadow:0 0 8px rgba(0,255,157,0.4);}
-        .star-rating {display:flex;gap:0.3rem;font-size:1.8rem;cursor:pointer;}
-        .star-rating span {color:rgba(100,90,40,0.35);transition:all 0.2s;}
-        .star-rating span.active {color:var(--gold);text-shadow:0 0 6px rgba(255,215,0,0.5);}
-        .star-rating span:hover {transform:scale(1.2);}
-        .preview-box {width:100px;height:100px;background:rgba(10,18,40,0.6);border:1px dashed rgba(0,255,157,0.25);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;overflow:hidden;}
-        .preview-box img {width:100%;height:100%;object-fit:cover;}
-        .form-row {display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-        .button-row {display:flex;gap:0.8rem;}
-        .button-row .btn {flex:1;justify-content:center;}
-        .admin-indicator {font-size:0.8rem;color:var(--neon-green);background:rgba(0,255,157,0.1);padding:0.3rem 0.6rem;border-radius:8px;border:1px solid rgba(0,255,157,0.25);}
-        @media(max-width:720px){.form-row{grid-template-columns:1fr;}.recipe-grid{grid-template-columns:1fr;}}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🌌 BITES - Recepten</title>
+<style>
+:root{--bg:#050714;--card:rgba(15,23,42,.75);--txt:#f0fff9;--grijs:#94b8b0;--groen:#0f9;--blauw:#0cf;--goud:#fd0;--rand:rgba(0,255,157,.25)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:radial-gradient(ellipse at top left,rgba(0,60,120,.4) 0,transparent 55%),radial-gradient(ellipse at top right,rgba(0,80,100,.35) 0,transparent 55%),radial-gradient(ellipse at bottom center,rgba(20,40,80,.5) 0,transparent 65%),linear-gradient(180deg,#050714 0,#0a1229 45%,#0f1a3c 100%);color:var(--txt);font-family:Segoe UI,sans-serif;background-attachment:fixed}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(1px 1px at 20px 30px,#fff,transparent),radial-gradient(1.5px 1.5px at 140px 90px,rgba(255,255,255,.9),transparent);background-size:200px 200px;opacity:.4}
+.container{position:relative;z-index:1;width:min(96vw,1300px);margin:0 auto;padding:1.2rem}
+header{background:rgba(8,12,28,.7);backdrop-filter:blur(20px);border:1px solid var(--rand);border-radius:20px;padding:1.2rem 1.5rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.8rem;margin-bottom:1.2rem;position:sticky;top:.8rem;z-index:100}
+.logo{font-size:1.6rem;font-weight:800;background:linear-gradient(90deg,var(--groen),var(--blauw));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px}
+.acties{display:flex;gap:.6rem;align-items:center}
+.btn{background:linear-gradient(135deg,rgba(0,255,157,.15),rgba(0,204,255,.12));color:var(--groen);border:1px solid var(--rand);padding:.6rem 1.1rem;border-radius:10px;cursor:pointer;font-weight:600;transition:all .25s}
+.btn:hover{transform:translateY(-3px);border-color:var(--groen);box-shadow:0 0 6px var(--groen),0 0 15px rgba(0,255,157,.4)}
+.btn.prim{background:linear-gradient(135deg,#0a6,#088);color:#fff;border:none}
+.btn.sec{background:rgba(40,50,80,.4);color:var(--grijs);border-color:rgba(100,120,150,.3)}
+.btn.sec:hover{color:var(--blauw);border-color:var(--blauw);box-shadow:0 0 6px var(--blauw),0 0 15px rgba(0,204,255,.3)}
+.veld-bar{background:rgba(12,20,45,.65);backdrop-filter:blur(18px);border:1px solid var(--rand);border-radius:20px;padding:1.2rem 1.5rem;margin-bottom:1.2rem}
+.rij{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.6rem}
+input,select{background:rgba(10,18,40,.7);border:1px solid rgba(0,255,157,.15);color:var(--txt);padding:.7rem 1rem;border-radius:10px;font-size:.95rem;outline:none;flex:1;min-width:140px}
+input:focus,select:focus{border-color:var(--groen);box-shadow:0 0 0 3px rgba(0,255,157,.12)}
+.uitklap{display:none;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.6rem;margin-top:.6rem}
+.uitklap.aan{display:grid;animation:binnen .3s ease-out}
+@keyframes binnen{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.rooster{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.2rem}
+.kaart{background:var(--card);backdrop-filter:blur(16px);border:1px solid var(--rand);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:all .3s;cursor:pointer}
+.kaart:hover{transform:translateY(-6px);border-color:var(--groen);box-shadow:0 0 12px rgba(0,255,157,.15),0 15px 35px rgba(0,0,0,.45)}
+.foto{height:150px;background:linear-gradient(135deg,rgba(0,60,80,.4),rgba(0,40,70,.5));display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative}
+.labels{position:absolute;top:10px;left:10px;display:flex;gap:.3rem;flex-wrap:wrap}
+.label{background:rgba(5,10,30,.75);padding:.25rem .5rem;border-radius:6px;font-size:.7rem;color:var(--groen);border:1px solid rgba(0,255,157,.3)}
+.status{position:absolute;top:10px;right:10px;padding:.25rem .5rem;border-radius:6px;font-size:.7rem;font-weight:600;backdrop-filter:blur(8px)}
+.status.ja{background:rgba(0,255,157,.12);color:var(--groen);border:1px solid rgba(0,255,157,.4)}
+.status.nee{background:rgba(255,215,0,.1);color:var(--goud);border:1px solid rgba(255,215,0,.35)}
+.inhoud{padding:1rem;display:flex;flex-direction:column;gap:.5rem}
+.titel{font-size:1.05rem;font-weight:700;color:var(--txt)}
+.ster{color:var(--goud);letter-spacing:1px}
+.ster .leeg{color:rgba(100,90,40,.35)}
+.beschrijving{font-size:.85rem;color:var(--grijs)}
+.gerei{background:rgba(0,255,157,.08);padding:.45rem .7rem;border-radius:8px;font-size:.8rem;color:var(--groen);border:1px solid rgba(0,255,157,.12);margin-top:.25rem}
+.info{display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;padding-top:.6rem;font-size:.8rem;color:var(--grijs);border-top:1px solid rgba(0,255,157,.1)}
+.venster{display:none;position:fixed;inset:0;background:rgba(5,7,20,.85);backdrop-filter:blur(12px);align-items:center;justify-content:center;z-index:1000;padding:1rem}
+.venster.aan{display:flex}
+.venster-inhoud{background:rgba(12,20,45,.92);border:1px solid var(--rand);width:min(100%,600px);max-height:90vh;border-radius:20px;display:flex;flex-direction:column}
+.venster-kop{padding:1rem 1.3rem;background:rgba(5,10,30,.6);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--rand)}
+.venster-kop h3{color:var(--groen)}
+.venster-body{padding:1.3rem;overflow-y:auto;display:flex;flex-direction:column;gap:.9rem}
+.sluit{background:none;border:none;color:var(--grijs);font-size:1.6rem;cursor:pointer}
+.sluit:hover{color:var(--groen)}
+.groep{display:flex;flex-direction:column;gap:.4rem}
+.groep label{font-size:.85rem;color:var(--grijs);font-weight:600}
+textarea{resize:vertical;min-height:90px}
+.sterren{display:flex;gap:.2rem;font-size:1.6rem;cursor:pointer}
+.sterren span{color:rgba(100,90,40,.35);transition:all .2s}
+.sterren span.aan{color:var(--goud);text-shadow:0 0 4px rgba(255,215,0,.4)}
+.sterren span:hover{transform:scale(1.15)}
+.voorver{width:90px;height:90px;background:rgba(10,18,40,.6);border:1px dashed rgba(0,255,157,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:2rem;overflow:hidden}
+.voorver img{width:100%;height:100%;object-fit:cover}
+.rij2{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.knop-rij{display:flex;gap:.6rem}
+.knop-rij .btn{flex:1}
+.balkje{font-size:.75rem;color:var(--groen);background:rgba(0,255,157,.1);padding:.25rem .5rem;border-radius:6px;border:1px solid rgba(0,255,157,.25)}
+@media(max-width:650px){.rij2{grid-template-columns:1fr}.rooster{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-<div class="app-container">
-    <header>
-        <div class="logo">🌌 BITES</div>
-        <div class="header-actions">
-            <span class="admin-indicator" id="adminIndicator" style="display:none;">🔐 Beheerder</span>
-            <button class="btn btn-secondary" id="adminBtn" onclick="openAdminLogin()">🔐</button>
-            <button class="btn btn-primary" id="addBtn" onclick="openRecipeFormModal()" style="display:none;">➕ Recept</button>
-        </div>
-    </header>
+<div class="container">
+<header>
+<div class="logo">🌌 BITES</div>
+<div class="acties">
+<span class="balkje" id="beheer" style="display:none">🔐 Beheerder</span>
+<button class="btn sec" id="beheerknop" onclick="loginVenster()">🔐</button>
+<button class="btn prim" id="toevoegknop" onclick="openForm()" style="display:none">➕ Recept</button>
+</div>
+</header>
 
-    <div class="controls-bar">
-        <div class="search-row">
-            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Zoek op naam, ingrediënt of categorie..." oninput="filterAndRender()">
-            <button class="btn" onclick="toggleSortAndFilters()">⚙️ Filters & Sorteren</button>
-        </div>
-        <div id="collapsibleControls" class="collapsible-controls">
-            <select id="categoryFilter" class="filter-select" onchange="filterAndRender()">
-                <option value="">Alle Categorieën</option>
-                <option value="Voorgerecht">Voorgerecht</option>
-                <option value="Hoofdgerecht">Hoofdgerecht</option>
-                <option value="Bijgerecht">Bijgerecht</option>
-                <option value="Nagerecht">Nagerecht</option>
-                <option value="Soep">Soep</option>
-                <option value="Salade">Salade</option>
-                <option value="Pasta & Rijst">Pasta & Rijst</option>
-                <option value="Vleesgerecht">Vleesgerecht</option>
-                <option value="Visgerecht">Visgerecht</option>
-                <option value="Vegetarisch">Vegetarisch</option>
-                <option value="Vegan">Vegan</option>
-                <option value="Tussendoortje">Tussendoortje</option>
-                <option value="Drank">Drank</option>
-            </select>
-            <select id="kitchenFilter" class="filter-select" onchange="filterAndRender()">
-                <option value="">Alle Keukens</option>
-                <option value="Italiaans">Italiaans</option>
-                <option value="Mexicaans">Mexicaans</option>
-                <option value="Spaans">Spaans</option>
-                <option value="Aziatisch">Aziatisch</option>
-                <option value="Frans">Frans</option>
-                <option value="Nederlands">Nederlands</option>
-                <option value="Overig">Overig</option>
-            </select>
-            <select id="occasionFilter" class="filter-select" onchange="filterAndRender()">
-                <option value="">Alle Gelegenheden</option>
-                <option value="Snel">Snel klaar</option>
-                <option value="Gezond">Gezond</option>
-                <option value="Feest">Feestdagen</option>
-                <option value="BBQ">BBQ</option>
-            </select>
-            <select id="statusFilter" class="filter-select" onchange="filterAndRender()">
-                <option value="">Alle Status</option>
-                <option value="Uitgeprobeerd">✅ Uitgeprobeerd</option>
-                <option value="Nog proberen">⏳ Nog proberen</option>
-            </select>
-            <select id="sortFilter" class="filter-select" onchange="filterAndRender()">
-                <option value="time-asc">⏱️ Tijd: Kort → Lang</option>
-                <option value="time-desc">⏱️ Tijd: Lang → Kort</option>
-                <option value="rating-desc">⭐ Beoordeling: Hoog → Laag</option>
-                <option value="name-asc">📫 Naam A → Z</option>
-            </select>
-        </div>
-    </div>
-
-    <div id="recipeGrid" class="recipe-grid"></div>
+<div class="veld-bar">
+<div class="rij">
+<input type="text" id="zoek" placeholder="🔍 Zoek op naam, ingrediënt..." oninput="toonAlles()">
+<button class="btn" onclick="wisselFilter()">⚙️ Filters</button>
+</div>
+<div id="filterVak" class="uitklap">
+<select id="cat" onchange="toonAlles()">
+<option value="">Alle Categorieën</option>
+<option>Voorgerecht</option><option selected>Hoofdgerecht</option><option>Bijgerecht</option><option>Nagerecht</option>
+<option>Soep</option><option>Salade</option><option>Pasta & Rijst</option><option>Vleesgerecht</option><option>Visgerecht</option>
+<option>Vegetarisch</option><option>Vegan</option><option>Tussendoortje</option><option>Drank</option>
+</select>
+<select id="keuken" onchange="toonAlles()">
+<option value="">Alle Keukens</option>
+<option>Italiaans</option><option>Mexicaans</option><option>Spaans</option><option>Aziatisch</option><option>Frans</option><option>Nederlands</option><option selected>Overig</option>
+</select>
+<select id="snel" onchange="toonAlles()">
+<option value="">Alle tijden</option>
+<option>Snel klaar</option><option>Gezond</option>
+</select>
+<select id="status" onchange="toonAlles()">
+<option value="">Alle status</option>
+<option>✅ Uitgeprobeerd</option><option>⏳ Nog proberen</option>
+</select>
+<select id="sorteer" onchange="toonAlles()">
+<option value="tijd-ops">⏱️ Tijd: Kort → Lang</option>
+<option value="tijd-afl">⏱️ Tijd: Lang → Kort</option>
+<option value="ster-afl">⭐ Beoordeling</option>
+<option value="naam">📫 Naam A-Z</option>
+</select>
+</div>
 </div>
 
-<div id="loginModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header"><h3>🔐 Beheerder Inloggen</h3><button class="close-btn" onclick="closeModal('loginModal')">&times;</button></div>
-        <div class="modal-body">
-            <div class="form-group"><label>Wachtwoord</label><input type="password" id="adminPassword" class="form-control" placeholder="Voer wachtwoord in..."></div>
-            <div class="button-row"><button class="btn btn-primary" onclick="checkAdminLogin()">Inloggen</button><button class="btn btn-secondary" onclick="closeModal('loginModal')">Annuleren</button></div>
-        </div>
-    </div>
+<div id="rooster" class="rooster"></div>
 </div>
 
-<div id="recipeFormModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header"><h3 id="formModalTitle">➕ Nieuw Recept</h3><button class="close-btn" onclick="closeModal('recipeFormModal')">&times;</button></div>
-        <div class="modal-body">
-            <input type="hidden" id="editRecipeId">
-            <div class="form-group"><label>Naam Recept *</label><input type="text" id="formName" class="form-control"></div>
-            <div class="form-row">
-                <div class="form-group"><label>Categorie</label><select id="formCategory" class="form-control">
-                    <option value="Voorgerecht">Voorgerecht</option>
-                    <option value="Hoofdgerecht" selected>Hoofdgerecht</option>
-                    <option value="Bijgerecht">Bijgerecht</option>
-                    <option value="Nagerecht">Nagerecht</option>
-                    <option value="Soep">Soep</option>
-                    <option value="Salade">Salade</option>
-                    <option value="Pasta & Rijst">Pasta & Rijst</option>
-                    <option value="Vleesgerecht">Vleesgerecht</option>
-                    <option value="Visgerecht">Visgerecht</option>
-                    <option value="Vegetarisch">Vegetarisch</option>
-                    <option value="Vegan">Vegan</option>
-                    <option value="Tussendoortje">Tussendoortje</option>
-                    <option value="Drank">Drank</option>
-                </select></div>
-                <div class="form-group"><label>Keuken</label><select id="formKitchen" class="form-control">
-                    <option value="Italiaans">Italiaans</option>
-                    <option value="Mexicaans">Mexicaans</option>
-                    <option value="Spaans">Spaans</option>
-                    <option value="Aziatisch">Aziatisch</option>
-                    <option value="Frans">Frans</option>
-                    <option value="Nederlands">Nederlands</option>
-                    <option value="Overig" selected>Overig</option>
-                </select></div>
-            </div>
-            <div class="form-row">
-                <div class="form-group"><label>Bereidingstijd (min)</label><input type="number" id="formTime" class="form-control" value="25"></div>
-                <div class="form-group"><label>Personen</label><input type="number" id="formServings" class="form-control" value="2"></div>
-            </div>
-            <div class="form-group"><label>Beoordeling</label><div class="star-rating" id="starRatingEditor">
-                <span data-v="0.5">★</span><span data-v="1">★</span><span data-v="1.5">★</span><span data-v="2">★</span><span data-v="2.5">★</span>
-                <span data-v="3">★</span><span data-v="3.5">★</span><span data-v="4">★</span><span data-v="4.5">★</span><span data-v="5">★</span>
-            </div></div>
-            <div class="form-row">
-                <div class="form-group"><label>Status</label><select id="formStatus" class="form-control">
-                    <option value="Nog proberen">⏳ Nog proberen</option>
-                    <option value="Uitgeprobeerd">✅ Uitgeprobeerd</option>
-                </select></div>
-                <div class="form-group"><label>Bron Link</label><input type="url" id="formSource" class="form-control"></div>
-            </div>
-            <div class="form-group"><label>Foto (emoji of link)</label><input type="text" id="formPhoto" class="form-control" value="🍽️" oninput="updatePreview(this.value)"><div id="previewBox" class="preview-box">🍽️</div></div>
-            <div class="form-group"><label>Ingrediënten</label><div id="ingContainer"></div><button class="btn btn-secondary" onclick="addIng()">➕ Toevoegen</button></div>
-            <div class="form-group"><label>Benodigdheden</label><input type="text" id="formTools" class="form-control"></div>
-            <div class="form-group"><label>Beschrijving</label><textarea id="formDesc" class="form-control"></textarea></div>
-            <div class="form-group"><label>Bereidingswijze</label><textarea id="formInstr" class="form-control"></textarea></div>
-            <div class="button-row"><button class="btn btn-primary" onclick="saveRecipe()">✅ Opslaan</button><button class="btn btn-secondary" onclick="closeModal('recipeFormModal')">Annuleren</button></div>
-        </div>
-    </div>
+<!-- Inlogvenster -->
+<div id="loginV" class="venster">
+<div class="venster-inhoud">
+<div class="venster-kop"><h3>🔐 Inloggen</h3><button class="sluit" onclick="sluitV('loginV')">&times;</button></div>
+<div class="venster-body">
+<div class="groep"><label>Wachtwoord</label><input type="password" id="ww"></div>
+<div class="knop-rij"><button class="btn prim" onclick="controleerWW()">Inloggen</button><button class="btn sec" onclick="sluitV('loginV')">Annuleren</button></div>
+</div>
+</div>
 </div>
 
-<div id="recipeModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header"><h3 id="modalTitle">Recept</h3><button class="close-btn" onclick="closeModal('recipeModal')">&times;</button></div>
-        <div class="modal-body" id="modalBody"></div>
-    </div>
+<!-- Recept bekijken -->
+<div id="detailV" class="venster">
+<div class="venster-inhoud">
+<div class="venster-kop"><h3 id="detailTitel">Recept</h3><button class="sluit" onclick="sluitV('detailV')">&times;</button></div>
+<div class="venster-body" id="detailInhoud"></div>
+</div>
+</div>
 </div>
 
 <script>
-const ADMIN_PASS = 'greenbite2026';
-const STORAGE_KEY = 'BITES_GALAXY_DATA';
-let isAdmin = localStorage.getItem('bites_admin_galaxy') === 'true';
-let editingId = null, starValue = 0;
+const WACHTWOORD = 'greenbite2026';
+const OPSLAG = 'BITES_DATA';
+let beheerder = localStorage.getItem('BITES_BEHEER') === 'JA';
+let bewerkId = null, sterWaarde = 0;
 
-const defaultRecipes = [
-    {id:1,name:"Garnalen in knoflook",category:"Visgerecht",kitchen:"Spaans",occasion:"Snel",time:20,servings:2,rating:4.5,status:"Uitgeprobeerd",photo:"🍤",ingredients:["Garnalen","Knoflook","Olijfolie","Peterselie","Chili","Zout"],tools:["Koekenpan","Lepel"],description:"Heerlijke Spaanse tapas! In 15-20 minuten klaar.",instructions:"1. Pel en dep garnalen droog.\n2. Snijd knoflook in plakjes.\n3. Verhit olie en fruit knoflook met chili.\n4. Voeg garnalen toe, bak 2-3 minuten.\n5. Bestrooi met peterselie en zout. Serveer direct.",source:""},
-    {id:2,name:"Beef Teriyaki",category:"Voorgerecht",kitchen:"Aziatisch",occasion:"",time:25,servings:2,rating:0,status:"Nog proberen",photo:"🥩",ingredients:["Rundvlees","Sojasaus","Suiker","Gember","Knoflook","Sesamolie"],tools:["Pan","Mes"],description:"Zoete en hartige Japanse stijl.",instructions:"1. Snij vlees in reepjes.\n2. Maak saus.\n3. Bak vlees kort.\n4. Voeg saus toe en laat inkoken.",source:""},
-    {id:3,name:"Spaghetti Bolognese",category:"Hoofdgerecht",kitchen:"Italiaans",occasion:"",time:45,servings:4,rating:4,status:"Uitgeprobeerd",photo:"🍝",ingredients:["Spaghetti","Gehakt","Tomaat","Ui","Knoflook","Wortel","Selderij"],tools:["Kookpan","Pan","Mes"],description:"Klassieke Italiaanse bolognese.",instructions:"1. Kook pasta.\n2. Fruit groenten.\n3. Voeg gehakt toe.\n4. Voeg tomaten toe, laat 30 minuten pruttelen.\n5. Meng met pasta.",source:""},
-    {id:4,name:"Macaroni",category:"Pasta & Rijst",kitchen:"Overig",occasion:"",time:30,servings:4,rating:3.5,status:"Uitgeprobeerd",photo:"🧀",ingredients:["Macaroni","Kaas","Melk","Boter","Bloem"],tools:["Kookpan","Ovenpan"],description:"Simpele en lekkere macaroni.",instructions:"1. Kook macaroni.\n2. Maak roomsaus.\n3. Meng kaas erdoor.\n4. Voeg pasta toe.",source:""},
-    {id:5,name:"Macaroni met spek of ham",category:"Pasta & Rijst",kitchen:"Overig",occasion:"",time:35,servings:4,rating:0,status:"Nog proberen",photo:"🥓",ingredients:["Macaroni","Spek of ham","Kaas","Melk","Boter","Ui"],tools:["Kookpan","Pan"],description:"Macaroni met spek of ham.",instructions:"1. Kook macaroni.\n2. Bak spek met ui.\n3. Maak kaassaus.\n4. Alles samen mengen.",source:""}
+// AL JOUW RECEPTEN HIERONDER
+const standaard = [
+{id:1,naam:"Garnalen in knoflook",cat:"Voorgerecht",keuken:"Spaans",tijd:20,pers:2,ster:4.5,status:"✅ Uitgeprobeerd",foto:"🍤",ing:["400 gr garnalen","Knoflook","Olijfolie","Peterselie","Chili vlokken","Zout"],gerei:["Koekenpan","Lepel"],korte:"Heerlijke Spaanse tapas! In 20 minuten klaar.",stap:"1. Pel de garnalen en dep droog.\n2. Snijd knoflook in plakjes.\n3. Verhit olie en fruit knoflook met chili.\n4. Voeg garnalen toe en bak 2-3 minuten.\n5. Bestrooi met peterselie en zout. Serveer direct."},
+{id:2,naam:"Beef Teriyaki",cat:"Hoofdgerecht",keuken:"Aziatisch",tijd:30,pers:2,ster:0,status:"⏳ Nog proberen",foto:"🥩",ing:["400 gr rundvlees","3 el sojasaus","2 el mirin of rijstwijn","1 el suiker of honing","1 teentje knoflook","1 tl gember","1 el sesamolie","Lente-ui"],gerei:["Pan of wok","Lepel"],korte:"Zoete en hartige Japanse stijl.",stap:"1. Snij vlees in dunne reepjes.\n2. Meng sojasaus, mirin, suiker, knoflook en gember.\n3. Marineer vlees 10 minuten.\n4. Verhit olie en bak vlees 4-5 minuten.\n5. Voeg saus toe en laat 2-3 minuten inkoken.\n6. Garneer met lente-ui en sesamzaad."},
+{id:3,naam:"Spaghetti Bolognese",cat:"Hoofdgerecht",keuken:"Italiaans",tijd:45,pers:4,ster:4,status:"✅ Uitgeprobeerd",foto:"🍝",ing:["Spaghetti","Gehakt","Tomaat","Ui","Knoflook","Wortel","Selderij"],gerei:["Kookpan","Pan","Mes"],korte:"Klassieke Italiaanse bolognese saus.",stap:"1. Kook de spaghetti gaar.\n2. Snijd ui, knoflook, wortel en selderij fijn.\n3. Fruit de groenten in een pan.\n4. Voeg gehakt toe en bak rul.\n5. Voeg tomaten toe en laat 30 minuten pruttelen.\n6. Meng met de pasta."},
+{id:4,naam:"Macaroni",cat:"Pasta & Rijst",keuken:"Overig",tijd:30,pers:4,ster:3.5,status:"✅ Uitgeprobeerd",foto:"🧀",ing:["Macaroni","Kaas","Melk","Boter","Bloem"],gerei:["Kookpan","Ovenpan"],korte:"Simpele en lekkere macaroni.",stap:"1. Kook de macaroni gaar.\n2. Maak roomsaus van boter, bloem en melk.\n3. Meng kaas door de saus.\n4. Voeg pasta toe en bak kort in de oven."},
+{id:5,naam:"Macaroni met spek of ham",cat:"Pasta & Rijst",keuken:"Overig",tijd:35,pers:4,ster:0,status:"⏳ Nog proberen",foto:"🥓",ing:["Macaroni","Spek of ham","Kaas","Melk","Boter","Ui"],gerei:["Kookpan","Pan"],korte:"Macaroni met een beetje spek of ham.",stap:"1. Kook de macaroni.\n2. Bak spek of ham samen met ui.\n3. Maak kaassaus.\n4. Alles samen mengen."},
+{id:6,naam:"Hamburger, friet en salade",cat:"Hoofdgerecht",keuken:"Overig",tijd:35,pers:2,ster:0,status:"⏳ Nog proberen",foto:"🍔",ing:["Gehakt","Broodjes","Friet","Sla","Tomaat","Ui","Saus"],gerei:["Pan","Oven/friteuse"],korte:"Complete maaltijd met hamburger.",stap:"1. Maak gehakt tot ballen en druk plat.\n2. Bak de hamburgers gaar.\n3. Bak de friet.\n4. Sla en tomaat snijden voor salade.\n5. Bouw de hamburger op in het broodje."},
+{id:7,naam:"Gebakken kipfilet met tacokruiden en friet",cat:"Hoofdgerecht",keuken:"Mexicaans",tijd:30,pers:2,ster:0,status:"⏳ Nog proberen",foto:"🍗",ing:["Kipfilet","Tacokruiden","Friet","Olie"],gerei:["Pan","Oven/friteuse"],korte:"Kip met pittige kruiden.",stap:"1. Smeer kipfilet in met tacokruiden.\n2. Verhit olie en bak kip gaar.\n3. Bak de friet."},
+{id:8,naam:"Kapsalon",cat:"Hoofdgerecht",keuken:"Overig",tijd:35,pers:2,ster:0,status:"⏳ Nog proberen",foto:"🥗",ing:["Shoarma-vlees","Friet","Kaas","Sla","Komkommer","Tomaat","Knoflooksaus"],gerei:["Ovenschaal","Oven"],korte:"Bekende schotel met vlees en groente.",stap:"1. Leg friet op de schaal.\n2. Daarop het vlees.\n3. Bestrooi met kaas en smelt in oven.\n4. Beleg met sla, komkommer en tomaat.\n5. Giet er saus overheen."},
+{id:9,naam:"Taco's gehakt",cat:"Hoofdgerecht",keuken:"Mexicaans",tijd:30,pers:3,ster:0,status:"⏳ Nog proberen",foto:"🌮",ing:["Taco schelpen","Gehakt","Tacokruiden","Sla","Tomaat","Kaas","Zure room"],gerei:["Pan"],korte:"Pittige taco's met gehakt.",stap:"1. Bak gehakt rul met tacokruiden.\n2. Verwarm de schelpen.\n3. Vul met gehakt en beleg met groente en kaas."},
+{id:10,naam:"Taco's kip",cat:"Hoofdgerecht",keuken:"Mexicaans",tijd:30,pers:3,ster:0,status:"⏳ Nog proberen",foto:"🌮",ing:["Taco schelpen","Kipfilet","Tacokruiden","Sla","Tomaat","Kaas"],gerei:["Pan"],korte:"Taco's met kip in plaats van gehakt.",stap:"1. Snij kip in stukjes en bak met kruiden.\n2. Verwarm de schelpen.\n3. Vul en beleg met groente."},
+{id:11,naam:"Nacho Bowl",cat:"Voorgerecht",keuken:"Mexicaans",tijd:20,pers:2,ster:0,status:"⏳ Nog proberen",foto:"🫕",ing:["Nacho chips","Kaas","Gehakt of kip","Guacamole","Zure room","Salsa"],gerei:["Ovenschaal"],korte:"Compleet gevulde nacho schaal.",stap:"1. Leg chips op schaal.\n2. Daarop vlees en kaas.\n3. Smelt in oven.\n4. Voeg saus en guacamole toe."},
+{id:12,naam:"Kip Pizza",cat:"Hoofdgerecht",keuken:"Italiaans",tijd:40,pers:4,ster:0,status:"⏳ Nog proberen",foto:"🍕",ing:["Pizzadeeg","Tomatensaus","Kaas","Kipfilet","Groente naar keuze"],gerei:["Oven","Bakplaat"],korte:"Pizza met kip belegd.",stap:"1. Rol deeg uit en beleg met saus.\n2. Voeg kip en groente toe.\n3. Bestrooi met kaas.\n4. Bak in oven volgens deeg-instructies."},
+{id:13,naam:"Shoarma Pizza",cat:"Hoofdgerecht",keuken:"Italiaans",tijd:40,pers:4,ster:0,status:"⏳ Nog proberen",foto:"🍕",ing:["Pizzadeeg","Tomatensaus","Kaas","Shoarma-vlees","Ui"],gerei:["Oven","Bakplaat"],korte:"Pizza belegd met shoarma-vlees.",stap:"1. Rol deeg uit en beleg met saus.\n2. Voeg vlees en ui toe.\n3. Bestrooi met kaas.\n4. Bak in oven."},
+{id:14,naam:"Gehakt Pizza",cat:"Hoofdgerecht",keuken:"Italiaans",tijd:40,pers:4,ster:0,status:"⏳ Nog proberen",foto:"🍕",ing:["Pizzadeeg","Tomatensaus","Kaas","Gehakt","Ui"],gerei:["Oven","Bakplaat"],korte:"Pizza met gehakt belegd.",stap:"1. Rol deeg uit.\n2. Saus, gebakken gehakt en ui erop.\n3. Kaas erover en bakken."},
+{id:15,naam:"Ham Pizza",cat:"Hoofdgerecht",keuken:"Italiaans",tijd:40,pers:4,ster:0,status:"⏳ Nog proberen",foto:"🍕",ing:["Pizzadeeg","Tomatensaus","Kaas","Ham"],gerei:["Oven","Bakplaat"],korte:"Simpele pizza met ham.",stap:"1. Deeg met saus.\n2. Ham en kaas erop.\n3. Bak in oven."},
+{id:16,naam:"Tonijn Pizza",cat:"Hoofdgerecht",keuken:"Italiaans",tijd:40,pers:4,ster:0,status:"⏳ Nog proberen",foto:"🍕",ing:["Pizzadeeg","Tomatensaus","Kaas","Tonijn","Ui"],gerei:["Oven","Bakplaat"],korte:"Pizza met tonijn.",stap:"1. Deeg met saus.\n2. Tonijn en ui verdelen.\n3. Kaas erover en bakken."},
+{id:17,naam:"Pizza Margherita met paprika en ui",cat:"Hoofdgerecht",keuken:"Italiaans",tijd:40,pers:4,ster:0,status:"⏳ Nog proberen",foto:"🍕",ing:["Pizzadeeg","Tomatensaus","Mozzarella","Paprika","Ui"],gerei:["Oven","Bakplaat"],korte:"Klassieke pizza met groente.",stap:"1. Deeg met saus.\n2. Beleg met plakjes mozzarella.\n3. Verdeel paprika en ui.\n4. Bak in oven."},
+{id:18,naam:"Wraps met kip",cat:"Hoofdgerecht",keuken:"Overig",tijd:25,pers:2,ster:0,status:"⏳ Nog proberen",foto:"🌯",ing:["Wraps","Kipfilet","Sla","Tomaat","Saus","Kruiden"],gerei:["Pan"],korte:"Lichte maaltijd met kip.",stap:"1. Snij kip en bak met kruiden.\n2. Sla en tomaat snijden.\n3. Wrap vullen met alles en oprollen."},
+{id:19,naam:"Wraps met gehakt",cat:"Hoofdgerecht",keuken:"Overig",tijd:25,pers:2,ster:0,status:"⏳ Nog proberen",foto:"🌯",ing:["Wraps","Gehakt","Sla","Tomaat","Saus","Kruiden"],gerei:["Pan"],korte:"Wraps met gehakt vulling.",stap:"1. Bak gehakt rul met kruiden.\n2. Sla en tomaat snijden.\n3. Wrap vullen en oprollen."},
+{id:20,naam:"Wraps vegetarisch",cat:"Hoofdgerecht",keuken:"Overig",tijd:25,pers:2,ster:0,status:"⏳ Nog proberen",foto:"🌯",ing:["Wraps","Paprika","Komkommer","Wortel","Sla","Hummus of saus"],gerei:["Pan"],korte:"Vleesvrije wraps met groente.",stap:"1. Groente in reepjes snijden.\n2. Wrap beleggen met saus en groente.\n3. Oprollen en serveren."},
+{id:21,naam:"Tonijnsalade",cat:"Bijgerecht",keuken:"Overig",tijd:15,pers:2,ster:0,status:"⏳ Nog proberen",foto:"🥗",ing:["Blik tonijn","Sla","Komkommer","Tomaat","Ui","Mayonaise of dressing"],gerei:["Kom","Lepel"],korte:"Lichte salade met vis.",stap:"1. Groente snijden en mengen.\n2. Tonijn toevoegen.\n3. Dressing naar smaak toevoegen."},
+{id:22,naam:"Paprikasalade",cat:"Bijgerecht",keuken:"Overig",tijd:15,pers:2,ster:0,status:"⏳ Nog proberen",foto:"🥗",ing:["Paprika (verschillende kleuren)","Ui","Olijfolie","Azijn","Zout"],gerei:["Kom"],korte:"Kleurrijke frisse salade.",stap:"1. Paprika en ui in dunne reepjes snijden.\n2. Meng olie, azijn en zout tot dressing.\n3. Alles door elkaar mengen."},
+{id:23,naam:"Bietensalade",cat:"Bijgerecht",keuken:"Overig",tijd:20,pers:2,ster:0,status:"⏳ Nog proberen",foto:"🥗",ing:["Gekookte bietjes","Ui","Walnoten","Geitenkaas (optioneel)","Dressing"],gerei:["Kom"],korte:"Salade met bieten en noten.",stap:"1. Bietjes in blokjes snijden.\n2. Ui fijnsnijden en samen met walnoten toevoegen.\n3. Dressing naar smaak."},
+{id:24,naam:"Pastasalade",cat:"Bijgerecht",keuken:"Italiaans",tijd:25,pers:4,ster:0,status:"⏳ Nog proberen",foto:"🥗",ing:["Pasta (kort)","Komkommer","Tomaat","Paprika","Ui","Olijven","Dressing"],gerei:["Kookpan","Kom"],korte:"Salade met pasta en groente.",stap:"1. Kook pasta en laat afkoelen.\n2. Groente in stukjes snijden.\n3. Alles mengen met dressing."},
+{id:25,naam:"Appelkruimeltaart",cat:"Nagerecht",keuken:"Overig",tijd:50,pers:8,ster:0,status:"⏳ Nog proberen",foto:"🍎",ing:["Appels","Bloem","Boter","Suiker","Kaneel"],gerei:["Taartvorm","Oven"],korte:"Zoete taart met kruimellaag.",stap:"1. Schil en snij appels, bestrooi met kaneel.\n2. Maak kruimels van bloem, boter en suiker.\n3. Appels in vorm, kruimels erop.\n4. Bak ca 40 minuten in oven."},
+{id:26,naam:"Oreo-taart",cat:"Nagerecht",keuken:"Overig",tijd:30,pers:8,ster:0,status:"⏳ Nog proberen",foto:"🍰",ing:["Oreo koekjes","Boter","Roomkaas","Suiker","Slagroom"],gerei:["Taartvorm","Kom"],korte:"Taart met koekjesbodem en romige vulling.",stap:"1. Maal koekjes fijn en meng met boter voor bodem.\n2. Klop roomkaas met suiker en slagroom.\n3. Giet op bodem en laat opstijven in koelkast."},
+{id:27,naam:"Boerencake",cat:"Nagerecht",keuken:"Nederlands",tijd:55,pers:10,ster:0,status:"⏳ Nog proberen",foto:"🍰",ing:["Boter","Suiker","Eieren","Bloem","Bakpoeder","Melk","Kruiden naar smaak"],gerei:["Cakevorm","Oven"],korte:"Ambachtsachtige stevige cake.",stap:"1. Boter en suiker romig kloppen.\n2. Eieren één voor één toevoegen.\n3. Bloem en bakpoeder mengen met melk.\n4. In vorm doen en ca 45 minuten bakken."},
+{id:28,naam:"Cupcakes",cat:"Nagerecht",keuken:"Overig",tijd:35,pers:12,ster:0,status:"⏳ Nog proberen",foto:"🧁",ing:["Boter","Suiker","Eieren","Bloem","Bakpoeder","Melk","Glazuur"],gerei:["Vormpjes","Oven"],korte:"Leuke kleine cakejes met glazuur.",stap:"1. Boter met suiker romig kloppen.\n2. Eieren toevoegen.\n3. Bloem en melk afwisselend toevoegen.\n4. In vormpjes en 20 minuten bakken.\n5. Versieren met glazuur."},
+{id:29,naam:"Brookies",cat:"Tussendoortje",keuken:"Overig",tijd:40,pers:12,ster:0,status:"⏳ Nog proberen",foto:"🍪",ing:["Brownie-beslag","Koekjes-beslag"],gerei:["Vierkante vorm","Oven"],korte:"Combinatie van brownie en koekje.",stap:"1. Maak beide soorten beslag.\n2. Door elkaar heen in de vorm scheppen.\n3. Bak tot ze gaar zijn."},
+{id:30,naam:"Chocolate Chip Cookies",cat:"Tussendoortje",keuken:"Overig",tijd:25,pers:15,ster:0,status:"⏳ Nog proberen",foto:"🍪",ing:["Boter","Bruine suiker","Witte suiker","Ei","Bloem","Zout","Chocolade stukjes"],gerei:["Bakplaat met papier","Oven"],korte:"Klassieke koekjes met chocolade.",stap:"1. Boter en suiker mengen.\n2. Ei toevoegen.\n3. Bloem en zout, daarna chocolade.\n4. Bolletjes op plaat en 10-12 minuten bakken."},
+{id:31,naam:"Zandkoekjes",cat:"Tussendoortje",keuken:"Overig",tijd:30,pers:15,ster:0,status:"⏳ Nog proberen",foto:"🍪",ing:["Boter","Suiker","Bloem","Vanille-suiker"],gerei:["Bakplaat","Oven"],korte:"Luchtige koekjes die smelten in je mond.",stap:"1. Zachte boter met suiker en bloem kneden.\n2. Oprollen en vormpjes snijden.\n3. Ca 10-12 minuten bakken."}
 ];
 
-function loadData(){const s=localStorage.getItem(STORAGE_KEY);return s?JSON.parse(s):defaultRecipes;}
-function saveData(d){localStorage.setItem(STORAGE_KEY,JSON.stringify(d));}
-function openAdminLogin(){isAdmin?(isAdmin=false,localStorage.removeItem('bites_admin_galaxy'),updateUI()):(document.getElementById('adminPassword').value='',document.getElementById('loginModal').style.display='flex');}
-function checkAdminLogin(){if(document.getElementById('adminPassword').value===ADMIN_PASS){isAdmin=true;localStorage.setItem('bites_admin_galaxy','true');closeModal('loginModal');updateUI();filterAndRender();}else alert('❌ Verkeerd wachtwoord!');}
-function updateUI(){document.getElementById('addBtn').style.display=isAdmin?'flex':'none';document.getElementById('adminIndicator').style.display=isAdmin?'inline-flex':'none';document.getElementById('adminBtn').innerHTML=isAdmin?'🔓':'🔐';}
-function toggleSortAndFilters(){document.getElementById('collapsibleControls').classList.toggle('show');}
-function renderStars(r){let h='';for(let i=0.5;i<=5;i+=0.5)h+=i<=r?'<span class="active">★</span>':'<span class="empty">★</span>';return h||'<span class="empty">Geen</span>';}
-function closeModal(id){document.getElementById(id).style.display='none';editingId=null;starValue=0;}
-function updatePreview(v){const b=document.getElementById('previewBox');b.innerHTML=(v.startsWith('http')||v.startsWith('data:'))?`<img src="${v}">`:v||'🍽️';}
-function addIng(v=''){const c=document.getElementById('ingContainer');const r=document.createElement('div');r.style.cssText='display:flex;gap:0.5rem;align-items:center;margin-bottom:0.4rem;';r.innerHTML=`<input type="text" class="form-control ing-inp" value="${v}" placeholder="bv. 200g pasta" style="flex:1;">${isAdmin?'<button class="btn btn-danger" style="padding:0.5rem 0.7rem;" onclick="this.parentElement.remove()">❌</button>':''}`;c.appendChild(r);}
+function laadOp(){const s=localStorage.getItem(OPSLAG);return s?JSON.parse(s):standaard}
+function bewaarOp(d){localStorage.setItem(OPSLAG,JSON.stringify(d))}
+function wisselFilter(){document.getElementById('filterVak').classList.toggle('aan')}
+function maakSterren(aantal){let h='';for(let i=.5;i<=5;i+=.5)h+=i<=aantal?'<span class="aan">★</span>':'<span class="leeg">★</span>';return h||'<span class="leeg">Geen</span>'}
+function sluitV(id){document.getElementById(id).classList.remove('aan')}
+function loginVenster(){document.getElementById('ww').value='';document.getElementById('loginV').classList.add('aan')}
+function controleerWW(){if(document.getElementById('ww').value===WACHTWOORD){beheerder=true;localStorage.setItem('BITES_BEHEER','JA');sluitV('loginV');werkBij()}else alert('❌ Verkeerd wachtwoord!')}
+function werkBij(){document.getElementById('toevoegknop').style.display=beheerder?'flex':'none';document.getElementById('beheer').style.display=beheerder?'inline-flex':'none';document.getElementById('beheerknop').innerHTML=beheerder?'🔓':'🔐'}
 
-function openRecipeFormModal(id=null){
-    if(!isAdmin){alert('🔐 Log eerst in!');return;}
-    editingId=id;starValue=0;
-    document.getElementById('formModalTitle').innerText=id?'✏️ Bewerk Recept':'➕ Nieuw Recept';
-    document.getElementById('ingContainer').innerHTML='';
-    document.getElementById('starRatingEditor').querySelectorAll('span').forEach(s=>s.classList.remove('active'));
-    if(id){
-        const r=loadData().find(x=>x.id===id);
-        if(r){
-            document.getElementById('formName').value=r.name;
-            document.getElementById('formCategory').value=r.category||'Hoofdgerecht';
-            document.getElementById('formKitchen').value=r.kitchen||'Overig';
-            document.getElementById('formTime').value=r.time||25;
-            document.getElementById('formServings').value=r.servings||2;
-            document.getElementById('formStatus').value=r.status||'Nog proberen';
-            document.getElementById('formSource').value=r.source||'';
-            document.getElementById('formPhoto').value=r.photo||'🍽️';
-            (r.ingredients||[]).forEach(x=>addIng(x));
-            document.getElementById('formTools').value=Array.isArray(r.tools)?r.tools.join(', '):(r.tools||'');
-            document.getElementById('formDesc').value=r.description||'';
-            document.getElementById('formInstr').value=r.instructions||'';
-            updatePreview(r.photo||'🍽️');
-            starValue=r.rating||0;
-            document.getElementById('starRatingEditor').querySelectorAll('span').forEach(s=>{if(parseFloat(s.dataset.v)<=starValue)s.classList.add('active');});
-        }
-    }else{
-        document.getElementById('formName').value='';
-        document.getElementById('formCategory').value='Hoofdgerecht';
-        document.getElementById('formKitchen').value='Overig';
-        document.getElementById('formTime').value=25;
-        document.getElementById('formServings').value=2;
-        document.getElementById('formStatus').value='Nog proberen';
-        document.getElementById('formSource').value='';
-        document.getElementById('formPhoto').value='🍽️';
-        addIng();addIng();
-        document.getElementById('formTools').value='';
-        document.getElementById('formDesc').value='';
-        document.getElementById('formInstr').value='';
-        updatePreview('🍽️');
-    }
-    document.getElementById('recipeFormModal').style.display='flex';
-}
-
-function saveRecipe(){
-    const name=document.getElementById('formName').value.trim();
-    const cat=document.getElementById('formCategory').value;
-    const kit=document.getElementById('formKitchen').value;
-    const time=parseInt(document.getElementById('formTime').value)||25;
-    const serv=parseInt(document.getElementById('formServings').value)||2;
-    const status=document.getElementById('formStatus').value;
-    const src=document.getElementById('formSource').value.trim();
-    const photo=document.getElementById('formPhoto').value.trim()||'🍽️';
-    const ing=Array.from(document.querySelectorAll('.ing-inp')).map(i=>i.value.trim()).filter(s=>s);
-    const tools=document.getElementById('formTools').value.split(',').map(s=>s.trim()).filter(s=>s);
-    const desc=document.getElementById('formDesc').value.trim();
-    const instr=document.getElementById('formInstr').value.trim();
-    if(!name){alert('⚠️ Vul een naam in!');return;}
-    if(ing.length===0){alert('⚠️ Voeg ingrediënten toe!');return;}
-
-    let data=loadData();
-    if(editingId){
-        const i=data.findIndex(x=>x.id===editingId);
-        if(i>-1)data[i]={id:editingId,name,category:cat,kitchen:kit,occasion:'',time,servings:serv,rating:starValue,status,photo,ingredients:ing,tools,description:desc,instructions:instr,source:src};
-    }else{
-        data.push({id:Date.now(),name,category:cat,kitchen:kit,occasion:'',time,servings:serv,rating:starValue,status,photo,ingredients:ing,tools,description:desc,instructions:instr,source:src});
-    }
-    saveData(data);
-    closeModal('recipeFormModal');
-    filterAndRender();
-    alert('✅ Opgeslagen!');
-}
-
-function openRecipeDetail(r){
-    document.getElementById('modalTitle').innerText=r.name;
-    const ingList=r.ingredients.map(i=>`<li>${i}</li>`).join('');
-    const toolsList=Array.isArray(r.tools)?r.tools.join(', '):r.tools;
-    const isImgUrl=r.photo&&(r.photo.startsWith('http')||r.photo.startsWith('data:'));
-    document.getElementById('modalBody').innerHTML=`
-        <div style="display:flex;gap:1.2rem;align-items:flex-start;flex-wrap:wrap;margin-bottom:1.2rem;">
-            <div style="width:100px;height:100px;background:rgba(10,18,40,0.7);border-radius:14px;border:1px solid rgba(0,255,157,0.2);display:flex;align-items:center;justify-content:center;font-size:3.2rem;overflow:hidden;">
-                ${isImgUrl?`<img src="${r.photo}" style="width:100%;height:100%;object-fit:cover;">`:r.photo}
-            </div>
-            <div style="flex:1;min-width:200px;">
-                <p><strong style="color:#00ff9d;">Categorie:</strong> ${r.category}</p>
-                <p><strong style="color:#00ff9d;">Keuken:</strong> ${r.kitchen}</p>
-                <p><strong style="color:#00ff9d;">Tijd:</strong> ${r.time} min</p>
-                <p><strong style="color:#00ff9d;">Personen:</strong> ${r.servings}</p>
-                <p><strong style="color:#ffd700;">Beoordeling:</strong> ${renderStars(r.rating||0)}</p>
-                <p><strong>Status:</strong> ${r.status}</p>
-                <p><strong>Benodigdheden:</strong> ${toolsList||'Geen'}</p>
-            </div>
-        </div>
-        <div style="margin-bottom:1rem;">
-            <h4 style="margin:0 0 0.5rem 0;color:#00ff9d;">Ingrediënten</h4>
-            <ul style="margin:0;padding-left:1.4rem;color:#94b8b0;line-height:1.8;">${ingList}</ul>
-        </div>
-        <div>
-            <h4 style="margin:0 0 0.5rem 0;color:#00ff9d;">Bereidingswijze</h4>
-            <p style="margin:0;color:#94b8b0;white-space:pre-line;line-height:1.7;">${r.instructions||'Geen beschrijving'}</p>
-        </div>
-        ${r.source?`<p style="margin-top:1rem;"><a href="${r.source}" target="_blank" style="color:#00ccff;">🔗 Originele bron</a></p>`:''}
-        ${isAdmin?`
-        <div style="display:flex;gap:0.8rem;margin-top:1.2rem;border-top:1px solid rgba(0,255,157,0.15);padding-top:1.2rem;">
-            <button class="btn btn-secondary" style="flex:1;" onclick="closeModal('recipeModal');openRecipeFormModal(${r.id})">✏️ Bewerken</button>
-            <button class="btn btn-danger" style="flex:1;" onclick="delRecipe(${r.id})">🗑️ Verwijderen</button>
-        </div>`:''}
-    `;
-    document.getElementById('recipeModal').style.display='flex';
-}
-
-function delRecipe(id){
-    if(confirm('Weet je het zeker?')){
-        saveData(loadData().filter(r=>r.id!==id));
-        closeModal('recipeModal');
-        filterAndRender();
-    }
-}
-
-function filterAndRender(){
-    const search=document.getElementById('searchInput').value.toLowerCase();
-    const cat=document.getElementById('categoryFilter').value;
-    const kit=document.getElementById('kitchenFilter').value;
-    const occ=document.getElementById('occasionFilter').value;
-    const stat=document.getElementById('statusFilter').value;
-    const sort=document.getElementById('sortFilter').value;
-    let data=loadData().filter(r=>{
-        const allText=`${r.name} ${r.category} ${r.kitchen} ${(r.ingredients||[]).join(' ')}`.toLowerCase();
-        return (!search||allText.includes(search))&&(!cat||r.category===cat)&&(!kit||r.kitchen===kit)&&(!occ||(r.occasion||'').includes(occ))&&(!stat||r.status===stat);
+function toonAlles(){
+    const z=document.getElementById('zoek').value.toLowerCase();
+    const c=document.getElementById('cat').value;
+    const k=document.getElementById('keuken').value;
+    const s=document.getElementById('snel').value;
+    const st=document.getElementById('status').value;
+    const so=document.getElementById('sorteer').value;
+    let lijst=laadOp().filter(r=>{
+        const alleTekst=`${r.naam} ${r.cat} ${r.keuken} ${(r.ing||[]).join(' ')}`.toLowerCase();
+        return (!z||alleTekst.includes(z))&&(!c||r.cat===c)&&(!k||r.keuken===k)&&(!s||(r.tags||'').includes(s))&&(!st||r.status===st)
     });
-    data.sort((a,b)=>{
-        if(sort==='time-asc')return a.time-b.time;
-        if(sort==='time-desc')return b.time-a.time;
-        if(sort==='rating-desc')return(b.rating||0)-(a.rating||0);
-        if(sort==='name-asc')return a.name.localeCompare(b.name);
-        return 0;
+    lijst.sort((a,b)=>{
+        if(so==='tijd-ops')return a.tijd-b.tijd;
+        if(so==='tijd-afl')return b.tijd-a.tijd;
+        if(so==='ster-afl')return(b.ster||0)-(a.ster||0);
+        if(so==='naam')return a.naam.localeCompare(b.naam);
+        return 0
     });
-    const grid=document.getElementById('recipeGrid');
-    grid.innerHTML='';
-    if(data.length===0){
-        grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;color:#94b8b0;padding:4rem 2rem;">🔍 Geen recepten gevonden.${isAdmin?'<br><button class="btn btn-primary" onclick="openRecipeFormModal()" style="margin-top:1.2rem;">➕ Voeg recept toe</button>':''}</div>`;
-        return;
-    }
-    data.forEach(r=>{
-        const card=document.createElement('div');
-        card.className='recipe-card';
-        card.onclick=()=>openRecipeDetail(r);
-        const isImgUrl=r.photo&&(r.photo.startsWith('http')||r.photo.startsWith('data:'));
-        const stClass=r.status==='Uitgeprobeerd'?'status-uitgeprobeerd':'status-nog';
-        card.innerHTML=`
-            <div class="recipe-image">
-                ${isImgUrl?`<img src="${r.photo}" style="width:100%;height:100%;object-fit:cover;">`:r.photo}
-                <div class="recipe-tags"><span class="tag">${r.category}</span><span class="tag">${r.kitchen}</span></div>
-                <div class="status-badge ${stClass}">${r.status==='Uitgeprobeerd'?'✅':'⏳'} ${r.status}</div>
-            </div>
-            <div class="recipe-info">
-                <h4 class="recipe-title">${r.name}</h4>
-                <div class="stars">${renderStars(r.rating||0)}</div>
-                <p class="recipe-desc">${r.description||''}</p>
-                ${r.tools?`<div class="recipe-tools">🍳 ${Array.isArray(r.tools)?r.tools.join(', '):r.tools}</div>`:''}
-                <div class="recipe-meta">
-                    <span>⏱️ ${r.time} min</span>
-                    <span>👥 ${r.servings} pers</span>
-                </div>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
+    const rooster=document.getElementById('rooster');
+    rooster.innerHTML='';
+    if(lijst.length===0){rooster.innerHTML=`<div style="grid-column:1/-1;text-align:center;color:var(--grijs);padding:3rem;">🔍 Geen recepten gevonden.</div>`;return}
+    lijst.forEach(r=>{
+        const kaart=document.createElement('div');
+        kaart.className='kaart';
+        kaart.onclick=()=>toonRecept(r);
+        const kl=r.status.includes('✅')?'status ja':'status nee';
+        kaart.innerHTML=`
+        <div class="foto">${r.foto}
+        <div class="labels"><span class="label">${r.cat}</span><span class="label">${r.keuken}</span></div>
+        <div class="status ${kl}">${r.status}</div>
+        </div>
+        <div class="inhoud">
+        <h4 class="titel">${r.naam}</h4>
+        <div class="ster">${maakSterren(r.ster||0)}</div>
+        <p class="beschrijving">${r.korte}</p>
+        ${r.gerei&&r.gerei.length?`<div class="gerei">🍳 ${r.gerei.join(', ')}</div>`:''}
+        <div class="info"><span>⏱️ ${r.tijd} min</span><span>👥 ${r.pers} pers</span></div>
+        </div>`;
+        rooster.appendChild(kaart)
+    })
 }
 
-document.getElementById('starRatingEditor').querySelectorAll('span').forEach(s=>{
-    s.onclick=()=>{
-        starValue=parseFloat(s.dataset.v);
-        document.getElementById('starRatingEditor').querySelectorAll('span').forEach(x=>{
-            x.classList.toggle('active',parseFloat(x.dataset.v)<=starValue);
-        });
-    };
-});
+function toonRecept(r){
+    document.getElementById('detailTitel').innerText=r.naam;
+    const ingLijst=(r.ing||[]).map(i=>`• ${i}`).join('<br>');
+    document.getElementById('detailInhoud').innerHTML=`
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;">
+    <div style="width:80px;height:80px;background:rgba(10,18,40,.7);border-radius:12px;border:1px solid rgba(0,255,157,.2);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">${r.foto}</div>
+    <div>
+    <p><strong style="color:var(--groen)">Categorie:</strong> ${r.cat}</p>
+    <p><strong style="color:var(--groen)">Keuken:</strong> ${r.keuken}</p>
+    <p><strong style="color:var(--groen)">Tijd:</strong> ${r.tijd} min</p>
+    <p><strong style="color:var(--groen)">Personen:</strong> ${r.pers}</p>
+    <p><strong style="color:var(--goud)">Sterren:</strong> ${maakSterren(r.ster||0)}</p>
+    </div>
+    </div>
+    <div style="margin-bottom:.8rem;">
+    <h4 style="color:var(--groen);margin-bottom:.3rem;">Ingrediënten</h4>
+    <p style="color:var(--grijs);line-height:1.7;">${ingLijst||'Geen'}</p>
+    </div>
+    <div style="margin-bottom:.8rem;">
+    <h4 style="color:var(--groen);margin-bottom:.3rem;">Benodigdheden</h4>
+    <p style="color:var(--grijs);">${(r.gerei||[]).join(', ')||'Geen'}</p>
+    </div>
+    <div>
+    <h4 style="color:var(--groen);margin-bottom:.3rem;">Bereiding</h4>
+    <p style="color:var(--grijs);white-space:pre-line;line-height:1.7;">${r.stap||'Geen beschrijving'}</p>
+    </div>`;
+    document.getElementById('detailV').classList.add('aan')
+}
 
-updateUI();
-filterAndRender();
+function openForm(){if(!beheerder){alert('Log eerst in!');return}alert('📝 Recepten toevoegen via de website volgt nog — voor nu direct in de code!')}
+
+werkBij();
+toonAlles();
 </script>
 </body>
 </html>
