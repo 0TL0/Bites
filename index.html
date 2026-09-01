@@ -19,7 +19,6 @@
         </div>
     </header>
 
-    <!-- Uitklap Lijst -->
     <div id="lijstVak" class="lijst-uitklap">
         <div id="lijstInhoud"></div>
     </div>
@@ -61,7 +60,6 @@
         <div id="rooster" class="rooster"></div>
     </main>
 
-    <!-- Recept Detail Pagina -->
     <div id="detailPagina" class="detail-pagina" style="display:none;">
         <button class="btn sec" onclick="naarOverzicht()">← Terug naar overzicht</button>
         <div id="detailInhoudVak"></div>
@@ -71,9 +69,9 @@
 <!-- Notitie Venster -->
 <div id="notitieV" class="venster">
     <div class="venster-inhoud">
-        <div class="venster-kop"><h3>📝 Snelle Notities</h3><button class="sluit" onclick="sluitVenster('notitieV')">&times;</button></div>
+        <div class="venster-kop"><h3>📝 Notities</h3><button class="sluit" onclick="sluitVenster('notitieV')">&times;</button></div>
         <div class="venster-body">
-            <textarea id="notitieVak" placeholder="Schrijf hier je notities...&#10;Bijv: wat nog toevoegen, boodschappen, ideeën..."></textarea>
+            <textarea id="notitieVak" placeholder="Schrijf hier je notities..."></textarea>
             <button class="btn prim" onclick="sluitVenster('notitieV')">✅ Opslaan & Sluiten</button>
         </div>
     </div>
@@ -109,7 +107,7 @@
                 <summary>📂 Archief (afgeronde taken)</summary>
                 <div id="archiefNotities"></div>
             </details>
-            <hr style="border:none;border-top:1px solid var(--rand);margin:1.2rem 0">
+            <hr>
             <h4>🍳 Recepten Beheren</h4>
             <div id="receptenBeheerLijst"></div>
         </div>
@@ -155,11 +153,11 @@
             </div>
             <label>Emoji / Foto 1</label><input type="text" id="f-foto" value="🍽️">
             <label>Foto 2 (link)</label><input type="text" id="f-foto2" placeholder="Optionele afbeelding-URL">
-            <label>Ingrediënten (hoeveelheid + product, elk op nieuwe regel)</label>
-            <textarea id="f-ing" placeholder="Bijv: 400 gr garnalen&#10;4 teentjes knoflook"></textarea>
-            <label>Benodigdheden</label><textarea id="f-gerei" placeholder="Bijv: Koekenpan, lepel"></textarea>
+            <label>Ingrediënten</label>
+            <textarea id="f-ing" placeholder="Elk op nieuwe regel"></textarea>
+            <label>Benodigdheden</label><textarea id="f-gerei"></textarea>
             <label>Korte beschrijving</label><textarea id="f-korte"></textarea>
-            <label>Bereidingswijze</label><textarea id="f-stap" placeholder="Stap voor stap..."></textarea>
+            <label>Bereidingswijze</label><textarea id="f-stap"></textarea>
             <div class="knop-rij">
                 <button class="btn sec" onclick="sluitVenster('formV')">Annuleren</button>
                 <button class="btn prim" onclick="bewaarRecept()">✅ Opslaan</button>
