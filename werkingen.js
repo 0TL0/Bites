@@ -9,6 +9,7 @@ let sterWaarde = 0;
 let toonAlleenFav = false;
 let geselecteerdRecept = null;
 let lijstZichtbaar = false;
+let filterZichtbaar = false;
 
 // JOUW 31 RECEPTEN
 const standaardRecepten = [
@@ -113,7 +114,7 @@ function maakSterren(aantal) {
 
 // === FAVORIETEN ===
 function wisselFavStatus(id, e) {
-    e.stopPropagation();
+    if (e) e.stopPropagation();
     const lijst = laadRecepten();
     const r = lijst.find(x => x.id === id);
     if (r) {
@@ -129,6 +130,12 @@ function wisselFav() {
     toonAlles();
 }
 
+// === FILTERS UITKLAP ===
+function wisselFilter() {
+    filterZichtbaar = !filterZichtbaar;
+    document.getElementById('filterVak').classList.toggle('aan', filterZichtbaar);
+}
+
 // === LIJST UITKLAP ===
 function wisselLijst() {
     lijstZichtbaar = !lijstZichtbaar;
@@ -138,4 +145,328 @@ function wisselLijst() {
 function tekenLijst() {
     const lijst = laadRecepten();
     const vak = document.getElementById('lijstInhoud');
-    vak.innerHTML = lijst.map(r => `<a href="#" onclick="openRecept(${r.id});return
+    vak.innerHTML = lijst.map(r => `<a href="#" onclick="openRecept(${r.id});return false;">${r.naam}</a>`).join('');
+}
+
+// === OPEN RECEPT (Detailpagina met deelbare link + portie-calculator) ===
+function openRecept(id) {
+    const lijst = laadRecepten();
+    const r = lijst.find(x => x.id === id);
+    if (!r) return;
+    geselecteerdRecept = r;
+
+    document.getElementById('hoofdPagina').style.display = 'none';
+    document.getElementById('detailPagina').style.display = 'block';
+
+    tekenDetailPagina(r);
+}
+
+function tekenDetailPagina(recept, factor = 1) {
+    const vak = document.getElementById('detailInhoudVak');
+    const aangepastAantal = Math.round((recept.pers * factor) * 10) / 10;
+    const geing = recept.ing.map(reg => pasHoeveelheidAan(reg, factor));
+
+    let foto1Html = recept.foto.startsWith('http')
+        ? `<img src="${recept.foto}" alt="${recept.naam}">`
+        : `<span style="font-size:3.5rem">${recept.foto}</span>`;
+
+    let foto2Html = '';
+    if (recept.foto2 && recept.foto2.trim()) {
+        foto2Html = `<div class="detail-foto">
+            <img src="${recept.foto2}" alt="${recept.naam} 2" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+        </div>`;
+    }
+
+    vak.innerHTML = `
+        <h1>${recept.naam}</h1>
+        ${recept.vertaling ? `<h2>${recept.vertaling}</h2>` : ''}
+        <div class="detail-meta">
+            <span>⏱️ ${recept.tijd} min</span>
+            <span>📂 ${recept.cat}</span>
+            <span>🌍 ${recept.keuken}</span>
+            <span>${maakSterren(recept.ster)}</span>
+        </div>
+
+        <div class="detail-foto-rij">
+            <div class="detail-foto">${foto1Html}</div>
+            ${foto2Html}
+        </div>
+
+        <div class="detail-portion">
+            <label>Aantal personen:</label>
+            <input type="number" id="aantalInvoer" value="${aangepastAantal}" min="0.5" step="0.5">
+            <button class="btn prim" onclick="pasPortieAan(${recept.id})">✅ Pas aan</button>
+            <small>(Standaard: ${recept.pers} pers.)</small>
+        </div>
+
+        <h3>📋 Ingrediënten</h3>
+        <ul class="detail-lijst">
+            ${geing.map(x => `<li>${x}</li>`).join('')}
+        </ul>
+
+        ${recept.gerei?.length ? `<h3>🔧 Benodigdheden</h3><ul class="detail-lijst">${recept.gerei.map(x => `<li>${x}</li>`).join('')}</ul>` : ''}
+
+        ${recept.korte ? `<p style="margin:1rem 0;color:var(--grijs)"><em>${recept.korte}</em></p>` : ''}
+
+        <div class="detail-stappen">
+            <h3>📝 Bereidingswijze</h3>
+            <p style="white-space:pre-line;line-height:1.7;">${recept.stap}</p>
+        </div>
+
+        ${beheerder ? `<div style="margin-top:2rem"><button class="btn prim" onclick="bewerkRecept(${recept.id})">✏️ Bewerk Recept</button></div>` : ''}
+    `;
+}
+
+function pasPortieAan(id) {
+    const lijst = laadRecepten();
+    const r = lijst.find(x => x.id === id);
+    if (!r) return;
+    const nieuwAantal = parseFloat(document.getElementById('aantalInvoer').value);
+    const factor = nieuwAantal / r.pers;
+    tekenDetailPagina(r, factor);
+}
+
+function pasHoeveelheidAan(regel, factor) {
+    const match = regel.match(/^([0-9.,/]+)\s+(.*)$/);
+    if (!match) return regel;
+
+    let getal = parseHoeveelheid(match[1]);
+    const eenheidEnNaam = match[2];
+    if (getal === null) return regel;
+
+    const nieuw = Math.round((getal * factor) * 100) / 100;
+    return `${nieuw} ${eenheidEnNaam}`;
+}
+
+function parseHoeveelheid(tekst) {
+    tekst = tekst.replace(',', '.');
+    if (tekst.includes('/')) {
+        const [t, n] = tekst.split('/').map(Number);
+        return t / n;
+    }
+    return parseFloat(tekst);
+}
+
+// === TOON ALLES / ZOEK / FILTER / SORTEER ===
+function toonAlles() {
+    let lijst = laadRecepten();
+    const zoektekst = document.getElementById('zoek').value.toLowerCase();
+    const cat = document.getElementById('cat').value;
+    const keuken = document.getElementById('keuken').value;
+    const sorteer = document.getElementById('sorteer').value;
+
+    if (toonAlleenFav) lijst = lijst.filter(r => r.fav);
+    if (zoektekst) lijst = lijst.filter(r =>
+        r.naam.toLowerCase().includes(zoektekst) ||
+        r.ing.some(i => i.toLowerCase().includes(zoektekst))
+    );
+    if (cat) lijst = lijst.filter(r => r.cat === cat);
+    if (keuken) lijst = lijst.filter(r => r.keuken === keuken);
+
+    switch (sorteer) {
+        case 'tijd-ops': lijst.sort((a,b) => a.tijd - b.tijd); break;
+        case 'tijd-afl': lijst.sort((a,b) => b.tijd - a.tijd); break;
+        case 'ster-afl': lijst.sort((a,b) => b.ster - a.ster); break;
+        case 'naam': lijst.sort((a,b) => a.naam.localeCompare(b.naam)); break;
+    }
+
+    tekenRooster(lijst);
+}
+
+function tekenRooster(lijst) {
+    const vak = document.getElementById('rooster');
+    vak.innerHTML = lijst.map(r => {
+        let fotoHtml = '';
+        if (r.foto.startsWith('http')) {
+            fotoHtml = `<img src="${r.foto}" alt="${r.naam}">`;
+        } else {
+            fotoHtml = r.foto;
+        }
+
+        return `
+        <div class="kaart" onclick="openRecept(${r.id})">
+            <div class="kaart-foto">
+                ${fotoHtml}
+                <div class="kaart-ster">${maakSterren(r.ster)}</div>
+                <button class="kaart-fav ${r.fav ? 'ja' : ''}" onclick="wisselFavStatus(${r.id}, event)">★</button>
+                ${beheerder ? `<button class="kaart-bewerk" onclick="event.stopPropagation();bewerkRecept(${r.id})">✏️</button>` : ''}
+                <div class="kaart-labels">
+                    <span class="kaart-label">${r.cat}</span>
+                    <span class="kaart-label">⏱️ ${r.tijd}m</span>
+                </div>
+            </div>
+            <div class="kaart-inhoud">
+                <h3 class="kaart-naam">${r.naam}</h3>
+                <p class="kaart-kort">${r.korte || ''}</p>
+                <div class="kaart-info">
+                    <span>👥 ${r.pers} pers.</span>
+                    <span>${r.keuken}</span>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// === FORMULIER / BEWERKEN / TOEVOEGEN ===
+function openForm() {
+    document.getElementById('formTitel').textContent = '➕ Nieuw Recept';
+    document.getElementById('bewerkId').value = '';
+    document.getElementById('f-naam').value = '';
+    document.getElementById('f-vertaling').value = '';
+    document.getElementById('f-cat').value = 'Hoofdgerecht';
+    document.getElementById('f-keuken').value = 'Overig';
+    document.getElementById('f-tijd').value = 20;
+    document.getElementById('f-pers').value = 2;
+    document.getElementById('f-foto').value = '🍽️';
+    document.getElementById('f-foto2').value = '';
+    document.getElementById('f-ing').value = '';
+    document.getElementById('f-gerei').value = '';
+    document.getElementById('f-korte').value = '';
+    document.getElementById('f-stap').value = '';
+    sterWaarde = 0;
+    tekenFormSterren();
+    document.getElementById('verwijderKnop').style.display = 'none';
+    openVenster('formV');
+}
+
+function bewerkRecept(id) {
+    sluitVenster('adminPaneel');
+    const lijst = laadRecepten();
+    const r = lijst.find(x => x.id === id);
+    if (!r) return;
+
+    document.getElementById('formTitel').textContent = '✏️ Bewerk Recept';
+    document.getElementById('bewerkId').value = id;
+    document.getElementById('f-naam').value = r.naam;
+    document.getElementById('f-vertaling').value = r.vertaling || '';
+    document.getElementById('f-cat').value = r.cat;
+    document.getElementById('f-keuken').value = r.keuken;
+    document.getElementById('f-tijd').value = r.tijd;
+    document.getElementById('f-pers').value = r.pers;
+    document.getElementById('f-foto').value = r.foto;
+    document.getElementById('f-foto2').value = r.foto2 || '';
+    document.getElementById('f-ing').value = r.ing.join('\n');
+    document.getElementById('f-gerei').value = (r.gerei || []).join('\n');
+    document.getElementById('f-korte').value = r.korte || '';
+    document.getElementById('f-stap').value = r.stap || '';
+    sterWaarde = r.ster;
+    tekenFormSterren();
+    document.getElementById('verwijderKnop').style.display = 'block';
+    openVenster('formV');
+}
+
+function tekenFormSterren() {
+    const vak = document.getElementById('f-ster');
+    vak.innerHTML = [1,2,3,4,5].map(n =>
+        `<span data-waarde="${n}" class="${n <= sterWaarde ? 'aan' : ''}" onclick="sterKlik(${n})">★</span>`
+    ).join('');
+}
+
+function sterKlik(n) {
+    sterWaarde = n;
+    tekenFormSterren();
+}
+
+function bewaarRecept() {
+    const naam = document.getElementById('f-naam').value.trim();
+    if (!naam) return alert('Vul een naam in!');
+
+    const lijst = laadRecepten();
+    const idVak = document.getElementById('bewerkId').value;
+    const ingTekst = document.getElementById('f-ing').value.trim();
+    const gereiTekst = document.getElementById('f-gerei').value.trim();
+
+    const gegevens = {
+        naam: naam,
+        vertaling: document.getElementById('f-vertaling').value.trim(),
+        cat: document.getElementById('f-cat').value,
+        keuken: document.getElementById('f-keuken').value,
+        tijd: parseInt(document.getElementById('f-tijd').value) || 20,
+        pers: parseInt(document.getElementById('f-pers').value) || 2,
+        ster: sterWaarde,
+        foto: document.getElementById('f-foto').value.trim() || '🍽️',
+        foto2: document.getElementById('f-foto2').value.trim(),
+        ing: ingTekst ? ingTekst.split('\n').map(s => s.trim()).filter(s => s) : [],
+        gerei: gereiTekst ? gereiTekst.split('\n').map(s => s.trim()).filter(s => s) : [],
+        korte: document.getElementById('f-korte').value.trim(),
+        stap: document.getElementById('f-stap').value.trim(),
+        fav: false
+    };
+
+    if (idVak) {
+        const index = lijst.findIndex(x => x.id === parseInt(idVak));
+        if (index !== -1) {
+            gegevens.id = parseInt(idVak);
+            gegevens.fav = lijst[index].fav;
+            lijst[index] = gegevens;
+        }
+    } else {
+        gegevens.id = lijst.length ? Math.max(...lijst.map(x => x.id)) + 1 : 1;
+        lijst.push(gegevens);
+    }
+
+    bewaarRecepten(lijst);
+    sluitVenster('formV');
+    toonAlles();
+    tekenLijst();
+}
+
+function verwijderRecept() {
+    if (!confirm('Weet je zeker dat je dit recept wilt verwijderen?')) return;
+    const idVak = document.getElementById('bewerkId').value;
+    if (!idVak) return;
+
+    let lijst = laadRecepten();
+    lijst = lijst.filter(x => x.id !== parseInt(idVak));
+    bewaarRecepten(lijst);
+    sluitVenster('formV');
+    toonAlles();
+    tekenLijst();
+}
+
+// === ADMIN PANEEL ===
+function tekenAdminPaneel() {
+    const taken = laadTaken();
+    document.getElementById('actieveNotities').innerHTML = taken.actief.map((taak, i) => `
+        <div class="notitie-item">
+            <input type="checkbox" ${taak.gedaan ? 'checked' : ''} onchange="wisselTaak(${i})">
+            <span>${taak.tekst}</span>
+        </div>`).join('');
+    document.getElementById('archiefNotities').innerHTML = taken.archief.map(taak => `
+        <div class="notitie-item af">
+            <span>✅ ${taak.tekst}</span>
+        </div>`).join('') || '<p style="color:var(--grijs)">Nog geen afgeronde taken.</p>';
+
+    const lijst = laadRecepten();
+    document.getElementById('receptenBeheerLijst').innerHTML = lijst.map(r => `
+        <div class="recept-beheer-item">
+            <span><strong>${r.naam}</strong> — ${r.cat} | ⏱️ ${r.tijd}m</span>
+            <button class="btn prim" onclick="bewerkRecept(${r.id});sluitVenster('adminPaneel')">✏️ Bewerk</button>
+        </div>`).join('');
+}
+
+function voegNotitieToe() {
+    const vak = document.getElementById('nieuwNotitieVak');
+    const tekst = vak.value.trim();
+    if (!tekst) return;
+
+    const taken = laadTaken();
+    taken.actief.push({ tekst: tekst, gedaan: false });
+    bewaarTaken(taken);
+    vak.value = '';
+    tekenAdminPaneel();
+}
+
+function wisselTaak(index) {
+    const taken = laadTaken();
+    const [taak] = taken.actief.splice(index, 1);
+    taak.gedaan = true;
+    taken.archief.unshift(taak);
+    bewaarTaken(taken);
+    tekenAdminPaneel();
+}
+
+// === BIJ LADEN ===
+window.onload = function() {
+    toonAlles();
+};
